@@ -1,0 +1,31 @@
+{
+    "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+    "name": "pb-sauce",
+    "description": "Premium Blend deck builder — generates branded HTML presentations with PB fonts, colors, and layout DNA from 9 reference decks.",
+    "owner": {
+        "name": "Premium Blend AI Pod",
+        "email": "scottjw89@gmail.com"
+    },
+    "plugins": [
+        {
+            "name": "pb-sauce",
+            "description": "Turn a brief into a branded Premium Blend HTML deck. 1280×720 per slide, PB design system, 9 reference layouts, PDF exporter included.",
+            "version": "1.0.0",
+            "author": {
+                "name": "Premium Blend AI Pod"
+            },
+            "source": "./",
+            "category": "productivity",
+            "keywords": [
+                "decks",
+                "presentations",
+                "premium-blend",
+                "html",
+                "slides",
+                "pb-sauce"
+            ],
+            "homepage": "https://github.com/Premium-Blend-Consulting/pb-sauce",
+            "repository": "https://github.com/Premium-Blend-Consulting/pb-sauce"
+        }
+    ]
+}

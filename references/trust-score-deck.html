@@ -1,0 +1,1665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trust Score — Executive Summary</title>
+<style>
+  @font-face {
+    font-family: "GT Walsheim";
+    src: url("../../../../Branding/Fonts/GT-Walsheim-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "GT Walsheim";
+    src: url("../../../../Branding/Fonts/GT-Walsheim-Light.ttf") format("truetype");
+    font-weight: 300;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "TT Hoves";
+    src: url("../../../../Branding/Fonts/TypeType - TT Hoves Medium.otf") format("opentype");
+    font-weight: 500;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "TT Hoves";
+    src: url("../../../../Branding/Fonts/TypeType - TT Hoves Light.otf") format("opentype");
+    font-weight: 300;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "TT Hoves";
+    src: url("../../../../Branding/Fonts/TypeType - TT Hoves Italic.otf") format("opentype");
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  :root {
+    --pb-black: #201F1F;
+    --pb-blue: #617EC8;
+    --pb-coral: #F15F40;
+    --pb-olive: #8C9E61;
+    --pb-gold: #FCB415;
+    --pb-plum: #9D5C88;
+    --pb-blush: #ECE3E1;
+    --white: #FFFFFF;
+    --font-headline: "GT Walsheim", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+    --font-body: "TT Hoves", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+  }
+
+  @page {
+    size: landscape;
+    margin: 0;
+    background: #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: #FFFFFF;
+    overflow-x: hidden;
+    font-family: var(--font-body);
+    color: var(--pb-black);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .slide {
+    width: 1280px;
+    height: 720px;
+    margin: 20px auto;
+    position: relative;
+    overflow: hidden;
+    background: var(--white);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    page-break-after: always;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* Save to PDF button */
+  .save-pdf-btn {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: 9999;
+    background: var(--pb-blue);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 28px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    transition: background 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .save-pdf-btn:hover {
+    background: #4e6ab5;
+  }
+  .save-pdf-btn::before {
+    content: "↓ ";
+  }
+
+  @media print {
+    html, body {
+      background: #FFFFFF !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: visible !important;
+    }
+    .save-pdf-btn { display: none !important; }
+    .slide {
+      margin: 0;
+      box-shadow: none;
+      width: 100%;
+      height: 100vh;
+    }
+    .blob { opacity: 0 !important; }
+  }
+
+  /* Typography */
+  .headline {
+    font-family: var(--font-headline);
+    font-weight: 500;
+    line-height: 1.1;
+  }
+  .label {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .badge {
+    display: inline-block;
+    padding: 6px 18px;
+    border: 2px solid currentColor;
+    border-radius: 20px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 500;
+    font-family: var(--font-body);
+  }
+
+  /* Page numbers */
+  .page-num {
+    position: absolute;
+    bottom: 20px;
+    right: 32px;
+    font-size: 11px;
+    color: rgba(0,0,0,0.25);
+    font-family: var(--font-body);
+    font-weight: 500;
+    z-index: 10;
+  }
+  .slide-dark .page-num,
+  .slide-divider .page-num {
+    color: rgba(255,255,255,0.3);
+  }
+
+  /* Blob accents */
+  .blob {
+    position: absolute;
+    border-radius: 50% 40% 60% 45% / 55% 50% 45% 50%;
+    opacity: 0.15;
+    z-index: 0;
+  }
+  .blob-blush { background: var(--pb-blush); opacity: 0.5; }
+  .blob-coral { background: var(--pb-coral); }
+  .blob-olive { background: var(--pb-olive); }
+  .blob-blue { background: var(--pb-blue); }
+  .blob-plum { background: var(--pb-plum); }
+  .blob-gold { background: var(--pb-gold); }
+
+  .asset-img {
+    position: absolute;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .slide-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    padding: 60px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 28px 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .card-dark {
+    background: var(--pb-black);
+    color: var(--white);
+    border-radius: 12px;
+    padding: 28px 24px;
+  }
+
+  .step-num {
+    font-family: var(--font-headline);
+    font-size: 40px;
+    font-weight: 500;
+    color: var(--pb-gold);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  /* Tables */
+  .pb-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .pb-table th {
+    background: var(--pb-blue);
+    color: var(--white);
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .pb-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid #eee;
+  }
+  .pb-table tr:last-child td {
+    border-bottom: none;
+    font-weight: 500;
+  }
+
+  .bar-track {
+    width: 100%;
+    height: 16px;
+    background: #f0f0f0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 8px;
+  }
+
+  .slide-divider .slide-content {
+    justify-content: center;
+    align-items: flex-start;
+    padding: 80px 100px;
+  }
+  .slide-divider .divider-title {
+    font-size: 64px;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+  .slide-divider .divider-sub {
+    font-size: 22px;
+    color: rgba(255,255,255,0.8);
+    font-weight: 300;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 14px;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .check-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--pb-olive);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+  .check-icon::after {
+    content: "✓";
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  /* Timeline */
+  .timeline {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    width: 100%;
+  }
+  .timeline-phase {
+    flex: 1;
+    text-align: center;
+    position: relative;
+  }
+  .timeline-phase::before {
+    content: "";
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--pb-blue);
+    z-index: 0;
+  }
+  .timeline-phase:first-child::before { left: 50%; }
+  .timeline-phase:last-child::before { right: 50%; }
+  .timeline-node {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--pb-blue);
+    color: var(--white);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 14px;
+    position: relative;
+    z-index: 1;
+  }
+  .timeline-label {
+    font-size: 11px;
+    margin-top: 10px;
+    line-height: 1.3;
+    color: var(--pb-black);
+  }
+  .timeline-gate {
+    font-size: 10px;
+    color: var(--pb-olive);
+    margin-top: 4px;
+    font-weight: 500;
+  }
+
+  /* Appendix tables */
+  .appendix-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .appendix-table th {
+    background: var(--pb-black);
+    color: var(--white);
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .appendix-table td {
+    padding: 7px 12px;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+    line-height: 1.4;
+  }
+
+  /* Architecture diagram */
+  .arch-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+  }
+  .arch-box {
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 11px;
+    text-align: center;
+    font-weight: 500;
+    line-height: 1.3;
+    flex-shrink: 0;
+  }
+  .arch-arrow {
+    font-size: 18px;
+    color: #ccc;
+    padding: 0 6px;
+    flex-shrink: 0;
+  }
+  .arch-arrow-down {
+    text-align: center;
+    font-size: 18px;
+    color: #ccc;
+    padding: 4px 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- SLIDE 1 — Title -->
+<!-- ============================================================ -->
+<section class="slide slide-dark" style="background: var(--pb-blue);">
+  <div class="blob blob-blush" style="width: 400px; height: 400px; bottom: -120px; right: -80px;"></div>
+  <img class="asset-img" src="../../../../Branding/Powerpoint Template/Template Images/Illustrations/slide13_illustrations_02.png" alt="" style="width: 200px; bottom: 40px; right: 60px; opacity: 0.2;">
+  <div class="slide-content" contenteditable="true" style="justify-content: center; align-items: flex-start; padding: 80px 100px;">
+    <div class="label" style="color: rgba(255,255,255,0.6); margin-bottom: 24px;">Premium Blend</div>
+    <h1 class="headline" style="font-size: 80px; color: var(--white); margin-bottom: 16px;">Trust Score</h1>
+    <p style="font-size: 28px; color: rgba(255,255,255,0.85); font-weight: 300; margin-bottom: 48px;">Executive Summary</p>
+    <div style="display: flex; gap: 40px; align-items: center;">
+      <p style="font-size: 15px; color: rgba(255,255,255,0.6);">Prepared by Joe, Director of Strategy &amp; Insights</p>
+      <p style="font-size: 15px; color: rgba(255,255,255,0.6);">March 2026</p>
+    </div>
+    <img src="../../../../Branding/Powerpoint Template/Template Images/Logo/slide04_logo_03.png" alt="PB Logo" style="position: absolute; bottom: 48px; right: 80px; height: 48px; opacity: 0.8;">
+  </div>
+  <span class="page-num">1</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 2 — Table of Contents -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding: 60px 100px;">
+    <div class="badge" style="color: var(--pb-blue); margin-bottom: 36px;">Contents</div>
+    <div style="display: flex; gap: 60px;">
+      <div style="flex: 1;">
+        <div style="margin-bottom: 28px;">
+          <div class="label" style="color: var(--pb-coral); margin-bottom: 12px;">The Vision</div>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dotted #ddd; padding-bottom: 6px;">
+              <span style="font-size: 15px;">The Belief</span><span style="font-size: 13px; color: #999;">03</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dotted #ddd; padding-bottom: 6px;">
+              <span style="font-size: 15px;">The Gap</span><span style="font-size: 13px; color: #999;">04</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dotted #ddd; padding-bottom: 6px;">
+              <span style="font-size: 15px;">The Product</span><span style="font-size: 13px; color: #999;">05</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dotted #ddd; padding-bottom: 6px;">
+              <span style="font-size: 15px;">The Business Model</span><span style="font-size: 13px; color: #999;">06</span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-bottom: 28px;">
+          <div class="label" style="color: var(--pb-olive); margin-bottom: 12px;">The Model</div>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dotted #ddd; padding-bottom: 6px;">
+              <span style="font-size: 15px;">Three Pillars</span><span style="font-size: 13px; color: #999;">08</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dotted #ddd; padding-bottom: 6px;">
+              <span style="font-size: 15px;">Seven Sub-Categories</span><span style="font-size: 13px; color: #999;">09</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="label" style="color: var(--pb-plum); margin-bottom: 12px;">The AI Layer</div>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dotted #ddd; padding-bottom: 6px;">
+              <span style="font-size: 15px;">Three Tiers of Intelligence</span><span style="font-size: 13px; color: #999;">11</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dotted #ddd; padding-bottom: 6px;">
+              <span style="font-size: 15px;">AI Cost</span><span style="font-size: 13px; color: #999;">12</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dotted #ddd; padding-bottom: 6px;">
+              <span style="font-size: 15px;">Service Tiers</span><span style="font-size: 13px; color: #999;">13</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="flex: 1;">
+        <div style="margin-bottom: 28px;">
+          <div class="label" style="color: var(--pb-blue); margin-bottom: 12px;">Proof of Concept</div>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dotted #ddd; padding-bottom: 6px;">
+              <span style="font-size: 15px;">Walgreens Live Score</span><span style="font-size: 13px; color: #999;">15</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dotted #ddd; padding-bottom: 6px;">
+              <span style="font-size: 15px;">What the Data Told Us</span><span style="font-size: 13px; color: #999;">16</span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-bottom: 28px;">
+          <div class="label" style="color: var(--pb-coral); margin-bottom: 12px;">How We Built It</div>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dotted #ddd; padding-bottom: 6px;">
+              <span style="font-size: 15px;">Build Timeline</span><span style="font-size: 13px; color: #999;">18</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dotted #ddd; padding-bottom: 6px;">
+              <span style="font-size: 15px;">Build Effort in Context</span><span style="font-size: 13px; color: #999;">19</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dotted #ddd; padding-bottom: 6px;">
+              <span style="font-size: 15px;">Challenges We Met</span><span style="font-size: 13px; color: #999;">20</span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-bottom: 28px;">
+          <div class="label" style="color: var(--pb-olive); margin-bottom: 12px;">Scaling</div>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dotted #ddd; padding-bottom: 6px;">
+              <span style="font-size: 15px;">Why It Scales</span><span style="font-size: 13px; color: #999;">21</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dotted #ddd; padding-bottom: 6px;">
+              <span style="font-size: 15px;">System Architecture</span><span style="font-size: 13px; color: #999;">22</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dotted #ddd; padding-bottom: 6px;">
+              <span style="font-size: 15px;">Cost to Scale</span><span style="font-size: 13px; color: #999;">23</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dotted #ddd; padding-bottom: 6px;">
+              <span style="font-size: 15px;">Next Steps</span><span style="font-size: 13px; color: #999;">24</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="label" style="color: #999; margin-bottom: 12px;">Appendix</div>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dotted #ddd; padding-bottom: 6px;">
+              <span style="font-size: 15px;">Methodology Deep Dive</span><span style="font-size: 13px; color: #999;">27–28</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dotted #ddd; padding-bottom: 6px;">
+              <span style="font-size: 15px;">Data Architecture &amp; Clarity</span><span style="font-size: 13px; color: #999;">29–30</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">2</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 3 — The Belief -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="blob blob-coral" style="width: 500px; height: 500px; top: -200px; right: -150px;"></div>
+  <img class="asset-img" src="../../../../Branding/Powerpoint Template/Template Images/Illustrations/slide13_illustrations_01.png" alt="" style="width: 180px; bottom: 40px; right: 60px; opacity: 0.6;">
+  <div class="slide-content" contenteditable="true" style="padding: 80px 100px; padding-right: 300px;">
+    <div class="badge" style="color: var(--pb-coral); margin-bottom: 32px;">The Belief</div>
+    <p class="headline" style="font-size: 36px; line-height: 1.35; color: var(--pb-black);">
+      We believe brands should stop chasing revenue from the top down — and start building it from the ground up <span style="color: var(--pb-coral);">by earning consumer trust.</span>
+    </p>
+    <p style="font-size: 22px; color: #666; margin-top: 32px; font-weight: 300;">This is the vision we set out to achieve.</p>
+  </div>
+  <span class="page-num">3</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 4 — The Gap -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="blob blob-gold" style="width: 300px; height: 300px; bottom: -100px; left: -80px;"></div>
+  <div class="slide-content" contenteditable="true" style="padding: 60px 80px;">
+    <div class="badge" style="color: var(--pb-gold); margin-bottom: 32px;">The Gap</div>
+    <p style="font-size: 18px; color: #666; margin-bottom: 40px; max-width: 800px;">Enterprise brands currently spend big on brand health reports. The reports arrive late, too broad to act on, and disconnected from daily operations.</p>
+    <div style="display: flex; gap: 40px;">
+      <div style="flex: 1; text-align: center; padding: 40px 24px; border: 1px solid #eee; border-radius: 12px;">
+        <div class="headline" style="font-size: 48px; color: var(--pb-coral); margin-bottom: 12px;">$50K–$200K</div>
+        <div style="font-size: 14px; color: #999; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">Per Year</div>
+        <p style="font-size: 15px; color: #666;">What brands pay Edelman, Kantar, and similar firms for brand health reports</p>
+      </div>
+      <div style="flex: 1; text-align: center; padding: 40px 24px; border: 1px solid #eee; border-radius: 12px;">
+        <div class="headline" style="font-size: 48px; color: var(--pb-coral); margin-bottom: 12px;">2–3×</div>
+        <div style="font-size: 14px; color: #999; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">Per Year</div>
+        <p style="font-size: 15px; color: #666;">How often those reports arrive — too infrequent to inform real-time decisions</p>
+      </div>
+      <div style="flex: 1; text-align: center; padding: 40px 24px; border: 1px solid #eee; border-radius: 12px;">
+        <div class="headline" style="font-size: 48px; color: var(--pb-coral); margin-bottom: 12px;">Too Broad</div>
+        <div style="font-size: 14px; color: #999; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">To Act On</div>
+        <p style="font-size: 15px; color: #666;">By the time the data arrives, the window to act on it has closed</p>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">4</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 5 — Trust Score Is... -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="flex-direction: row; align-items: center; gap: 60px; padding: 60px 80px;">
+    <div style="flex: 1.2;">
+      <div class="badge" style="color: var(--pb-blue); margin-bottom: 28px;">The Product</div>
+      <h2 class="headline" style="font-size: 36px; margin-bottom: 20px;">A real-time, always-on brand health platform.</h2>
+      <p style="font-size: 18px; color: #555; line-height: 1.6; margin-bottom: 24px;">One number. One north star. Updated as often as the data flows in.</p>
+      <div style="background: var(--pb-blush); border-radius: 10px; padding: 20px 24px;">
+        <p style="font-size: 15px; color: var(--pb-black); font-weight: 500;">53 metrics → 7 sub-categories → 3 pillars → <strong style="color: var(--pb-blue);">1 score</strong></p>
+      </div>
+    </div>
+    <div style="flex: 0.8; display: flex; justify-content: center; align-items: center;">
+      <svg width="240" height="240" viewBox="0 0 240 240">
+        <circle cx="120" cy="120" r="100" fill="none" stroke="#f0f0f0" stroke-width="16"/>
+        <circle cx="120" cy="120" r="100" fill="none" stroke="var(--pb-blue)" stroke-width="16"
+          stroke-dasharray="628.3" stroke-dashoffset="364.4" stroke-linecap="round"
+          transform="rotate(-90 120 120)"/>
+        <text x="120" y="110" text-anchor="middle" font-family="GT Walsheim, system-ui, sans-serif" font-size="56" font-weight="500" fill="var(--pb-black)">42</text>
+        <text x="120" y="142" text-anchor="middle" font-size="13" fill="#999" letter-spacing="2">TRUST SCORE</text>
+      </svg>
+    </div>
+  </div>
+  <span class="page-num">5</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 6 — The Business Model -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="blob blob-olive" style="width: 350px; height: 350px; bottom: -120px; right: -100px;"></div>
+  <div class="slide-content" contenteditable="true" style="padding: 70px 100px; justify-content: center;">
+    <div class="badge" style="color: var(--pb-olive); margin-bottom: 32px;">The Business Model</div>
+    <h2 class="headline" style="font-size: 36px; margin-bottom: 24px; max-width: 700px;">New SaaS revenue line.<br>Sold at the C-suite level.</h2>
+    <p style="font-size: 17px; color: #555; line-height: 1.7; margin-bottom: 32px; max-width: 680px;">
+      Target buyers: CMOs, CCOs, VPs of Consumer Insights — the leaders who need to connect daily team activity to brand trust.
+    </p>
+    <div style="background: var(--pb-black); color: var(--white); border-radius: 10px; padding: 24px 32px; max-width: 700px;">
+      <p style="font-size: 17px; line-height: 1.6; font-weight: 300;">
+        This is the product that makes Premium Blend more than an agency.<br>
+        <strong style="color: var(--pb-gold); font-weight: 500;">It makes us a technology company.</strong>
+      </p>
+    </div>
+  </div>
+  <span class="page-num">6</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 7 — Section Divider: The Model -->
+<!-- ============================================================ -->
+<section class="slide slide-divider" style="background: var(--pb-olive);">
+  <img class="asset-img" src="../../../../Branding/Powerpoint Template/Template Images/Illustrations/slide13_illustrations_03.png" alt="" style="width: 260px; bottom: 40px; right: 80px; opacity: 0.3;">
+  <div class="slide-content" contenteditable="true">
+    <div class="badge" style="color: rgba(255,255,255,0.6); border-color: rgba(255,255,255,0.3); margin-bottom: 24px;">Section</div>
+    <h2 class="headline divider-title">The Model</h2>
+    <p class="divider-sub">Research-backed methodology</p>
+  </div>
+  <span class="page-num">7</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 8 — Three Pillars -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding: 50px 60px;">
+    <div class="badge" style="color: var(--pb-blue); margin-bottom: 28px;">Three Pillars</div>
+    <div style="display: flex; flex: 1; align-items: stretch;">
+      <div style="flex: 1; padding: 0 28px 0 0; display: flex; flex-direction: column;">
+        <div class="headline" style="font-size: 56px; color: var(--pb-coral); margin-bottom: 4px;">40%</div>
+        <h3 style="font-size: 20px; font-weight: 500; margin-bottom: 12px;">Accountability</h3>
+        <p style="font-size: 14px; color: #666; line-height: 1.6; flex: 1;">How well the brand responds, resolves, and owns its reputation. Trust must be earned operationally before it can be built emotionally.</p>
+        <div style="margin-top: 16px;">
+          <div class="label" style="font-size: 11px; color: #999; margin-bottom: 6px;">Sub-categories</div>
+          <p style="font-size: 13px; color: #555;">Dependability (55%) · Fulfillment (45%)</p>
+        </div>
+      </div>
+      <div style="width: 1px; background: #E0E0E0; align-self: stretch;"></div>
+      <div style="flex: 1; padding: 0 28px; display: flex; flex-direction: column;">
+        <div class="headline" style="font-size: 56px; color: var(--pb-blue); margin-bottom: 4px;">30%</div>
+        <h3 style="font-size: 20px; font-weight: 500; margin-bottom: 12px;">Authenticity &amp; Credibility</h3>
+        <p style="font-size: 14px; color: #666; line-height: 1.6; flex: 1;">How genuine, expert, and values-aligned the brand's voice is perceived by consumers.</p>
+        <div style="margin-top: 16px;">
+          <div class="label" style="font-size: 11px; color: #999; margin-bottom: 6px;">Sub-categories</div>
+          <p style="font-size: 13px; color: #555;">Relatability (40%) · Congruence (35%) · Expertise (25%)</p>
+        </div>
+      </div>
+      <div style="width: 1px; background: #E0E0E0; align-self: stretch;"></div>
+      <div style="flex: 1; padding: 0 0 0 28px; display: flex; flex-direction: column;">
+        <div class="headline" style="font-size: 56px; color: var(--pb-olive); margin-bottom: 4px;">30%</div>
+        <h3 style="font-size: 20px; font-weight: 500; margin-bottom: 12px;">Community</h3>
+        <p style="font-size: 14px; color: #666; line-height: 1.6; flex: 1;">How deeply the brand fosters belonging, advocacy, and loyal community among consumers.</p>
+        <div style="margin-top: 16px;">
+          <div class="label" style="font-size: 11px; color: #999; margin-bottom: 6px;">Sub-categories</div>
+          <p style="font-size: 13px; color: #555;">Belonging (50%) · Advocacy (50%)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">8</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 9 — Seven Sub-Categories -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding: 48px 60px;">
+    <div class="badge" style="color: var(--pb-blue); margin-bottom: 20px;">Seven Sub-Categories</div>
+    <div style="display: flex; gap: 24px; flex: 1;">
+      <div style="flex: 1;">
+        <div style="background: var(--pb-coral); color: white; padding: 10px 16px; border-radius: 8px 8px 0 0; font-weight: 500; font-size: 14px;">Accountability (40%)</div>
+        <div style="border: 1px solid #eee; border-top: none; border-radius: 0 0 8px 8px; padding: 16px;">
+          <div style="margin-bottom: 16px;">
+            <div style="font-weight: 500; font-size: 15px; margin-bottom: 4px;">Dependability <span style="color: var(--pb-coral); font-size: 13px;">55%</span></div>
+            <p style="font-size: 12px; color: #777; line-height: 1.5;">Response Rate, SLA Adherence, Resolution Rate</p>
+          </div>
+          <div>
+            <div style="font-weight: 500; font-size: 15px; margin-bottom: 4px;">Fulfillment <span style="color: var(--pb-coral); font-size: 13px;">45%</span></div>
+            <p style="font-size: 12px; color: #777; line-height: 1.5;">Ratings, Reviews, Critical Mention Rate</p>
+          </div>
+        </div>
+      </div>
+      <div style="flex: 1;">
+        <div style="background: var(--pb-blue); color: white; padding: 10px 16px; border-radius: 8px 8px 0 0; font-weight: 500; font-size: 14px;">Authenticity &amp; Credibility (30%)</div>
+        <div style="border: 1px solid #eee; border-top: none; border-radius: 0 0 8px 8px; padding: 16px;">
+          <div style="margin-bottom: 16px;">
+            <div style="font-weight: 500; font-size: 15px; margin-bottom: 4px;">Relatability <span style="color: var(--pb-blue); font-size: 13px;">40%</span></div>
+            <p style="font-size: 12px; color: #777; line-height: 1.5;">Engagement Rate (FB/IG/TikTok), Comment Sentiment, UGC Rate</p>
+          </div>
+          <div style="margin-bottom: 16px;">
+            <div style="font-weight: 500; font-size: 15px; margin-bottom: 4px;">Congruence <span style="color: var(--pb-blue); font-size: 13px;">35%</span></div>
+            <p style="font-size: 12px; color: #777; line-height: 1.5;">Key Pillar Mention Rate, On-Brand Content Ratio</p>
+          </div>
+          <div>
+            <div style="font-weight: 500; font-size: 15px; margin-bottom: 4px;">Expertise <span style="color: var(--pb-blue); font-size: 13px;">25%</span></div>
+            <p style="font-size: 12px; color: #777; line-height: 1.5;">Leadership Posting, SOV, Search Authority</p>
+          </div>
+        </div>
+      </div>
+      <div style="flex: 1;">
+        <div style="background: var(--pb-olive); color: white; padding: 10px 16px; border-radius: 8px 8px 0 0; font-weight: 500; font-size: 14px;">Community (30%)</div>
+        <div style="border: 1px solid #eee; border-top: none; border-radius: 0 0 8px 8px; padding: 16px;">
+          <div style="margin-bottom: 16px;">
+            <div style="font-weight: 500; font-size: 15px; margin-bottom: 4px;">Belonging <span style="color: var(--pb-olive); font-size: 13px;">50%</span></div>
+            <p style="font-size: 12px; color: #777; line-height: 1.5;">Community Footprint (AAR 60%, Follower 15%, Growth 25%)</p>
+          </div>
+          <div>
+            <div style="font-weight: 500; font-size: 15px; margin-bottom: 4px;">Advocacy <span style="color: var(--pb-olive); font-size: 13px;">50%</span></div>
+            <p style="font-size: 12px; color: #777; line-height: 1.5;">NPS, Fan Accounts, Influencer Reach, Employee Participation</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size: 12px; color: #999; margin-top: 12px;">Three metric types: Standard (required), Bonus (additive lift), ConditionalStandard (renormalizes when absent). All weights versioned and locked per client contract.</p>
+  </div>
+  <span class="page-num">9</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 10 — Section Divider: The AI Layer -->
+<!-- ============================================================ -->
+<section class="slide slide-divider" style="background: var(--pb-plum);">
+  <div class="blob blob-blush" style="width: 400px; height: 400px; top: -150px; right: -100px; opacity: 0.15;"></div>
+  <div class="slide-content" contenteditable="true">
+    <div class="badge" style="color: rgba(255,255,255,0.6); border-color: rgba(255,255,255,0.3); margin-bottom: 24px;">Section</div>
+    <h2 class="headline divider-title">The AI Layer</h2>
+    <p class="divider-sub">"The queen on the chess board."</p>
+  </div>
+  <span class="page-num">10</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 11 — Three Tiers of Intelligence -->
+<!-- ============================================================ -->
+<section class="slide slide-dark" style="background: var(--pb-black);">
+  <div class="slide-content" contenteditable="true" style="padding: 50px 60px; color: var(--white);">
+    <div class="badge" style="color: var(--pb-gold); border-color: var(--pb-gold); margin-bottom: 28px;">Three Tiers of Intelligence</div>
+    <div style="display: flex; gap: 28px; flex: 1; align-items: stretch;">
+      <div class="card-dark" style="flex: 1; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column;">
+        <div class="step-num">01</div>
+        <h3 style="font-size: 18px; font-weight: 500; margin-bottom: 12px;">Executive Headline + Narrative</h3>
+        <p style="font-size: 14px; color: rgba(255,255,255,0.65); line-height: 1.6; flex: 1;">5-8 word headline and 2-4 sentence boardroom-ready summary. Instant context for leadership.</p>
+        <p style="font-size: 12px; color: rgba(255,255,255,0.35); margin-top: 16px; font-style: italic;">"February 2026 — Opportunity to Improve"</p>
+      </div>
+      <div class="card-dark" style="flex: 1; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column;">
+        <div class="step-num">02</div>
+        <h3 style="font-size: 18px; font-weight: 500; margin-bottom: 12px;">Pillar Blurbs</h3>
+        <p style="font-size: 14px; color: rgba(255,255,255,0.65); line-height: 1.6; flex: 1;">2-3 sentences per pillar explaining what's driving the score up or down. All three generated in a single API call.</p>
+      </div>
+      <div class="card-dark" style="flex: 1; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column;">
+        <div class="step-num">03</div>
+        <h3 style="font-size: 18px; font-weight: 500; margin-bottom: 12px;">Sub-Category Drilldowns</h3>
+        <p style="font-size: 14px; color: rgba(255,255,255,0.65); line-height: 1.6; flex: 1;">On-demand tactical analysis. 3-5 sentences with strengths, weaknesses, and actionable recommendations. Generated once, then cached.</p>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">11</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 12 — AI Cost -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="justify-content: center; align-items: center; text-align: center;">
+    <div class="badge" style="color: var(--pb-olive); margin-bottom: 40px;">AI Cost Per Analysis</div>
+    <div class="headline" style="font-size: 120px; color: var(--pb-black); margin-bottom: 8px;">$0.003</div>
+    <p style="font-size: 22px; color: #999; margin-bottom: 48px;">Less than a third of a penny.</p>
+    <div style="display: flex; gap: 48px; justify-content: center;">
+      <div>
+        <div style="font-size: 32px; font-weight: 500; color: var(--pb-blue);">~$10</div>
+        <p style="font-size: 14px; color: #999; margin-top: 4px;">10 clients / month</p>
+      </div>
+      <div style="width: 1px; background: #eee;"></div>
+      <div>
+        <div style="font-size: 32px; font-weight: 500; color: var(--pb-blue);">~$50–100</div>
+        <p style="font-size: 14px; color: #999; margin-top: 4px;">100 clients / month</p>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">12</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 13 — The Service Tier Model -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding: 50px 60px;">
+    <div class="badge" style="color: var(--pb-plum); margin-bottom: 28px;">Service Tiers</div>
+    <div style="display: flex; flex: 1; align-items: stretch;">
+      <div style="flex: 1; padding: 0 28px 0 0; display: flex; flex-direction: column;">
+        <div class="label" style="color: #bbb; margin-bottom: 8px;">Tier 1</div>
+        <h3 style="font-size: 22px; font-weight: 500; margin-bottom: 12px; color: var(--pb-black);">Just a Login</h3>
+        <p style="font-size: 14px; color: #666; line-height: 1.6; flex: 1;">Access to the dashboard. We provide the CSV template — they populate and upload their own data to see results in-platform.</p>
+        <div style="margin-top: 16px;">
+          <p style="font-size: 12px; color: #999;">Client effort: <strong style="color: var(--pb-black);">High</strong></p>
+        </div>
+      </div>
+      <div style="width: 1px; background: #E0E0E0; align-self: stretch;"></div>
+      <div style="flex: 1; padding: 0 28px; display: flex; flex-direction: column;">
+        <div class="label" style="color: var(--pb-blue); margin-bottom: 8px;">Tier 2</div>
+        <h3 style="font-size: 22px; font-weight: 500; margin-bottom: 12px; color: var(--pb-black);">We Parse, They Assess</h3>
+        <p style="font-size: 14px; color: #666; line-height: 1.6; flex: 1;">They provide data sources. We handle parsing, normalization, and ingestion. They read and act on AI-generated insights.</p>
+        <div style="margin-top: 16px;">
+          <p style="font-size: 12px; color: #999;">Client effort: <strong style="color: var(--pb-black);">Medium</strong></p>
+        </div>
+      </div>
+      <div style="width: 1px; background: #E0E0E0; align-self: stretch;"></div>
+      <div style="flex: 1; padding: 0 0 0 28px; display: flex; flex-direction: column;">
+        <div class="label" style="color: var(--pb-gold); margin-bottom: 8px;">Tier 3</div>
+        <h3 style="font-size: 22px; font-weight: 500; margin-bottom: 12px; color: var(--pb-black);">White Glove</h3>
+        <p style="font-size: 14px; color: #666; line-height: 1.6; flex: 1;">Full drilldown analysis with tactical recommendations. Sub-category deep-dives. We handle everything — they get strategy delivered.</p>
+        <div style="margin-top: 16px;">
+          <p style="font-size: 12px; color: #999;">Client effort: <strong style="color: var(--pb-black);">Low</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">13</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 14 — Section Divider: Proof of Concept -->
+<!-- ============================================================ -->
+<section class="slide slide-divider" style="background: var(--pb-blue);">
+  <img class="asset-img" src="../../../../Branding/Powerpoint Template/Template Images/Scribbles/slide06_scribbles_03.png" alt="" style="width: 200px; bottom: 60px; right: 100px; opacity: 0.25;">
+  <div class="slide-content" contenteditable="true">
+    <div class="badge" style="color: rgba(255,255,255,0.6); border-color: rgba(255,255,255,0.3); margin-bottom: 24px;">Section</div>
+    <h2 class="headline divider-title">Proof of Concept</h2>
+    <p class="divider-sub">Walgreens Reference Client</p>
+  </div>
+  <span class="page-num">14</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 15 — Walgreens Score -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding: 44px 60px;">
+    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
+      <div class="badge" style="color: var(--pb-blue);">Walgreens — Live Score</div>
+      <span class="label" style="color: #bbb;">February 2026</span>
+    </div>
+    <div style="display: flex; gap: 40px; align-items: center; flex: 1;">
+      <div style="flex-shrink: 0; text-align: center;">
+        <svg width="220" height="220" viewBox="0 0 220 220">
+          <circle cx="110" cy="110" r="90" fill="none" stroke="#f0f0f0" stroke-width="18"/>
+          <circle cx="110" cy="110" r="90" fill="none" stroke="var(--pb-gold)" stroke-width="18"
+            stroke-dasharray="565.5" stroke-dashoffset="326.3" stroke-linecap="round"
+            transform="rotate(-90 110 110)"/>
+          <text x="110" y="100" text-anchor="middle" font-family="GT Walsheim, system-ui, sans-serif" font-size="52" font-weight="500" fill="var(--pb-black)">42.3</text>
+          <text x="110" y="126" text-anchor="middle" font-size="12" fill="#999" letter-spacing="1.5">OVERALL</text>
+        </svg>
+        <div style="margin-top: 4px;">
+          <span class="badge" style="color: var(--pb-gold); font-size: 10px; padding: 4px 12px;">Opportunity to Improve</span>
+        </div>
+      </div>
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 20px;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+            <span style="font-weight: 500; font-size: 16px;">Accountability</span>
+            <span class="headline" style="font-size: 28px; color: var(--pb-coral);">55.2</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" style="width: 55.2%; background: var(--pb-coral);"></div></div>
+          <p style="font-size: 12px; color: #888; margin-top: 6px;">Strongest pillar. Response Rate carrying weight. Care operations are doing their job.</p>
+        </div>
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+            <span style="font-weight: 500; font-size: 16px;">Authenticity &amp; Credibility</span>
+            <span class="headline" style="font-size: 28px; color: var(--pb-blue);">53.7</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" style="width: 53.7%; background: var(--pb-blue);"></div></div>
+          <p style="font-size: 12px; color: #888; margin-top: 6px;">Content solid. Expertise dragging — leadership visibility and SOV underperforming.</p>
+        </div>
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+            <span style="font-weight: 500; font-size: 16px;">Community</span>
+            <span class="headline" style="font-size: 28px; color: var(--pb-coral);">13.8</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" style="width: 13.8%; background: var(--pb-coral);"></div></div>
+          <p style="font-size: 12px; color: #888; margin-top: 6px;"><strong style="color: var(--pb-coral);">Red flag.</strong> Advocacy infrastructure nearly absent. Community strategy needs foundational work.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">15</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 16 — What the Data Told Us -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding: 50px 80px;">
+    <div class="badge" style="color: var(--pb-blue); margin-bottom: 12px;">What the Data Told Us</div>
+    <p class="headline" style="font-size: 15px; color: var(--pb-black); margin-bottom: 6px; line-height: 1.4;">Trust Score surfaces signals that spreadsheets hide. A Community score of 13.8 is immediate, unmistakable, and actionable. Visit <a href="https://operation-astoria.vercel.app/" target="_blank" style="color: var(--pb-blue); text-decoration: underline;">operation-astoria.vercel.app</a> for full read out.</p>
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="display: flex; gap: 0; border-radius: 10px; overflow: hidden; border: 1px solid #eee;">
+        <div style="width: 6px; background: var(--pb-coral); flex-shrink: 0;"></div>
+        <div style="padding: 20px 24px;">
+          <h4 style="font-size: 16px; font-weight: 500; margin-bottom: 8px; color: var(--pb-coral);">Accountability: 55.2 — The Foundation</h4>
+          <p style="font-size: 14px; color: #555; line-height: 1.6;">Response Rate is carrying weight. Walgreens' care operations are doing their job. This is the foundation the brand can build on — trust earned operationally.</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 0; border-radius: 10px; overflow: hidden; border: 1px solid #eee;">
+        <div style="width: 6px; background: var(--pb-blue); flex-shrink: 0;"></div>
+        <div style="padding: 20px 24px;">
+          <h4 style="font-size: 16px; font-weight: 500; margin-bottom: 8px; color: var(--pb-blue);">Authenticity: 53.7 — The Missed Position</h4>
+          <p style="font-size: 14px; color: #555; line-height: 1.6;">Content and engagement metrics are solid, but Expertise is dragging. Leadership visibility, share of voice, and search authority are underperforming. The brand's social presence is fine, but it's not being positioned as an authority.</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 0; border-radius: 10px; overflow: hidden; border: 1px solid #eee;">
+        <div style="width: 6px; background: var(--pb-coral); flex-shrink: 0;"></div>
+        <div style="padding: 20px 24px;">
+          <h4 style="font-size: 16px; font-weight: 500; margin-bottom: 8px; color: var(--pb-coral);">Community: 13.8 — The Red Flag</h4>
+          <p style="font-size: 14px; color: #555; line-height: 1.6;">Advocacy infrastructure is nearly absent. No formal advocate program. Low influencer engagement. Minimal employee participation. This score tells Walgreens something invisible across 15 separate platform reports: community strategy needs foundational work.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">16</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 17 — Section Divider: How We Built It -->
+<!-- ============================================================ -->
+<section class="slide slide-divider" style="background: var(--pb-coral);">
+  <img class="asset-img" src="../../../../Branding/Powerpoint Template/Template Images/Illustrations/slide14_illustrations_05.png" alt="" style="width: 240px; bottom: 40px; right: 80px; opacity: 0.25;">
+  <div class="slide-content" contenteditable="true">
+    <div class="badge" style="color: rgba(255,255,255,0.6); border-color: rgba(255,255,255,0.3); margin-bottom: 24px;">Section</div>
+    <h2 class="headline divider-title">How We Built It</h2>
+    <p class="divider-sub">No engineering team. No budget.</p>
+  </div>
+  <span class="page-num">17</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 18 — Build Timeline -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding: 44px 50px;">
+    <div class="badge" style="color: var(--pb-blue); margin-bottom: 24px;">Build Timeline</div>
+    <p style="font-size: 15px; color: #666; margin-bottom: 28px;">13 build sessions across 24 working hours. Each phase gated — no phase started until the previous one passed.</p>
+    <div class="timeline" style="margin-bottom: 28px;">
+      <div class="timeline-phase">
+        <div class="timeline-node" style="background: var(--pb-plum);">0</div>
+        <div class="timeline-label">PRD, Methodology,<br>6 Specialist Personas</div>
+        <div class="timeline-gate">PRD v1 signed off</div>
+      </div>
+      <div class="timeline-phase">
+        <div class="timeline-node" style="background: var(--pb-coral);">1</div>
+        <div class="timeline-label">Score Engine<br>Python, 48 Tests</div>
+        <div class="timeline-gate">Pass Excel baseline</div>
+      </div>
+      <div class="timeline-phase">
+        <div class="timeline-node" style="background: var(--pb-olive);">2</div>
+        <div class="timeline-label">Data Ingestion<br>CSV/Excel Parsing</div>
+        <div class="timeline-gate">66 tests pass</div>
+      </div>
+      <div class="timeline-phase">
+        <div class="timeline-node" style="background: var(--pb-blue);">3</div>
+        <div class="timeline-label">REST API, JWT Auth<br>Security Hardening</div>
+        <div class="timeline-gate">125 tests, 14 fixes</div>
+      </div>
+      <div class="timeline-phase">
+        <div class="timeline-node" style="background: var(--pb-gold);">4</div>
+        <div class="timeline-label">Dashboard (5 views)<br>Railway + Vercel</div>
+        <div class="timeline-gate">Live w/ Walgreens data</div>
+      </div>
+      <div class="timeline-phase">
+        <div class="timeline-node" style="background: var(--pb-black);">5</div>
+        <div class="timeline-label">AI Insights (3 tiers)<br>9 Red-Team Fixes</div>
+        <div class="timeline-gate">145 tests, prod live</div>
+      </div>
+    </div>
+    <div style="background: var(--pb-blush); border-radius: 10px; padding: 16px 24px;">
+      <div style="font-size: 13px; color: var(--pb-black);">
+        <strong>Full stack:</strong> Python scoring engine → REST API with auth → Next.js dashboard → AI narrative layer → Production deployment
+      </div>
+    </div>
+  </div>
+  <span class="page-num">18</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 19 — Build Effort in Context -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="justify-content: center; align-items: center; text-align: center; padding: 60px 100px;">
+    <div class="badge" style="color: var(--pb-coral); margin-bottom: 40px;">Build Effort in Context</div>
+    <div style="display: flex; gap: 48px; align-items: center; justify-content: center; margin-bottom: 40px;">
+      <div>
+        <div class="headline" style="font-size: 72px; color: var(--pb-black);">1</div>
+        <p style="font-size: 16px; color: #999;">person</p>
+      </div>
+      <div style="font-size: 32px; color: #ddd;">×</div>
+      <div>
+        <div class="headline" style="font-size: 72px; color: var(--pb-black);">24</div>
+        <p style="font-size: 16px; color: #999;">hours</p>
+      </div>
+      <div style="font-size: 32px; color: #ddd;">×</div>
+      <div>
+        <div class="headline" style="font-size: 72px; color: var(--pb-black);">145</div>
+        <p style="font-size: 16px; color: #999;">tests</p>
+      </div>
+      <div style="font-size: 32px; color: #ddd;">=</div>
+      <div>
+        <div class="headline" style="font-size: 72px; color: var(--pb-coral);">Live</div>
+        <p style="font-size: 16px; color: #999;">in production</p>
+      </div>
+    </div>
+    <div style="background: var(--pb-black); color: var(--white); border-radius: 10px; padding: 24px 36px; max-width: 700px;">
+      <p style="font-size: 16px; line-height: 1.6;">
+        Traditional approach: 3-4 person team, 4-6 weeks, six-figure budget.<br>
+        Our approach: Claude Max subscription at <strong style="color: var(--pb-gold);">$100/month</strong>.
+      </p>
+    </div>
+  </div>
+  <span class="page-num">19</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 20 — Challenges & Solutions -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding: 48px 60px;">
+    <div class="badge" style="color: var(--pb-coral); margin-bottom: 24px;">Challenges We Met</div>
+    <div style="display: flex; flex-direction: column; flex: 1; justify-content: center;">
+      <div style="display: flex; align-items: stretch;">
+        <div style="flex: 1; padding: 0 28px 24px 0;">
+          <h4 style="font-size: 15px; font-weight: 500; margin-bottom: 8px; color: var(--pb-coral);">Security Scope Creep</h4>
+          <p style="font-size: 13px; color: #666; line-height: 1.5; margin-bottom: 10px;">Phase 3 initially included full login flows, password handling, refresh tokens, and user management for a product with one client.</p>
+          <p style="font-size: 13px; color: var(--pb-olive); font-weight: 500;">→ Rolled back. JWT-only auth. Smaller attack surface, zero wasted complexity.</p>
+        </div>
+        <div style="width: 1px; background: #E0E0E0; align-self: stretch;"></div>
+        <div style="flex: 1; padding: 0 0 24px 28px;">
+          <h4 style="font-size: 15px; font-weight: 500; margin-bottom: 8px; color: var(--pb-coral);">Real-World Data Is Messy</h4>
+          <p style="font-size: 13px; color: #666; line-height: 1.5; margin-bottom: 10px;">Walgreens' Excel had 3 missing fields, 2 out-of-range values, and 1 metric below schema minimum.</p>
+          <p style="font-size: 13px; color: var(--pb-olive); font-weight: 500;">→ Built empathetic ingestion that guides rather than blocks. Every client's data will have quirks.</p>
+        </div>
+      </div>
+      <div style="height: 1px; background: #E0E0E0; width: 100%;"></div>
+      <div style="display: flex; align-items: stretch;">
+        <div style="flex: 1; padding: 24px 28px 0 0;">
+          <h4 style="font-size: 15px; font-weight: 500; margin-bottom: 8px; color: var(--pb-coral);">The Polish Problem</h4>
+          <p style="font-size: 13px; color: #666; line-height: 1.5; margin-bottom: 10px;">Score rings animated to mock values, then jittered when real API data arrived. The kind of thing a CMO notices.</p>
+          <p style="font-size: 13px; color: var(--pb-olive); font-weight: 500;">→ Gating pattern: rings hold at zero until real data confirmed, then animate once.</p>
+        </div>
+        <div style="width: 1px; background: #E0E0E0; align-self: stretch;"></div>
+        <div style="flex: 1; padding: 24px 0 0 28px;">
+          <h4 style="font-size: 15px; font-weight: 500; margin-bottom: 8px; color: var(--pb-coral);">Deployment Chain</h4>
+          <p style="font-size: 13px; color: #666; line-height: 1.5; margin-bottom: 10px;">Vercel ↔ Railway required solving CORS, env var injection timing, and framework auto-detection.</p>
+          <p style="font-size: 13px; color: var(--pb-olive); font-weight: 500;">→ Each solvable, but each could have been a multi-day blocker for someone new.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">20</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 21 — Why It Scales -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding: 56px 80px;">
+    <div class="badge" style="color: var(--pb-olive); margin-bottom: 32px;">Why It Scales</div>
+    <p style="font-size: 17px; color: #555; margin-bottom: 32px;">Built bootstrapped. Built enterprise-ready.</p>
+    <div style="display: flex; flex-direction: column; gap: 18px; max-width: 900px;">
+      <div class="check-item">
+        <div class="check-icon"></div>
+        <div><strong>Multi-tenant from day one.</strong> <span style="color: #666;">Every API request scoped to the client's JWT. Adding client #2 = creating a token.</span></div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon"></div>
+        <div><strong>Database migration path designed.</strong> <span style="color: #666;">SQLite today → Postgres when client #2 arrives. One migration, already architected.</span></div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon"></div>
+        <div><strong>Weight versioning.</strong> <span style="color: #666;">New clients get customized weights without affecting existing clients' historical data.</span></div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon"></div>
+        <div><strong>AI insights are cached.</strong> <span style="color: #666;">Costs don't compound with repeat views. Only with new data uploads.</span></div>
+      </div>
+      <div class="check-item">
+        <div class="check-icon"></div>
+        <div><strong>Small, auditable codebase.</strong> <span style="color: #666;">~2,000 lines of Python. No framework bloat. Easy to audit, extend, or hand off.</span></div>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">21</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 22 — System Architecture (Full Pipeline Diagram) -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding: 32px 40px;">
+    <div class="badge" style="color: var(--pb-blue); margin-bottom: 12px;">System Architecture</div>
+    <p style="font-size: 12px; color: #888; margin-bottom: 14px;">From a raw Excel file to a live, AI-narrated brand health dashboard — every step, every system call.</p>
+
+    <!-- ROW 1: Ingestion Pipeline (left to right) -->
+    <div style="display: flex; align-items: stretch; gap: 0; margin-bottom: 4px;">
+      <div style="flex: 0 0 120px;">
+        <div class="arch-box" style="background: var(--pb-blush); color: var(--pb-black); height: 100%; display: flex; flex-direction: column; justify-content: center; border: 2px solid #d9ccc8;">
+          <div style="font-size: 16px; margin-bottom: 2px;">📄</div>
+          <strong style="font-size: 11px;">Data Source</strong>
+          <div style="font-size: 9px; color: #888; margin-top: 3px;">Excel / CSV<br>43 metrics per period</div>
+        </div>
+      </div>
+      <div class="arch-arrow" style="display: flex; align-items: center;">→</div>
+      <div style="flex: 0 0 135px;">
+        <div class="arch-box" style="background: var(--pb-blue); color: white; height: 100%; display: flex; flex-direction: column; justify-content: center;">
+          <strong style="font-size: 10px;">POST /api/v1/<br>score/upload</strong>
+          <div style="font-size: 9px; opacity: 0.7; margin-top: 3px;">JWT Bearer Token<br>Multipart file<br>client_id + period</div>
+        </div>
+      </div>
+      <div class="arch-arrow" style="display: flex; align-items: center;">→</div>
+      <div style="flex: 0 0 170px;">
+        <div class="arch-box" style="background: var(--pb-coral); color: white; height: 100%; display: flex; flex-direction: column; justify-content: center;">
+          <strong style="font-size: 11px;">data_ingestor.py</strong>
+          <div style="font-size: 9px; opacity: 0.8; margin-top: 3px;">
+            Column mapping<br>
+            Type validation &amp; range checks<br>
+            Missing field detection<br>
+            → flat dict of 43 values
+          </div>
+        </div>
+      </div>
+      <div class="arch-arrow" style="display: flex; align-items: center;">→</div>
+      <div style="flex: 0 0 195px;">
+        <div class="arch-box" style="background: var(--pb-black); color: white; height: 100%; display: flex; flex-direction: column; justify-content: center;">
+          <strong style="font-size: 11px; color: var(--pb-gold);">score_engine.py</strong>
+          <div style="font-size: 9px; opacity: 0.8; margin-top: 3px;">
+            Min/max normalization (0–100)<br>
+            Inverse metric handling<br>
+            Standard / Bonus / ConditionalStd<br>
+            <span style="color: var(--pb-gold);">53 → 7 → 3 → 1 score</span><br>
+            Weight version locking
+          </div>
+        </div>
+      </div>
+      <div class="arch-arrow" style="display: flex; align-items: center;">→</div>
+      <div style="flex: 0 0 130px;">
+        <div class="arch-box" style="background: var(--pb-olive); color: white; height: 100%; display: flex; flex-direction: column; justify-content: center;">
+          <strong style="font-size: 11px;">TrustScoreResult</strong>
+          <div style="font-size: 9px; opacity: 0.8; margin-top: 3px;">Overall score<br>3 pillar scores<br>7 sub-cat scores<br>53 metric indices<br>Exclusion disclosures</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BRANCH: TrustScoreResult splits into Storage + Serving -->
+    <div style="text-align: center; padding: 2px 0;">
+      <span style="font-size: 9px; color: #aaa;">↓ saved &amp; served ↓</span>
+    </div>
+
+    <!-- ROW 2: Two parallel paths -->
+    <div style="display: flex; gap: 16px; margin-bottom: 4px;">
+      <!-- LEFT PATH: Storage -->
+      <div style="flex: 0 0 280px; display: flex; align-items: stretch; gap: 0;">
+        <div style="flex: 1;">
+          <div class="arch-box" style="background: #f5f5f5; color: var(--pb-black); height: 100%; display: flex; flex-direction: column; justify-content: center; border: 2px solid #ddd;">
+            <div style="font-size: 14px; margin-bottom: 2px;">🗄️</div>
+            <strong style="font-size: 11px;">SQLite Storage</strong>
+            <div style="font-size: 9px; color: #888; margin-top: 3px;">score_runs table — raw inputs + scored results<br>Linked by client_id &amp; run_id<br>→ Postgres migration at scale</div>
+          </div>
+        </div>
+        <div class="arch-arrow" style="display: flex; align-items: center; font-size: 14px;">↔</div>
+        <div style="flex: 1;">
+          <div class="arch-box" style="background: var(--pb-blue); color: white; height: 100%; display: flex; flex-direction: column; justify-content: center;">
+            <strong style="font-size: 11px;">REST API</strong>
+            <div style="font-size: 9px; opacity: 0.7; margin-top: 3px;">FastAPI on Railway<br>JWT auth per request<br>CORS → Vercel origin<br><strong>GET /scores</strong><br><strong>GET /analysis</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTER: Arrow connecting REST API to AI layer -->
+      <div style="display: flex; align-items: center; font-size: 14px; color: #ccc;">→</div>
+
+      <!-- RIGHT PATH: AI Analysis -->
+      <div style="flex: 1; display: flex; align-items: stretch; gap: 0;">
+        <div style="flex: 1.4;">
+          <div class="arch-box" style="background: var(--pb-plum); color: white; height: 100%; display: flex; flex-direction: column; justify-content: center;">
+            <strong style="font-size: 11px; color: var(--pb-gold);">AI Analysis Layer</strong>
+            <div style="font-size: 9px; opacity: 0.8; margin-top: 3px;">
+              Claude API (Sonnet) — 3 calls per analysis:<br>
+              <strong>Call 1:</strong> Executive headline + narrative<br>
+              <strong>Call 2:</strong> All 3 pillar blurbs<br>
+              <strong>Call 3:</strong> Sub-cat drilldown (on demand)<br>
+              <span style="color: var(--pb-gold);">~$0.003 per full analysis</span>
+            </div>
+          </div>
+        </div>
+        <div class="arch-arrow" style="display: flex; align-items: center; font-size: 14px;">→</div>
+        <div style="flex: 0.8;">
+          <div class="arch-box" style="background: #f5f5f5; color: var(--pb-black); height: 100%; display: flex; flex-direction: column; justify-content: center; border: 2px solid #ddd;">
+            <strong style="font-size: 11px;">Cache</strong>
+            <div style="font-size: 9px; color: #888; margin-top: 3px;">AI insights stored per run_id<br>Repeat views = instant, $0<br>Only new uploads trigger calls</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 2→3 connector -->
+    <div style="text-align: center; padding: 2px 0;">
+      <div style="display: inline-block; font-size: 9px; color: #aaa; background: white; padding: 0 8px;">scores + cached AI insights served via API</div>
+    </div>
+
+    <!-- ROW 3: Dashboard -->
+    <div style="display: flex; align-items: stretch; gap: 0;">
+      <div style="flex: 1;">
+        <div class="arch-box" style="background: var(--pb-black); color: white; display: flex; flex-direction: row; gap: 14px; padding: 12px 18px; align-items: center;">
+          <div style="flex-shrink: 0;">
+            <strong style="color: var(--pb-gold); font-size: 12px;">Next.js Dashboard</strong>
+            <div style="font-size: 9px; opacity: 0.6; margin-top: 2px;">Vercel · HTTPS · Responsive · Dark mode</div>
+          </div>
+          <div style="display: flex; gap: 8px; flex: 1; justify-content: flex-end;">
+            <div style="background: rgba(255,255,255,0.08); border-radius: 6px; padding: 6px 10px; text-align: center; font-size: 9px;">
+              <div style="color: var(--pb-coral); font-weight: 500;">Overview</div>
+              <div style="opacity: 0.5;">Hero ring · Pillar cards<br>Trend chart</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.08); border-radius: 6px; padding: 6px 10px; text-align: center; font-size: 9px;">
+              <div style="color: var(--pb-blue); font-weight: 500;">Pillars</div>
+              <div style="opacity: 0.5;">Sub-cat scores<br>AI blurbs · Deltas</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.08); border-radius: 6px; padding: 6px 10px; text-align: center; font-size: 9px;">
+              <div style="color: var(--pb-olive); font-weight: 500;">Drilldown</div>
+              <div style="opacity: 0.5;">Metric detail<br>AI recs · On-demand</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.08); border-radius: 6px; padding: 6px 10px; text-align: center; font-size: 9px;">
+              <div style="color: var(--pb-plum); font-weight: 500;">Outcomes</div>
+              <div style="opacity: 0.5;">Biz metrics vs. trust<br>(Phase 2)</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.08); border-radius: 6px; padding: 6px 10px; text-align: center; font-size: 9px;">
+              <div style="color: var(--pb-gold); font-weight: 500;">Glossary</div>
+              <div style="opacity: 0.5;">All metrics defined<br>+ formulas</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom stats bar -->
+    <div style="margin-top: 8px; display: flex; gap: 16px; font-size: 10px; color: #999;">
+      <div><strong style="color: var(--pb-black);">Security:</strong> JWT auth on every request · CORS restricted · No PII stored · 23 red-team findings resolved</div>
+      <div><strong style="color: var(--pb-black);">Testing:</strong> 145 tests passing · Score engine, ingestion, API, security all covered</div>
+      <div><strong style="color: var(--pb-black);">Infra:</strong> Railway (backend) + Vercel (frontend) · ~$5/mo pilot</div>
+    </div>
+  </div>
+  <span class="page-num">22</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 23 — Cost to Scale -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding: 48px 70px;">
+    <div class="badge" style="color: var(--pb-blue); margin-bottom: 24px;">Cost to Scale</div>
+    <table class="pb-table" style="margin-bottom: 28px;">
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>Pilot (1 Client)</th>
+          <th>10 Clients</th>
+          <th>100 Clients</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Hosting (Railway + Vercel)</td>
+          <td>~$5/mo</td>
+          <td>~$25/mo</td>
+          <td>~$100/mo</td>
+        </tr>
+        <tr>
+          <td>Database (Postgres)</td>
+          <td>—</td>
+          <td>~$25/mo</td>
+          <td>~$50–100/mo</td>
+        </tr>
+        <tr>
+          <td>AI Insights (Claude API)</td>
+          <td>~$1/mo</td>
+          <td>~$10/mo</td>
+          <td>~$50–100/mo</td>
+        </tr>
+        <tr>
+          <td>Data Ingestion (Sprinklr API)</td>
+          <td>~$3K/mo</td>
+          <td>~$3K/mo (shared)</td>
+          <td>Negotiate volume</td>
+        </tr>
+        <tr>
+          <td style="color: var(--pb-blue);"><strong>Total Infrastructure</strong></td>
+          <td><strong>~$3K/mo</strong></td>
+          <td><strong>~$3K–4K/mo</strong></td>
+          <td><strong>~$4K–5K/mo + Sprinklr</strong></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="background: var(--pb-black); color: var(--white); border-radius: 10px; padding: 24px 32px; display: flex; align-items: center; gap: 24px;">
+      <div>
+        <div style="font-size: 13px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px;">At $2K/client/month (conservative)</div>
+        <div style="font-size: 20px; font-weight: 500;">
+          <span style="color: var(--pb-gold);">$20K MRR</span>
+          <span style="color: rgba(255,255,255,0.4); margin: 0 12px;">vs</span>
+          <span style="color: rgba(255,255,255,0.8);">~$4K infrastructure</span>
+        </div>
+      </div>
+      <div style="margin-left: auto; text-align: right;">
+        <div style="font-size: 32px; font-weight: 500; color: var(--pb-olive);">80%+</div>
+        <div style="font-size: 12px; color: rgba(255,255,255,0.5);">Gross margin</div>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">23</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 24 — Next Steps -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding: 56px 80px;">
+    <div class="badge" style="color: var(--pb-blue); margin-bottom: 36px;">Next Steps</div>
+    <div style="display: flex; flex-direction: column; gap: 28px; max-width: 800px;">
+      <div style="display: flex; gap: 24px; align-items: flex-start;">
+        <div class="step-num" style="font-size: 48px; min-width: 60px;">01</div>
+        <div>
+          <h4 style="font-size: 20px; font-weight: 500; margin-bottom: 6px;">First Paying Client</h4>
+          <p style="font-size: 15px; color: #666; line-height: 1.5;">Validate the product with real revenue. Everything else follows from this.</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 24px; align-items: flex-start;">
+        <div class="step-num" style="font-size: 48px; min-width: 60px;">02</div>
+        <div>
+          <h4 style="font-size: 20px; font-weight: 500; margin-bottom: 6px;">Sprinklr API Integration</h4>
+          <p style="font-size: 15px; color: #666; line-height: 1.5;">Replace manual CSV uploads with automated data ingestion from existing PB tooling.</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 24px; align-items: flex-start;">
+        <div class="step-num" style="font-size: 48px; min-width: 60px;">03</div>
+        <div>
+          <h4 style="font-size: 20px; font-weight: 500; margin-bottom: 6px;">SSO + Postgres Migration</h4>
+          <p style="font-size: 15px; color: #666; line-height: 1.5;">Enterprise-grade auth (Auth0/Clerk) and managed database for multi-client support.</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 24px; align-items: flex-start;">
+        <div class="step-num" style="font-size: 48px; min-width: 60px;">04</div>
+        <div>
+          <h4 style="font-size: 20px; font-weight: 500; margin-bottom: 6px;">PDF Report Export</h4>
+          <p style="font-size: 15px; color: #666; line-height: 1.5;">White-labeled exportable reports for client stakeholders who don't log into dashboards.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">24</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 25 — Closing -->
+<!-- ============================================================ -->
+<section class="slide slide-dark" style="background: var(--pb-blue);">
+  <div class="blob blob-blush" style="width: 500px; height: 500px; bottom: -200px; left: -150px;"></div>
+  <div class="blob blob-olive" style="width: 300px; height: 300px; top: -100px; right: -80px; opacity: 0.1;"></div>
+  <img class="asset-img" src="../../../../Branding/Powerpoint Template/Template Images/Illustrations/slide13_illustrations_01.png" alt="" style="width: 160px; bottom: 48px; left: 80px; opacity: 0.35;">
+  <div class="slide-content" contenteditable="true" style="justify-content: center; align-items: center; text-align: center;">
+    <p class="headline" style="font-size: 34px; color: var(--white); line-height: 1.4; max-width: 700px; margin-bottom: 48px;">
+      The next step is a paying client.<br>
+      <span style="opacity: 0.7;">Everything else follows from that.</span>
+    </p>
+    <img src="../../../../Branding/Powerpoint Template/Template Images/Logo/slide04_logo_03.png" alt="PB Logo" style="height: 44px; opacity: 0.7;">
+  </div>
+  <span class="page-num">25</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 26 — Appendix Divider -->
+<!-- ============================================================ -->
+<section class="slide slide-divider" style="background: var(--pb-black);">
+  <div class="slide-content" contenteditable="true">
+    <div class="badge" style="color: rgba(255,255,255,0.4); border-color: rgba(255,255,255,0.2); margin-bottom: 24px;">Reference</div>
+    <h2 class="headline divider-title">Appendix</h2>
+    <p class="divider-sub">Methodology rationale, data architecture, and metric sourcing</p>
+  </div>
+  <span class="page-num">26</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 27 — Appendix: Methodology Deep Dive (1/2) -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding: 40px 56px;">
+    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+      <div class="badge" style="color: var(--pb-plum); font-size: 10px;">Appendix</div>
+      <span class="headline" style="font-size: 22px;">Methodology Deep Dive — Pillar Weight Rationale</span>
+    </div>
+    <p style="font-size: 12px; color: #888; margin-bottom: 16px;">Grounded in three bodies of research. All source reports available on file.</p>
+
+    <div style="display: flex; gap: 20px; margin-bottom: 16px;">
+      <!-- Accountability -->
+      <div style="flex: 1; border-left: 4px solid var(--pb-coral); padding-left: 16px;">
+        <h4 style="font-size: 15px; font-weight: 500; color: var(--pb-coral); margin-bottom: 6px;">Accountability — 40%</h4>
+        <p style="font-size: 11px; color: #555; line-height: 1.55; margin-bottom: 8px;">
+          <strong>Research basis:</strong> Edelman<sup style="font-size: 8px; color: var(--pb-coral);">1</sup> identifies "Reliable/Delivers on promises" as the #1 trust attribute globally (63% of respondents). McKinsey<sup style="font-size: 8px; color: var(--pb-coral);">2</sup> finds response speed and resolution rate are the two highest-leverage levers for service trust in consumer businesses.
+        </p>
+        <p style="font-size: 11px; color: #555; line-height: 1.55;">
+          <strong>Why 40% and not higher:</strong> Accountability without Authenticity produces compliance, not loyalty. A brand that always responds but has no authentic voice or community will plateau. The 40/30/30 split reflects the research hierarchy while preserving the other pillars as meaningful contributors.
+        </p>
+      </div>
+      <!-- Authenticity -->
+      <div style="flex: 1; border-left: 4px solid var(--pb-blue); padding-left: 16px;">
+        <h4 style="font-size: 15px; font-weight: 500; color: var(--pb-blue); margin-bottom: 6px;">Authenticity &amp; Credibility — 30%</h4>
+        <p style="font-size: 11px; color: #555; line-height: 1.55; margin-bottom: 8px;">
+          <strong>Research basis:</strong> Edelman's<sup style="font-size: 8px; color: var(--pb-blue);">1</sup> pandemic studies (2020–2024) established that brand trust increasingly depends on perceived honesty and values alignment. Qualtrics<sup style="font-size: 8px; color: var(--pb-blue);">3</sup> identifies sentiment-based metrics as leading indicators of loyalty — they predict churn before purchase behavior changes.
+        </p>
+        <p style="font-size: 11px; color: #555; line-height: 1.55;">
+          <strong>Limitation acknowledged:</strong> 30% may be conservative given AI-content skepticism acceleration (2024–2026). Weight to be re-evaluated after Phase 2 regression against Walgreens business outcome data.
+        </p>
+      </div>
+      <!-- Community -->
+      <div style="flex: 1; border-left: 4px solid var(--pb-olive); padding-left: 16px;">
+        <h4 style="font-size: 15px; font-weight: 500; color: var(--pb-olive); margin-bottom: 6px;">Community — 30%</h4>
+        <p style="font-size: 11px; color: #555; line-height: 1.55; margin-bottom: 8px;">
+          <strong>Research basis:</strong> Qualtrics<sup style="font-size: 8px; color: var(--pb-olive);">3</sup> shows advocacy-stage customers (NPS Promoters, active community members) generate 2.5–4× the lifetime value of passive customers. Community metrics are powerful but downstream — they form after Accountability and Authenticity are established.
+        </p>
+        <p style="font-size: 11px; color: #555; line-height: 1.55;">
+          <strong>Framework mapping:</strong> 30% reflects Community's importance as an outcome metric and lagging indicator. NPS placement validated by Reichheld<sup style="font-size: 8px; color: var(--pb-olive);">4</sup> framework. Phase 2 regression may adjust.
+        </p>
+      </div>
+    </div>
+
+    <!-- Research source mapping -->
+    <div style="background: #fafafa; border-radius: 8px; padding: 14px 18px;">
+      <div class="label" style="font-size: 10px; color: #999; margin-bottom: 8px;">Research Framework Alignment</div>
+      <table class="appendix-table">
+        <thead><tr><th>Trust Score Pillar</th><th>Research Equivalent</th><th>Primary Source</th></tr></thead>
+        <tbody>
+          <tr><td><strong style="color: var(--pb-coral);">Accountability</strong></td><td>Reliability / Competence</td><td>Edelman<sup style="font-size: 8px;">1</sup> — "Reliable" and "Competent" are #1 and #2 trust attributes; McKinsey<sup style="font-size: 8px;">2</sup> — response &amp; resolution as top trust levers</td></tr>
+          <tr><td><strong style="color: var(--pb-blue);">Authenticity</strong></td><td>Transparency / Honesty / Values</td><td>Edelman<sup style="font-size: 8px;">1</sup> — Transparency is fastest-growing trust driver; Qualtrics<sup style="font-size: 8px;">3</sup> — sentiment predicts churn</td></tr>
+          <tr><td><strong style="color: var(--pb-olive);">Community</strong></td><td>Belonging / Advocacy / Social Proof</td><td>Qualtrics<sup style="font-size: 8px;">3</sup> — community &amp; loyalty metrics are highest leading indicators of revenue retention</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+  <div style="position: absolute; bottom: 20px; left: 56px; right: 56px; font-size: 9px; color: #aaa; line-height: 1.6; z-index: 10;">
+    <sup style="font-size: 7px;">1</sup> 2026 Edelman Trust Barometer Global Report &nbsp;&nbsp;
+    <sup style="font-size: 7px;">2</sup> McKinsey on Customer Care (2024) &nbsp;&nbsp;
+    <sup style="font-size: 7px;">3</sup> Qualtrics Consumer Experience Trends Report 2026 &nbsp;&nbsp;
+    <sup style="font-size: 7px;">4</sup> Reichheld, F. — The Ultimate Question / NPS Methodology
+  </div>
+  <span class="page-num">27</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 28 — Appendix: Methodology Deep Dive (2/2) -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding: 40px 56px;">
+    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+      <div class="badge" style="color: var(--pb-plum); font-size: 10px;">Appendix</div>
+      <span class="headline" style="font-size: 22px;">Methodology Deep Dive — Sub-Category Weights &amp; Metric Types</span>
+    </div>
+
+    <div style="display: flex; gap: 16px; margin-bottom: 14px;">
+      <!-- Accountability subs -->
+      <div style="flex: 1;">
+        <div style="font-weight: 500; font-size: 13px; color: var(--pb-coral); margin-bottom: 8px;">Accountability Sub-Categories</div>
+        <div style="background: #fafafa; border-radius: 8px; padding: 12px 14px; font-size: 11px; line-height: 1.55; color: #555;">
+          <strong>Dependability (55%):</strong> McKinsey<sup style="font-size: 8px; color: var(--pb-coral);">2</sup> identifies response speed and resolution as the highest-leverage trust levers in service businesses. Takes larger share because it reflects active trust-building behavior.<br><br>
+          <strong>Fulfillment (45%):</strong> Ratings, reviews, critical mentions. Important but more of a hygiene factor — reflects product quality rather than active trust-building.
+        </div>
+      </div>
+      <!-- Authenticity subs -->
+      <div style="flex: 1.3;">
+        <div style="font-weight: 500; font-size: 13px; color: var(--pb-blue); margin-bottom: 8px;">Authenticity Sub-Categories</div>
+        <div style="background: #fafafa; border-radius: 8px; padding: 12px 14px; font-size: 11px; line-height: 1.55; color: #555;">
+          <strong>Relatability (40%):</strong> Behavioral trust — engagement, sentiment, UGC. Qualtrics<sup style="font-size: 8px; color: var(--pb-blue);">3</sup> shows CX sentiment as a leading indicator. Largest sub because behavioral signals are the most direct trust proxy.<br><br>
+          <strong>Congruence (35%):</strong> Two complementary metrics — Key Pillar Mention Rate (65%, the audience <em>echo</em>) and On-Brand Content Ratio (35%, the brand <em>signal</em>). Together they validate congruence from both sides.<br><br>
+          <strong>Expertise (25%):</strong> Moved from Accountability per Edelman<sup style="font-size: 8px; color: var(--pb-blue);">1</sup> "Competence" framework. Leadership posting, SOV, search authority. Contributes 7.5% to total score (nearly doubled from prior 4%).
+        </div>
+      </div>
+      <!-- Community subs -->
+      <div style="flex: 1;">
+        <div style="font-weight: 500; font-size: 13px; color: var(--pb-olive); margin-bottom: 8px;">Community Sub-Categories</div>
+        <div style="background: #fafafa; border-radius: 8px; padding: 12px 14px; font-size: 11px; line-height: 1.55; color: #555;">
+          <strong>Belonging (50%):</strong> Community Footprint composite — Active Audience Ratio (60%), Follower Count (15%), Growth Rate (25%). AAR is the key signal: "what % of followers actually showed up?" Qualtrics<sup style="font-size: 8px; color: var(--pb-olive);">3</sup> finds engagement quality outperforms audience size as a predictor of retention.<br><br>
+          <strong>Advocacy (50%):</strong> NPS<sup style="font-size: 8px; color: var(--pb-olive);">4</sup>, fan accounts, influencer reach, employee participation. Edelman<sup style="font-size: 8px; color: var(--pb-olive);">1</sup> ranks employee voices as the most credible form of brand communication. Equal split with Belonging is the defensible baseline.
+        </div>
+      </div>
+    </div>
+
+    <!-- Metric handling patterns -->
+    <div style="display: flex; gap: 16px;">
+      <div style="flex: 1; background: var(--pb-black); border-radius: 8px; padding: 14px 18px; color: white;">
+        <div style="font-weight: 500; font-size: 12px; color: var(--pb-gold); margin-bottom: 6px;">Standard Metrics</div>
+        <p style="font-size: 11px; opacity: 0.7; line-height: 1.5;">Always included. Required data. Missing = error. Core trust signals that every brand must report.</p>
+      </div>
+      <div style="flex: 1; background: var(--pb-black); border-radius: 8px; padding: 14px 18px; color: white;">
+        <div style="font-weight: 500; font-size: 12px; color: var(--pb-gold); margin-bottom: 6px;">Bonus Metrics</div>
+        <p style="font-size: 11px; opacity: 0.7; line-height: 1.5;">Optional. Additive lift when present (e.g., Raves Rate). Capped so it can't distort. Absent = no penalty. Rewards brands that go above and beyond.</p>
+      </div>
+      <div style="flex: 1; background: var(--pb-black); border-radius: 8px; padding: 14px 18px; color: white;">
+        <div style="font-weight: 500; font-size: 12px; color: var(--pb-gold); margin-bottom: 6px;">ConditionalStandard Metrics</div>
+        <p style="font-size: 11px; opacity: 0.7; line-height: 1.5;">When data exists → weighted normally. When absent → remaining metrics renormalize. Absence disclosed transparently. Prevents penalizing brands for not yet tracking a metric (e.g., Resolution Rate<sup style="font-size: 8px; color: var(--pb-gold);">2</sup>, Employee Participation<sup style="font-size: 8px; color: var(--pb-gold);">1</sup>).</p>
+      </div>
+    </div>
+
+  </div>
+  <div style="position: absolute; bottom: 20px; left: 56px; right: 56px; font-size: 9px; color: #aaa; line-height: 1.6; z-index: 10;">
+    <sup style="font-size: 7px;">1</sup> 2026 Edelman Trust Barometer Global Report &nbsp;&nbsp;
+    <sup style="font-size: 7px;">2</sup> McKinsey on Customer Care (2024) &nbsp;&nbsp;
+    <sup style="font-size: 7px;">3</sup> Qualtrics Consumer Experience Trends Report 2026 &nbsp;&nbsp;
+    <sup style="font-size: 7px;">4</sup> Reichheld, F. — The Ultimate Question / NPS Methodology
+  </div>
+  <span class="page-num">28</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 29 — Appendix: Data Architecture (1/2) -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding: 40px 56px;">
+    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+      <div class="badge" style="color: var(--pb-plum); font-size: 10px;">Appendix</div>
+      <span class="headline" style="font-size: 22px;">Data Architecture — Where the 43 Metrics Come From</span>
+    </div>
+    <p style="font-size: 12px; color: #888; margin-bottom: 14px;">The engine scores data you hand it. All 43 metrics must exist as numbers in the uploaded file. Here's where each category of data originates.</p>
+
+    <div style="display: flex; gap: 16px; margin-bottom: 14px;">
+      <!-- Owned Social -->
+      <div style="flex: 1;">
+        <div style="background: var(--pb-blue); color: white; padding: 8px 14px; border-radius: 8px 8px 0 0; font-weight: 500; font-size: 12px;">Owned Social (8–10 metrics)</div>
+        <div style="border: 1px solid #eee; border-top: none; border-radius: 0 0 8px 8px; padding: 12px 14px; font-size: 11px; line-height: 1.6; color: #555;">
+          Engagement rates (FB/IG/TikTok), follower count, active audience ratio, audience growth rate, leadership posting, on-brand content ratio<br><br>
+          <strong style="color: var(--pb-blue);">Source:</strong> Platform analytics or scraping API<br>
+          <strong style="color: var(--pb-olive);">Automatable:</strong> Yes — Sprinklr, Apify, or platform-native APIs
+        </div>
+      </div>
+      <!-- Earned/Listening -->
+      <div style="flex: 1;">
+        <div style="background: var(--pb-plum); color: white; padding: 8px 14px; border-radius: 8px 8px 0 0; font-weight: 500; font-size: 12px;">Earned / Listening (12–15 metrics)</div>
+        <div style="border: 1px solid #eee; border-top: none; border-radius: 0 0 8px 8px; padding: 12px 14px; font-size: 11px; line-height: 1.6; color: #555;">
+          Critical mention rate, raves rate, comment sentiment, UGC rate, key pillar mention rate, leadership mentions, SOV<br><br>
+          <strong style="color: var(--pb-plum);">Source:</strong> Social listening tool<br>
+          <strong style="color: var(--pb-coral);">Requires:</strong> Sprinklr, Brandwatch, or Mention.com running for 30+ days
+        </div>
+      </div>
+      <!-- Reviews + Client -->
+      <div style="flex: 1;">
+        <div style="background: var(--pb-coral); color: white; padding: 8px 14px; border-radius: 8px 8px 0 0; font-weight: 500; font-size: 12px;">Reviews + Client-Provided (15–18 metrics)</div>
+        <div style="border: 1px solid #eee; border-top: none; border-radius: 0 0 8px 8px; padding: 12px 14px; font-size: 11px; line-height: 1.6; color: #555;">
+          Rating, reviews, NPS, resolution rate, employee participation, advocacy program data, influencer program data, search rank, ad conversion rates<br><br>
+          <strong style="color: var(--pb-coral);">Source:</strong> Client surveys, CRM, internal HR/comms<br>
+          <strong style="color: var(--pb-gold);">Key insight:</strong> These are the metrics that differentiate — and they require client partnership
+        </div>
+      </div>
+    </div>
+
+    <!-- What a scraper covers -->
+    <div style="background: var(--pb-black); border-radius: 10px; padding: 18px 24px; color: white; display: flex; align-items: center; gap: 24px;">
+      <div style="flex: 1;">
+        <div style="font-weight: 500; font-size: 13px; color: var(--pb-gold); margin-bottom: 6px;">The Honest Answer</div>
+        <p style="font-size: 12px; opacity: 0.75; line-height: 1.6;">A scraping API gets you ~8–10 of 43 metrics automatically. The rest requires a listening tool (Sprinklr, Brandwatch, Mention) or client-provided data. Sprinklr's value isn't just scraping — it's aggregated listening + sentiment + competitive monitoring in one place.</p>
+      </div>
+      <div style="flex-shrink: 0; text-align: center; padding: 0 16px;">
+        <div class="headline" style="font-size: 36px; color: var(--pb-coral);">~20%</div>
+        <div style="font-size: 11px; opacity: 0.5;">scrapeable</div>
+      </div>
+      <div style="flex-shrink: 0; text-align: center; padding: 0 16px;">
+        <div class="headline" style="font-size: 36px; color: var(--pb-gold);">~35%</div>
+        <div style="font-size: 11px; opacity: 0.5;">listening tool</div>
+      </div>
+      <div style="flex-shrink: 0; text-align: center; padding: 0 16px;">
+        <div class="headline" style="font-size: 36px; color: var(--pb-olive);">~45%</div>
+        <div style="font-size: 11px; opacity: 0.5;">client-provided</div>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">29</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 30 — Appendix: Data Architecture (2/2) -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding: 40px 56px;">
+    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+      <div class="badge" style="color: var(--pb-plum); font-size: 10px;">Appendix</div>
+      <span class="headline" style="font-size: 22px;">Client Onboarding — What It Takes to Run a Score</span>
+    </div>
+
+    <div style="display: flex; margin-bottom: 16px; align-items: stretch;">
+      <!-- Tier 1: Client provides -->
+      <div style="flex: 1; padding: 0 24px 0 0;">
+        <div class="label" style="color: var(--pb-coral); font-size: 11px; margin-bottom: 8px;">Tier 1 — Client Provides Directly</div>
+        <ul style="font-size: 12px; color: #555; line-height: 1.7; padding-left: 16px;">
+          <li>NPS score (current period average)</li>
+          <li>Resolution rate (% issues resolved)</li>
+          <li>Employee participation rate</li>
+          <li>Advocacy program exists (Y/N) + participation</li>
+          <li>Influencer program exists (Y/N)</li>
+          <li>Ad conversion rates by platform</li>
+          <li>L&amp;D social support program (Y/N)</li>
+        </ul>
+      </div>
+      <div style="width: 1px; background: #E0E0E0; align-self: stretch;"></div>
+      <!-- Tier 2: We pull -->
+      <div style="flex: 1; padding: 0 24px;">
+        <div class="label" style="color: var(--pb-blue); font-size: 11px; margin-bottom: 8px;">Tier 2 — We Pull With Their Access</div>
+        <ul style="font-size: 12px; color: #555; line-height: 1.7; padding-left: 16px;">
+          <li>Social metrics: follower count, engagement rates (read access to Business Suite / TikTok Analytics)</li>
+          <li>Review data: Google Business rating + count (public)</li>
+          <li>Leadership posting: exec LinkedIn/IG post counts (public)</li>
+        </ul>
+      </div>
+      <div style="width: 1px; background: #E0E0E0; align-self: stretch;"></div>
+      <!-- Tier 3: Listening tool needed -->
+      <div style="flex: 1; padding: 0 0 0 24px;">
+        <div class="label" style="color: var(--pb-plum); font-size: 11px; margin-bottom: 8px;">Tier 3 — Needs Listening Tool (30-Day Lead)</div>
+        <ul style="font-size: 12px; color: #555; line-height: 1.7; padding-left: 16px;">
+          <li>Critical mention rate, raves rate</li>
+          <li>Comment net sentiment, UGC rate</li>
+          <li>Key pillar mention rate (requires defining brand pillars first)</li>
+          <li>Share of voice (requires competitor list)</li>
+          <li>Earned influencer reach &amp; engagement</li>
+          <li>Community group participation signals</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 30-day lead time + demo framing -->
+    <div style="display: flex; gap: 16px;">
+      <div style="flex: 1; background: var(--pb-blush); border-radius: 10px; padding: 16px 20px;">
+        <div style="font-weight: 500; font-size: 13px; color: var(--pb-black); margin-bottom: 6px;">The 30-Day Lead Time</div>
+        <p style="font-size: 11px; color: #555; line-height: 1.55;">For Tier 3 metrics, you need historical listening data. For a first-time client, three options: (1) use industry benchmarks as proxies for the first period with disclosure, (2) start the listening tool 30 days before the first score, (3) define those metrics as "data not provided" — the engine handles them as ConditionalStandards.</p>
+      </div>
+      <div style="flex: 1; background: var(--pb-black); border-radius: 10px; padding: 16px 20px; color: white;">
+        <div style="font-weight: 500; font-size: 13px; color: var(--pb-gold); margin-bottom: 6px;">The Selling Point</div>
+        <p style="font-size: 11px; opacity: 0.75; line-height: 1.55;">The engine's ability to handle missing ConditionalStandard metrics — scoring without penalizing, with full disclosure — means you can run a partial score on day one and fill in the gaps over time. The product meets the client where they are.</p>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">30</span>
+</section>
+
+<button class="save-pdf-btn" onclick="window.print()">Save to PDF</button>
+
+</body>
+</html>

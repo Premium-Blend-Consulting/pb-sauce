@@ -1,0 +1,12 @@
+{
+    "name": "pb-sauce",
+    "version": "1.0.0",
+    "description": "Premium Blend deck builder — branded HTML presentations with PB design system",
+    "private": true,
+    "author": "Premium Blend AI Pod",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Premium-Blend-Consulting/pb-sauce"
+    },
+    "homepage": "https://github.com/Premium-Blend-Consulting/pb-sauce"
+}

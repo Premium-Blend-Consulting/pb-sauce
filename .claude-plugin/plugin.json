@@ -1,0 +1,16 @@
+{
+    "name": "pb-sauce",
+    "version": "1.0.0",
+    "description": "Premium Blend deck builder — generates branded HTML presentations at 1280×720 per slide with PB fonts, colors, and layout DNA from 9 reference decks.",
+    "author": {
+        "name": "Premium Blend AI Pod"
+    },
+    "keywords": [
+        "decks",
+        "presentations",
+        "premium-blend",
+        "html",
+        "slides",
+        "pb-sauce"
+    ]
+}

@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Walgreens Enterprise Transformation: Value Created &amp; Path Forward</title>
+<style>
+  @font-face {
+    font-family: "GT Walsheim";
+    src: url("/fonts/GT-Walsheim-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "GT Walsheim";
+    src: url("/fonts/GT-Walsheim-Light.ttf") format("truetype");
+    font-weight: 300;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "TT Hoves";
+    src: url("/fonts/TT-Hoves-Medium.otf") format("opentype");
+    font-weight: 500;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "TT Hoves";
+    src: url("/fonts/TT-Hoves-Light.otf") format("opentype");
+    font-weight: 300;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "TT Hoves";
+    src: url("/fonts/TT-Hoves-Italic.otf") format("opentype");
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  :root {
+    --pb-black: #201F1F;
+    --pb-blue: #617EC8;
+    --pb-coral: #F15F40;
+    --pb-olive: #8C9E61;
+    --pb-gold: #FCB415;
+    --pb-plum: #9D5C88;
+    --pb-blush: #ECE3E1;
+    --white: #FFFFFF;
+    --font-headline: "GT Walsheim", system-ui, sans-serif;
+    --font-body: "TT Hoves", system-ui, sans-serif;
+  }
+
+  @page { size: 1280px 720px; margin: 0; }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: #FFFFFF;
+    font-family: var(--font-body);
+    color: var(--pb-black);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .slide {
+    width: 1280px;
+    height: 720px;
+    position: relative;
+    overflow: hidden;
+    background: var(--white);
+    page-break-after: always;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .slide-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    padding: 60px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .headline {
+    font-family: var(--font-headline);
+    font-weight: 500;
+    line-height: 1.1;
+  }
+
+  .label {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 6px 18px;
+    border: 2px solid currentColor;
+    border-radius: 20px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 500;
+    font-family: var(--font-body);
+  }
+
+  .page-num {
+    position: absolute;
+    bottom: 20px;
+    right: 32px;
+    font-size: 11px;
+    color: rgba(0,0,0,0.25);
+    font-family: var(--font-body);
+    font-weight: 500;
+    z-index: 10;
+  }
+
+  .slide-dark .page-num { color: rgba(255,255,255,0.3); }
+
+  .blob {
+    position: absolute;
+    border-radius: 50% 40% 60% 45% / 55% 50% 45% 50%;
+    opacity: 0.15;
+    z-index: 0;
+  }
+  .blob-blush { background: var(--pb-blush); opacity: 0.5; }
+
+  .card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 28px 24px;
+    border: 1px solid rgba(0,0,0,0.08);
+  }
+
+  .bar-track {
+    width: 100%;
+    height: 16px;
+    background: #f0f0f0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 8px;
+  }
+
+  .pb-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .pb-table th {
+    background: var(--pb-blue);
+    color: var(--white);
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .pb-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 14px;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .check-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--pb-olive);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+  .check-icon::after {
+    content: "\2713";
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .timeline {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+  }
+  .timeline-phase {
+    flex: 1;
+    text-align: center;
+    position: relative;
+  }
+  .timeline-phase::before {
+    content: "";
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--pb-blue);
+    z-index: 0;
+  }
+  .timeline-phase:first-child::before { left: 50%; }
+  .timeline-phase:last-child::before { right: 50%; }
+  .timeline-node {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--pb-blue);
+    color: var(--white);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 14px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .slide-divider .slide-content {
+    justify-content: center;
+    align-items: flex-start;
+    padding: 80px 100px;
+  }
+  .slide-divider .divider-title {
+    font-size: 64px;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+  .slide-divider .divider-sub {
+    font-size: 22px;
+    color: rgba(255,255,255,0.8);
+    font-weight: 300;
+  }
+</style>
+</head>
+<body>
+<section class="slide slide-dark" style="background:var(--pb-black)">
+        <div class="blob blob-blush" style="width:400px;height:400px;bottom:-120px;right:-80px;position:absolute;"></div>
+        <div class="slide-content" style="justify-content:center;align-items:flex-start;padding:80px 100px;">
+          <div class="label" style="color:rgba(255,255,255,0.6);margin-bottom:24px;">Premium Blend</div>
+          <h1 class="headline" style="font-size:80px;color:var(--white);margin-bottom:16px;">Walgreens Enterprise Transformation</h1>
+          <p style="font-size:28px;color:rgba(255,255,255,0.85);font-weight:300;margin-bottom:48px;">Value Created, Adoption Unlocked &amp; the Path to Enterprise Scale</p>
+          <div style="display:flex;gap:40px;align-items:center;">
+            <p style="font-size:15px;color:rgba(255,255,255,0.6);">Premium Blend Consulting</p>
+            <p style="font-size:15px;color:rgba(255,255,255,0.6);">2025</p>
+          </div>
+        </div>
+        <img src="/assets/illustrations/slide13_illustrations_01.png" alt="" style="position:absolute;bottom:32px;right:48px;height:120px;z-index:1;opacity:0.85;pointer-events:none;" />
+        <img src="http://localhost:3000/logos/PB_Logo_Wordmark_Horizontal_White_1.png" alt="" style="position:absolute;bottom:20px;left:28px;height:16px;opacity:0.25;z-index:3;pointer-events:none;" />
+        <span class="page-num">1</span>
+      </section>
+<section class="slide" style="position:relative;overflow:hidden;">
+        <div style="display:flex;height:100%;font-family:var(--font-body);"><div style="width:44%;background:white;padding:72px 56px;display:flex;flex-direction:column;justify-content:center;position:relative;"><div style="position:absolute;top:-60px;left:-60px;width:280px;height:280px;border-radius:50%;background:var(--pb-blue);opacity:0.05;"></div><span style="display:inline-block;padding:6px 18px;border:2px solid var(--pb-coral);border-radius:20px;font-size:12px;text-transform:uppercase;letter-spacing:0.12em;color:var(--pb-coral);font-weight:500;margin-bottom:24px;">Executive Summary</span><h2 style="font-family:var(--font-headline);font-size:38px;line-height:1.1;color:#1a1a1a;margin:0 0 20px;">Two years in.<br>The foundation<br><span style="color:var(--pb-coral);">is set.</span></h2><div style="width:60px;height:3px;background:var(--pb-coral);border-radius:2px;margin-bottom:20px;"></div><p style="font-size:15px;line-height:1.65;color:rgba(32,31,31,0.75);">Through our partnership, Walgreens has moved from fragmented, product-centric operations to a unified Sprinklr ecosystem — with <strong>300+ users onboarded</strong>, centralized workflows, and enterprise-wide data visibility. FY26 is the year to finish the job.</p></div><div style="width:56%;background:var(--pb-black);padding:64px 52px;display:flex;flex-direction:column;justify-content:center;border-radius:24px 0 0 24px;margin:28px 0;"><div style="margin-bottom:36px;"><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.12em;color:var(--pb-coral);font-weight:500;margin-bottom:8px;">North Star</div><p style="font-size:18px;font-family:var(--font-headline);color:white;line-height:1.4;margin:0;">Audience-led marketing, unified across every channel — powered by a single operating model.</p></div><div style="display:flex;flex-direction:column;gap:18px;"><div style="display:flex;align-items:flex-start;gap:16px;padding:18px 20px;background:rgba(255,255,255,0.06);border-radius:10px;border-left:3px solid var(--pb-coral);"><div><div style="font-size:13px;font-weight:600;color:white;margin-bottom:4px;">Foundation Delivered</div><div style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.5;">Sprinklr ecosystem live, workflows migrated, 300+ users onboarded across 6 teams & 3 agencies.</div></div></div><div style="display:flex;align-items:flex-start;gap:16px;padding:18px 20px;background:rgba(255,255,255,0.06);border-radius:10px;border-left:3px solid var(--pb-gold);"><div><div style="font-size:13px;font-weight:600;color:white;margin-bottom:4px;">One Bottleneck Remains</div><div style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.5;">Internal change management — not platform capability — is the only barrier to enterprise scale.</div></div></div><div style="display:flex;align-items:flex-start;gap:16px;padding:18px 20px;background:rgba(255,255,255,0.06);border-radius:10px;border-left:3px solid var(--pb-olive);"><div><div style="font-size:13px;font-weight:600;color:white;margin-bottom:4px;">FY26 Imperative</div><div style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.5;">Embed Paid Media, In-Store, App, and Site teams. Establish CoE. Complete the transformation.</div></div></div></div></div></div>
+        <img src="http://localhost:3000/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="" style="position:absolute;bottom:20px;left:28px;height:16px;opacity:0.25;z-index:3;pointer-events:none;" />
+        <span class="page-num">2</span>
+      </section>
+<section class="slide slide-dark slide-divider" style="background:var(--pb-blue)">
+        <div class="blob blob-blush" style="width:500px;height:500px;top:-200px;right:-100px;position:absolute;"></div>
+        <div class="slide-content">
+          <h2 class="headline divider-title">Current State Assessment</h2>
+          <p class="divider-sub">What we've built — and where the friction lives</p>
+        </div>
+        <img src="/assets/illustrations/slide13_illustrations_01.png" alt="" style="position:absolute;bottom:32px;right:48px;height:140px;z-index:1;opacity:0.85;pointer-events:none;" />
+        <img src="http://localhost:3000/logos/PB_Logo_Wordmark_Horizontal_White_1.png" alt="" style="position:absolute;bottom:20px;left:28px;height:16px;opacity:0.25;z-index:3;pointer-events:none;" />
+        <span class="page-num">3</span>
+      </section>
+<section class="slide" style="position:relative;overflow:hidden;">
+        <div style="padding:52px 68px;height:100%;display:flex;flex-direction:column;font-family:var(--font-body);"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;"><div><span style="display:inline-block;padding:6px 18px;border:2px solid var(--pb-olive);border-radius:20px;font-size:12px;text-transform:uppercase;letter-spacing:0.12em;color:var(--pb-olive);font-weight:500;margin-bottom:12px;">FY25 Achievements</span><h2 style="font-family:var(--font-headline);font-size:32px;margin:0;color:#1a1a1a;">What We've Delivered</h2></div></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;flex:1;"><div style="background:white;border-radius:14px;padding:28px 24px;box-shadow:0 2px 14px rgba(0,0,0,0.07);border-top:4px solid var(--pb-blue);display:flex;flex-direction:column;"><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:var(--pb-blue);font-weight:600;margin-bottom:14px;">Platform Adoption</div><div style="font-family:var(--font-headline);font-size:44px;font-weight:700;color:var(--pb-blue);line-height:1;margin-bottom:8px;">220+</div><div style="font-size:13px;color:rgba(0,0,0,0.5);margin-bottom:16px;">Users onboarded in Sprinklr</div><div style="display:flex;flex-direction:column;gap:8px;flex:1;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:6px;height:6px;border-radius:50%;background:var(--pb-blue);flex-shrink:0;"></div><div style="font-size:13px;line-height:1.45;color:#333;">Login sessions grew from 45 (Q3 FY23) to 111 (Q2 FY25)</div></div><div style="display:flex;align-items:center;gap:10px;"><div style="width:6px;height:6px;border-radius:50%;background:var(--pb-blue);flex-shrink:0;"></div><div style="font-size:13px;line-height:1.45;color:#333;">Avg. logged-in time: 7 hrs → 1+ day per quarter</div></div><div style="display:flex;align-items:center;gap:10px;"><div style="width:6px;height:6px;border-radius:50%;background:var(--pb-blue);flex-shrink:0;"></div><div style="font-size:13px;line-height:1.45;color:#333;">6 teams + 3 agencies integrated</div></div></div></div><div style="background:white;border-radius:14px;padding:28px 24px;box-shadow:0 2px 14px rgba(0,0,0,0.07);border-top:4px solid var(--pb-coral);display:flex;flex-direction:column;"><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:var(--pb-coral);font-weight:600;margin-bottom:14px;">Workflow Integration</div><div style="font-family:var(--font-headline);font-size:44px;font-weight:700;color:var(--pb-coral);line-height:1;margin-bottom:8px;">107</div><div style="font-size:13px;color:rgba(0,0,0,0.5);margin-bottom:16px;">Intake requests fielded</div><div style="display:flex;flex-direction:column;gap:8px;flex:1;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:6px;height:6px;border-radius:50%;background:var(--pb-coral);flex-shrink:0;"></div><div style="font-size:13px;line-height:1.45;color:#333;">Centralized intake across 20+ campaign & asset types</div></div><div style="display:flex;align-items:center;gap:10px;"><div style="width:6px;height:6px;border-radius:50%;background:var(--pb-coral);flex-shrink:0;"></div><div style="font-size:13px;line-height:1.45;color:#333;">35 automated workflows deployed</div></div><div style="display:flex;align-items:center;gap:10px;"><div style="width:6px;height:6px;border-radius:50%;background:var(--pb-coral);flex-shrink:0;"></div><div style="font-size:13px;line-height:1.45;color:#333;">Manual briefing & approvals replaced with in-platform tactical plans</div></div></div></div><div style="background:white;border-radius:14px;padding:28px 24px;box-shadow:0 2px 14px rgba(0,0,0,0.07);border-top:4px solid var(--pb-olive);display:flex;flex-direction:column;"><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:var(--pb-olive);font-weight:600;margin-bottom:14px;">Governance & Insights</div><div style="font-family:var(--font-headline);font-size:44px;font-weight:700;color:var(--pb-olive);line-height:1;margin-bottom:8px;">231</div><div style="font-size:13px;color:rgba(0,0,0,0.5);margin-bottom:16px;">Pieces of content produced</div><div style="display:flex;flex-direction:column;gap:8px;flex:1;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:6px;height:6px;border-radius:50%;background:var(--pb-olive);flex-shrink:0;"></div><div style="font-size:13px;line-height:1.45;color:#333;">Trust Index created to connect creative output to brand health</div></div><div style="display:flex;align-items:center;gap:10px;"><div style="width:6px;height=6px;border-radius:50%;background:var(--pb-olive);flex-shrink:0;"></div><div style="font-size:13px;line-height:1.45;color:#333;">7 ops reports + automated SLA adherence tracking</div></div><div style="display:flex;align-items:center;gap:10px;"><div style="width:6px;height:6px;border-radius:50%;background:var(--pb-olive);flex-shrink:0;"></div><div style="font-size:13px;line-height:1.45;color:#333;">22 Empower sessions + 14 hours of training delivered</div></div></div></div></div></div>
+        <img src="http://localhost:3000/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="" style="position:absolute;bottom:20px;left:28px;height:16px;opacity:0.25;z-index:3;pointer-events:none;" />
+        <span class="page-num">4</span>
+      </section>
+<section class="slide slide-dark" style="background:var(--pb-black)">
+        <div class="slide-content" style="padding:80px 100px;justify-content:center;">
+          <div class="headline" style="font-size:56px;color:var(--pb-coral);margin-bottom:32px;">The Adoption Challenge</div>
+          <h2 class="headline" style="font-size:52px;color:var(--white);line-height:1.15;max-width:1000px;">The platform isn't the problem. The narrative is.</h2>
+          <p style="font-size:20px;color:rgba(255,255,255,0.7);font-weight:300;margin-top:32px;line-height:1.6;max-width:900px;">Teams still on Workfront aren't there because Sprinklr falls short — they're there because internal change management hasn't caught up. The question isn't 'why pay for a product not getting adopted?' The question is 'how do we fix the internal adoption gap?'</p>
+        </div>
+        
+        <img src="http://localhost:3000/logos/PB_Logo_Wordmark_Horizontal_White_1.png" alt="" style="position:absolute;bottom:20px;left:28px;height:16px;opacity:0.25;z-index:3;pointer-events:none;" />
+        <span class="page-num">5</span>
+      </section>
+<section class="slide " style="background:var(--white)">
+        <div class="slide-content" style="padding:60px 80px;justify-content:flex-start;">
+          <p class="headline" style="font-size:28px;margin-bottom:28px;color:var(--pb-black);">Reframing the Conversation at Leadership Level</p>
+          <div style="display:flex;gap:40px;flex:1;width:100%;">
+            <div style="flex:1;">
+              <h3 style="font-size:14px;text-transform:uppercase;letter-spacing:0.1em;color:#999;margin-bottom:16px;font-weight:500;">Current Perception</h3>
+              <div style="display:flex;flex-direction:column;gap:12px;">
+                <div style="background:var(--white);border-radius:10px;padding:16px 20px;border:1px solid rgba(0,0,0,0.08);">
+                  <h4 style="font-size:15px;font-weight:500;color:var(--pb-black);margin-bottom:4px;">Platform ROI Question</h4>
+                  <p style="font-size:13px;color:#666;font-weight:300;">&quot;Why are we paying for a product that isn't getting fully adopted?&quot;</p>
+                </div><div style="background:var(--white);border-radius:10px;padding:16px 20px;border:1px solid rgba(0,0,0,0.08);">
+                  <h4 style="font-size:15px;font-weight:500;color:var(--pb-black);margin-bottom:4px;">Root Cause Misdiagnosis</h4>
+                  <p style="font-size:13px;color:#666;font-weight:300;">Assuming Sprinklr capability gaps are driving non-adoption</p>
+                </div><div style="background:var(--white);border-radius:10px;padding:16px 20px;border:1px solid rgba(0,0,0,0.08);">
+                  <h4 style="font-size:15px;font-weight:500;color:var(--pb-black);margin-bottom:4px;">Workfront as Safe Harbor</h4>
+                  <p style="font-size:13px;color:#666;font-weight:300;">In-store signage team stays on Workfront due to creative specification dependencies</p>
+                </div><div style="background:var(--white);border-radius:10px;padding:16px 20px;border:1px solid rgba(0,0,0,0.08);">
+                  <h4 style="font-size:15px;font-weight:500;color:var(--pb-black);margin-bottom:4px;">Fragmented Accountability</h4>
+                  <p style="font-size:13px;color:#666;font-weight:300;">No single operating model governing adoption across all 12 marketing functions</p>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;">
+              <div style="color:var(--pb-coral);font-size:20px;">&#x2192;</div><div style="color:var(--pb-coral);font-size:20px;">&#x2192;</div><div style="color:var(--pb-coral);font-size:20px;">&#x2192;</div><div style="color:var(--pb-coral);font-size:20px;">&#x2192;</div>
+            </div>
+            <div style="flex:1;">
+              <h3 style="font-size:14px;text-transform:uppercase;letter-spacing:0.1em;color:var(--pb-coral);margin-bottom:16px;font-weight:500;">The Reality</h3>
+              <div style="display:flex;flex-direction:column;gap:12px;">
+                <div style="background:var(--white);border-radius:10px;padding:16px 20px;border-left:3px solid var(--pb-coral);border:1px solid rgba(0,0,0,0.08);">
+                  <h4 style="font-size:15px;font-weight:500;color:var(--pb-black);margin-bottom:4px;">Change Management Imperative</h4>
+                  <p style="font-size:13px;color:#666;font-weight:300;">&quot;We must fix the internal adoption issue — the platform is fully capable.&quot;</p>
+                </div><div style="background:var(--white);border-radius:10px;padding:16px 20px;border-left:3px solid var(--pb-coral);border:1px solid rgba(0,0,0,0.08);">
+                  <h4 style="font-size:15px;font-weight:500;color:var(--pb-black);margin-bottom:4px;">Correct Diagnosis</h4>
+                  <p style="font-size:13px;color:#666;font-weight:300;">Organizational change management is the only barrier to enterprise scale</p>
+                </div><div style="background:var(--white);border-radius:10px;padding:16px 20px;border-left:3px solid var(--pb-coral);border:1px solid rgba(0,0,0,0.08);">
+                  <h4 style="font-size:15px;font-weight:500;color:var(--pb-black);margin-bottom:4px;">Solvable Dependency</h4>
+                  <p style="font-size:13px;color:#666;font-weight:300;">Signage specification issue is a workflow configuration problem — not a platform limitation</p>
+                </div><div style="background:var(--white);border-radius:10px;padding:16px 20px;border-left:3px solid var(--pb-coral);border:1px solid rgba(0,0,0,0.08);">
+                  <h4 style="font-size:15px;font-weight:500;color:var(--pb-black);margin-bottom:4px;">COE as the Answer</h4>
+                  <p style="font-size:13px;color:#666;font-weight:300;">A Center of Excellence provides the operating model to govern adoption across all teams</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p style="font-size:15px;color:#666;font-weight:300;margin-top:20px;line-height:1.5;">Shifting this narrative with leadership unlocks the FY26 investment and the organizational will to complete the transformation.</p>
+        </div>
+        <img src="http://localhost:3000/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="" style="position:absolute;bottom:20px;left:28px;height:16px;opacity:0.25;z-index:3;pointer-events:none;" />
+        <span class="page-num">6</span>
+      </section>
+<section class="slide slide-dark slide-divider" style="background:var(--pb-black)">
+        <div class="blob blob-blush" style="width:500px;height:500px;top:-200px;right:-100px;position:absolute;"></div>
+        <div class="slide-content">
+          <h2 class="headline divider-title">Market Forces Driving Change</h2>
+          <p class="divider-sub">Three macro-trends making this transformation non-negotiable</p>
+        </div>
+        <img src="/assets/illustrations/slide13_illustrations_02.png" alt="" style="position:absolute;bottom:32px;right:48px;height:140px;z-index:1;opacity:0.85;pointer-events:none;" />
+        <img src="http://localhost:3000/logos/PB_Logo_Wordmark_Horizontal_White_1.png" alt="" style="position:absolute;bottom:20px;left:28px;height:16px;opacity:0.25;z-index:3;pointer-events:none;" />
+        <span class="page-num">7</span>
+      </section>
+<section class="slide slide-dark" style="background:var(--pb-black);overflow:hidden;">
+        <!-- Ambient background shapes -->
+        <div style="position:absolute;top:-80px;right:-60px;width:320px;height:320px;border-radius:50% 40% 60% 45%;background:var(--pb-coral);opacity:0.06;"></div>
+        <div style="position:absolute;bottom:-100px;left:-40px;width:260px;height:260px;border-radius:45% 55% 40% 60%;background:var(--pb-blue);opacity:0.06;"></div>
+        <div class="slide-content" style="padding:48px 72px;justify-content:flex-start;">
+          <!-- Header area -->
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:10px;">
+            <div class="badge" style="color:var(--pb-plum);">Macro Context</div>
+            <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(157,92,136,0.4),transparent);"></div>
+          </div>
+          <p class="headline" style="font-size:36px;margin-bottom:6px;color:var(--white);letter-spacing:-0.01em;">Three forces reshaping enterprise marketing.</p>
+          <p style="font-size:15px;color:rgba(255,255,255,0.45);font-weight:300;margin-bottom:32px;">The external environment isn't waiting for internal adoption debates to resolve.</p>
+
+          <!-- Three columns with illustrations -->
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;flex:1;align-items:stretch;">
+
+            <!-- CARD 1: Downward Pressure on Agencies -->
+            <div style="background:rgba(255,255,255,0.04);border-radius:16px;padding:32px 28px 28px;position:relative;overflow:hidden;display:flex;flex-direction:column;border:1px solid rgba(241,95,64,0.15);">
+              <!-- Accent glow -->
+              <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--pb-coral),transparent);"></div>
+              <!-- Illustration: two characters clashing -->
+              <div style="text-align:center;margin-bottom:20px;height:100px;display:flex;align-items:center;justify-content:center;">
+                <img src="/assets/illustrations/slide35_illustrations.png" alt="" style="height:96px;object-fit:contain;pointer-events:none;" />
+              </div>
+              <div style="background:var(--pb-coral);color:white;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;padding:5px 12px;border-radius:4px;display:inline-block;width:fit-content;margin-bottom:14px;">Force 01</div>
+              <h3 class="headline" style="font-size:20px;margin-bottom:10px;color:var(--pb-coral);line-height:1.2;">Downward Pressure on Agencies</h3>
+              <p style="font-size:13.5px;color:rgba(255,255,255,0.65);font-weight:300;line-height:1.6;flex:1;">Platforms like Sprinklr make content operations transparent. Agency teams resisting adoption are protecting <em style="color:rgba(255,255,255,0.85);font-style:italic;">their</em> workflows — not Walgreens'.</p>
+              <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.08);">
+                <p style="font-size:12px;color:var(--pb-coral);font-weight:500;letter-spacing:0.04em;">↓ Structural pressure is permanent</p>
+              </div>
+            </div>
+
+            <!-- CARD 2: Enterprise Operations at Scale -->
+            <div style="background:rgba(255,255,255,0.04);border-radius:16px;padding:32px 28px 28px;position:relative;overflow:hidden;display:flex;flex-direction:column;border:1px solid rgba(97,126,200,0.15);">
+              <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--pb-blue),transparent);"></div>
+              <!-- Illustration: character juggling complexity -->
+              <div style="text-align:center;margin-bottom:20px;height:100px;display:flex;align-items:center;justify-content:center;">
+                <img src="/assets/illustrations/slide14_illustrations_14.png" alt="" style="height:96px;object-fit:contain;pointer-events:none;" />
+              </div>
+              <div style="background:var(--pb-blue);color:white;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;padding:5px 12px;border-radius:4px;display:inline-block;width:fit-content;margin-bottom:14px;">Force 02</div>
+              <h3 class="headline" style="font-size:20px;margin-bottom:10px;color:var(--pb-blue);line-height:1.2;">Enterprise Operations at Scale</h3>
+              <p style="font-size:13.5px;color:rgba(255,255,255,0.65);font-weight:300;line-height:1.6;flex:1;">12 marketing functions need a true product model — DevOps discipline, Agile sprints, ALM governance, and a COE. Not a series of one-off implementations.</p>
+              <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.08);">
+                <p style="font-size:12px;color:var(--pb-blue);font-weight:500;letter-spacing:0.04em;">→ Complexity demands a system</p>
+              </div>
+            </div>
+
+            <!-- CARD 3: Perception = Investment Reality -->
+            <div style="background:rgba(255,255,255,0.04);border-radius:16px;padding:32px 28px 28px;position:relative;overflow:hidden;display:flex;flex-direction:column;border:1px solid rgba(140,158,97,0.15);">
+              <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--pb-olive),transparent);"></div>
+              <!-- Illustration: perception / narrative shift -->
+              <div style="text-align:center;margin-bottom:20px;height:100px;display:flex;align-items:center;justify-content:center;">
+                <img src="/assets/illustrations/slide14_illustrations_07.png" alt="" style="height:96px;object-fit:contain;pointer-events:none;" />
+              </div>
+              <div style="background:var(--pb-olive);color:white;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;padding:5px 12px;border-radius:4px;display:inline-block;width:fit-content;margin-bottom:14px;">Force 03</div>
+              <h3 class="headline" style="font-size:20px;margin-bottom:10px;color:var(--pb-olive);line-height:1.2;">Perception = Investment Reality</h3>
+              <p style="font-size:13.5px;color:rgba(255,255,255,0.65);font-weight:300;line-height:1.6;flex:1;">Leadership perception drives budget. Until the narrative shifts from <span style="color:rgba(255,255,255,0.35);text-decoration:line-through;">adoption problem</span> → <span style="color:var(--pb-olive);font-weight:500;">change management solution</span>, FY26 investment stays at risk.</p>
+              <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.08);">
+                <p style="font-size:12px;color:var(--pb-olive);font-weight:500;letter-spacing:0.04em;">⚡ Narrative is the unlock</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <img src="http://localhost:3000/logos/PB_Logo_Wordmark_Horizontal_White_1.png" alt="" style="position:absolute;bottom:20px;left:28px;height:16px;opacity:0.25;z-index:3;pointer-events:none;" />
+        <span class="page-num">8</span>
+      </section>
+<section class="slide slide-dark slide-divider" style="background:var(--pb-blue)">
+        <div class="blob blob-blush" style="width:500px;height:500px;top:-200px;right:-100px;position:absolute;"></div>
+        <div class="slide-content">
+          <h2 class="headline divider-title">Platform Intelligence</h2>
+          <p class="divider-sub">Workfront vs. Sprinklr — understanding the real difference</p>
+        </div>
+        <img src="/assets/illustrations/slide14_illustrations_05.png" alt="" style="position:absolute;bottom:32px;right:48px;height:140px;z-index:1;opacity:0.85;pointer-events:none;" />
+        <img src="http://localhost:3000/logos/PB_Logo_Wordmark_Horizontal_White_1.png" alt="" style="position:absolute;bottom:20px;left:28px;height:16px;opacity:0.25;z-index:3;pointer-events:none;" />
+        <span class="page-num">9</span>
+      </section>
+<section class="slide" style="position:relative;overflow:hidden;">
+        <div style="padding:50px 68px;height:100%;display:flex;flex-direction:column;font-family:var(--font-body);"><span style="display:inline-block;padding:6px 18px;border:2px solid var(--pb-plum);border-radius:20px;font-size:12px;text-transform:uppercase;letter-spacing:0.12em;color:var(--pb-plum);font-weight:500;margin-bottom:16px;">Platform Comparison</span><h2 style="font-family:var(--font-headline);font-size:30px;margin:0 0 8px;color:#1a1a1a;">One manages production. One manages execution.</h2><p style="font-size:14px;color:rgba(0,0,0,0.5);margin:0 0 28px;">The question isn't which platform to use — it's understanding what each is built for.</p><div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1;"><div style="background:white;border-radius:14px;padding:28px 26px;box-shadow:0 2px 12px rgba(0,0,0,0.07);border-top:4px solid #5c5c5c;display:flex;flex-direction:column;"><div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;"><div style="background:#f0f0f0;border-radius:8px;padding:8px 14px;"><span style="font-family:var(--font-headline);font-size:14px;font-weight:700;color:#444;">WORKFRONT</span></div><div style="font-size:13px;color:rgba(0,0,0,0.5);">Production Management</div></div><div style="background:#f7f7f7;border-radius:8px;padding:14px 16px;margin-bottom:18px;"><p style="font-size:14px;font-style:italic;color:#555;margin:0;line-height:1.5;">"Manages the <strong>production</strong> of marketing work — inside the organization."</p></div><div style="display:flex;flex-direction:column;gap:10px;flex:1;"><div style="display:flex;align-items:flex-start;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:#e0e0e0;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;"><span style="font-size:11px;color:#666;">✓</span></div><div style="font-size:13px;color:#333;line-height:1.45;">Campaign planning & brief templates</div></div><div style="display:flex;align-items:flex-start;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:#e0e0e0;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;"><span style="font-size:11px;color:#666;">✓</span></div><div style="font-size:13px;color:#333;line-height:1.45;">Task management & workflow automation</div></div><div style="display:flex;align-items:flex-start;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:#e0e0e0;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;"><span style="font-size:11px;color:#666;">✓</span></div><div style="font-size:13px;color:#333;line-height:1.45;">Approval routing</div></div><div style="display:flex;align-items:flex-start;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:#f5d0c8;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;"><span style="font-size:11px;color:#c0392b;">✗</span></div><div style="font-size:13px;color:#888;line-height:1.45;">Customer listening & real-time engagement</div></div><div style="display:flex;align-items:flex-start;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:#f5d0c8;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;"><span style="font-size:11px;color:#c0392b;">✗</span></div><div style="font-size:13px;color:#888;line-height:1.45;">Performance reporting & AI insights</div></div><div style="display:flex;align-items:flex-start;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:#f5d0c8;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;"><span style="font-size:11px;color:#c0392b;">✗</span></div><div style="font-size:13px;color:#888;line-height:1.45;">Social publishing & content calendar</div></div></div></div><div style="background:var(--pb-black);border-radius:14px;padding:28px 26px;display:flex;flex-direction:column;"><div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;"><div style="background:var(--pb-coral);border-radius:8px;padding:8px 14px;"><span style="font-family:var(--font-headline);font-size:14px;font-weight:700;color:white;">SPRINKLR</span></div><div style="font-size:13px;color:rgba(255,255,255,0.5);">Execution Management</div></div><div style="background:rgba(255,255,255,0.08);border-radius:8px;padding:14px 16px;margin-bottom:18px;"><p style="font-size:14px;font-style:italic;color:rgba(255,255,255,0.85);margin:0;line-height:1.5;">"Manages the <strong style='color:var(--pb-coral);'>execution</strong> of marketing in the customer environment."</p></div><div style="display:flex;flex-direction:column;gap:10px;flex:1;"><div style="display:flex;align-items:flex-start;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:var(--pb-olive);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;"><span style="font-size:11px;color:white;">✓</span></div><div style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.45;">Campaign planning & brief templates</div></div><div style="display:flex;align-items:flex-start;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:var(--pb-olive);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;"><span style="font-size:11px;color:white;">✓</span></div><div style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.45;">Task management & workflow automation</div></div><div style="display:flex;align-items:flex-start;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:var(--pb-olive);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;"><span style="font-size:11px;color:white;">✓</span></div><div style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.45;">Approval routing</div></div><div style="display:flex;align-items:flex-start;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:var(--pb-coral);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;"><span style="font-size:11px;color:white;">+</span></div><div style="font-size:13px;color:white;line-height:1.45;">Content calendar, social publishing & real-time engagement</div></div><div style="display:flex;align-items:flex-start;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:var(--pb-coral);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;"><span style="font-size:11px;color:white;">+</span></div><div style="font-size:13px;color:white;line-height:1.45;">Customer listening & care workflows</div></div><div style="display:flex;align-items:flex-start;gap:10px;"><div style="width:20px;height:20px;border-radius:50%;background:var(--pb-coral);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;"><span style="font-size:11px;color:white;">+</span></div><div style="font-size:13px;color:white;line-height:1.45;">Performance reporting & AI-powered insights</div></div></div></div></div></div>
+        <img src="http://localhost:3000/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="" style="position:absolute;bottom:20px;left:28px;height:16px;opacity:0.25;z-index:3;pointer-events:none;" />
+        <span class="page-num">10</span>
+      </section>
+<section class="slide slide-dark" style="background:var(--pb-black)">
+        <div class="slide-content" style="padding:60px 80px;justify-content:center;">
+          <p class="headline" style="font-size:28px;color:rgba(255,255,255,0.9);margin-bottom:40px;line-height:1.35;max-width:900px;font-weight:500;">The cost of staying fragmented</p>
+          <div style="display:flex;gap:60px;align-items:baseline;">
+            <div>
+              <div class="headline" style="font-size:80px;color:var(--pb-coral);line-height:1;margin-bottom:12px;">$100M+</div>
+              <div style="font-size:15px;color:rgba(255,255,255,0.6);font-weight:300;max-width:200px;line-height:1.4;">Annual marketing investment impacted by operational inefficiencies &amp; data silos</div>
+            </div><div>
+              <div class="headline" style="font-size:80px;color:var(--pb-gold);line-height:1;margin-bottom:12px;">20-30%</div>
+              <div style="font-size:15px;color:rgba(255,255,255,0.6);font-weight:300;max-width:200px;line-height:1.4;">Slower campaign time-to-market under manual orchestration</div>
+            </div><div>
+              <div class="headline" style="font-size:80px;color:var(--pb-blue);line-height:1;margin-bottom:12px;">$50M+</div>
+              <div style="font-size:15px;color:rgba(255,255,255,0.6);font-weight:300;max-width:200px;line-height:1.4;">Wasted media spend from fragmented briefing &amp; overlapping audience targeting</div>
+            </div>
+          </div>
+        </div>
+        <img src="http://localhost:3000/logos/PB_Logo_Wordmark_Horizontal_White_1.png" alt="" style="position:absolute;bottom:20px;left:28px;height:16px;opacity:0.25;z-index:3;pointer-events:none;" />
+        <span class="page-num">11</span>
+      </section>
+<section class="slide slide-dark slide-divider" style="background:var(--pb-olive)">
+        <div class="blob blob-blush" style="width:500px;height:500px;top:-200px;right:-100px;position:absolute;"></div>
+        <div class="slide-content">
+          <h2 class="headline divider-title">The Full Opportunity</h2>
+          <p class="divider-sub">12 teams. One platform. A complete marketing lifecycle.</p>
+        </div>
+        <img src="/assets/illustrations/slide14_illustrations_07.png" alt="" style="position:absolute;bottom:32px;right:48px;height:140px;z-index:1;opacity:0.85;pointer-events:none;" />
+        <img src="http://localhost:3000/logos/PB_Logo_Wordmark_Horizontal_White_1.png" alt="" style="position:absolute;bottom:20px;left:28px;height:16px;opacity:0.25;z-index:3;pointer-events:none;" />
+        <span class="page-num">12</span>
+      </section>
+<section class="slide" style="position:relative;overflow:hidden;">
+        <div style="padding:50px 68px;height:100%;display:flex;flex-direction:column;font-family:var(--font-body);"><div style="margin-bottom:24px;"><span style="display:inline-block;padding:6px 18px;border:2px solid var(--pb-blue);border-radius:20px;font-size:12px;text-transform:uppercase;letter-spacing:0.12em;color:var(--pb-blue);font-weight:500;margin-bottom:12px;">Enterprise Scope</span><h2 style="font-family:var(--font-headline);font-size:30px;margin:0;color:#1a1a1a;">12 teams ready for Sprinklr foundation.</h2></div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;flex:1;"><div style="background:var(--pb-blue);border-radius:12px;padding:18px 16px;display:flex;align-items:center;gap:10px;"><div style="width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white;flex-shrink:0;">01</div><div style="font-size:13px;font-weight:600;color:white;">Organic Social</div></div><div style="background:white;border:2px solid #eee;border-radius:12px;padding:18px 16px;display:flex;align-items:center;gap:10px;"><div style="width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#555;flex-shrink:0;">02</div><div style="font-size:13px;font-weight:600;color:#222;">Site & App</div></div><div style="background:white;border:2px solid #eee;border-radius:12px;padding:18px 16px;display:flex;align-items:center;gap:10px;"><div style="width:28px;height:28px;border-radius:50%;background:rgba(241,95,64,0.12);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--pb-coral);flex-shrink:0;">03</div><div style="font-size:13px;font-weight:600;color:#222;">In-Store Signage</div></div><div style="background:white;border:2px solid #eee;border-radius:12px;padding:18px 16px;display:flex;align-items:center;gap:10px;"><div style="width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#555;flex-shrink:0;">04</div><div style="font-size:13px;font-weight:600;color:#222;">SMI</div></div><div style="background:white;border:2px solid #eee;border-radius:12px;padding:18px 16px;display:flex;align-items:center;gap:10px;"><div style="width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#555;flex-shrink:0;">05</div><div style="font-size:13px;font-weight:600;color:#222;">Category Marketers</div></div><div style="background:white;border:2px solid #eee;border-radius:12px;padding:18px 16px;display:flex;align-items:center;gap:10px;"><div style="width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#555;flex-shrink:0;">06</div><div style="font-size:13px;font-weight:600;color:#222;">Research & Insights</div></div><div style="background:white;border:2px solid #eee;border-radius:12px;padding:18px 16px;display:flex;align-items:center;gap:10px;"><div style="width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#555;flex-shrink:0;">07</div><div style="font-size:13px;font-weight:600;color:#222;">In-Store Audio</div></div><div style="background:white;border:2px solid #eee;border-radius:12px;padding:18px 16px;display:flex;align-items:center;gap:10px;"><div style="width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#555;flex-shrink:0;">08</div><div style="font-size:13px;font-weight:600;color:#222;">Paid Media</div></div><div style="background:white;border:2px solid #eee;border-radius:12px;padding:18px 16px;display:flex;align-items:center;gap:10px;"><div style="width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#555;flex-shrink:0;">09</div><div style="font-size:13px;font-weight:600;color:#222;">Email</div></div><div style="background:white;border:2px solid #eee;border-radius:12px;padding:18px 16px;display:flex;align-items:center;gap:10px;"><div style="width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#555;flex-shrink:0;">10</div><div style="font-size:13px;font-weight:600;color:#222;">Loyalty</div></div><div style="background:white;border:2px solid #eee;border-radius:12px;padding:18px 16px;display:flex;align-items:center;gap:10px;"><div style="width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#555;flex-shrink:0;">11</div><div style="font-size:13px;font-weight:600;color:#222;">OLV</div></div><div style="background:white;border:2px solid #eee;border-radius:12px;padding:18px 16px;display:flex;align-items:center;gap:10px;"><div style="width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#555;flex-shrink:0;">12</div><div style="font-size:13px;font-weight:600;color:#222;">Broadcast</div></div></div><div style="background:var(--pb-black);border-radius:12px;padding:20px 28px;margin-top:16px;display:flex;align-items:center;gap:20px;"><div style="width:4px;height:48px;background:var(--pb-coral);border-radius:2px;flex-shrink:0;"></div><div style="flex:1;"><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:var(--pb-coral);font-weight:500;margin-bottom:6px;">Complete Marketing Lifecycle Now Possible</div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"><span style="font-size:13px;color:white;">Campaign Brief</span><span style="color:var(--pb-coral);font-size:16px;">→</span><span style="font-size:13px;color:white;">Task Creation</span><span style="color:var(--pb-coral);font-size:16px;">→</span><span style="font-size:13px;color:white;">Approval Workflow</span><span style="color:var(--pb-coral);font-size:16px;">→</span><span style="font-size:13px;color:white;">Publishing</span><span style="color:var(--pb-coral);font-size:16px;">→</span><span style="font-size:13px;color:white;">Engagement</span><span style="color:var(--pb-coral);font-size:16px;">→</span><span style="font-size:13px;color:white;">Performance Reporting</span></div></div></div></div>
+        <img src="http://localhost:3000/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="" style="position:absolute;bottom:20px;left:28px;height:16px;opacity:0.25;z-index:3;pointer-events:none;" />
+        <span class="page-num">13</span>
+      </section>
+<section class="slide " style="background:var(--white)">
+        <div class="slide-content" style="padding:60px 80px;justify-content:flex-start;">
+          <div class="badge" style="color:var(--pb-blue);margin-bottom:20px;">Operating Model</div>
+          <p class="headline" style="font-size:28px;margin-bottom:8px;color:var(--pb-black);">What the full Sprinklr lifecycle looks like at Walgreens scale.</p>
+          <p style="font-size:16px;color:#666;font-weight:300;margin-bottom:28px;line-height:1.5;">Sprinklr doesn't just manage tasks — it connects every stage from brief to customer insight, eliminating the data silos that cost Walgreens $100M+ annually.</p>
+          <div style="display:flex;align-items:flex-start;gap:8px;width:100%;">
+            
+              <div style="flex:1;text-align:center;">
+                <div style="width:44px;height:44px;border-radius:50%;background:var(--pb-blue);color:var(--white);display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;font-family:var(--font-headline);margin-bottom:12px;">1</div>
+                <h4 class="headline" style="font-size:16px;color:var(--pb-blue);margin-bottom:6px;">Campaign Brief</h4>
+                <p style="font-size:12px;color:#666;font-weight:300;line-height:1.4;">Audience-first briefs standardized across all 12 teams via centralized intake</p>
+              </div><div style="display:flex;align-items:center;padding-top:20px;color:#ccc;font-size:24px;">&#x2192;</div>
+              <div style="flex:1;text-align:center;">
+                <div style="width:44px;height:44px;border-radius:50%;background:var(--pb-coral);color:var(--white);display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;font-family:var(--font-headline);margin-bottom:12px;">2</div>
+                <h4 class="headline" style="font-size:16px;color:var(--pb-coral);margin-bottom:6px;">Task &amp; Workflow</h4>
+                <p style="font-size:12px;color:#666;font-weight:300;line-height:1.4;">Automated approval routing replaces manual email &amp; Workfront chains</p>
+              </div><div style="display:flex;align-items:center;padding-top:20px;color:#ccc;font-size:24px;">&#x2192;</div>
+              <div style="flex:1;text-align:center;">
+                <div style="width:44px;height:44px;border-radius:50%;background:var(--pb-olive);color:var(--white);display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;font-family:var(--font-headline);margin-bottom:12px;">3</div>
+                <h4 class="headline" style="font-size:16px;color:var(--pb-olive);margin-bottom:6px;">Publish &amp; Engage</h4>
+                <p style="font-size:12px;color:#666;font-weight:300;line-height:1.4;">Content calendar, social publishing &amp; real-time engagement in one platform</p>
+              </div><div style="display:flex;align-items:center;padding-top:20px;color:#ccc;font-size:24px;">&#x2192;</div>
+              <div style="flex:1;text-align:center;">
+                <div style="width:44px;height:44px;border-radius:50%;background:var(--pb-gold);color:var(--white);display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;font-family:var(--font-headline);margin-bottom:12px;">4</div>
+                <h4 class="headline" style="font-size:16px;color:var(--pb-gold);margin-bottom:6px;">Listen &amp; Learn</h4>
+                <p style="font-size:12px;color:#666;font-weight:300;line-height:1.4;">Customer listening, care workflows &amp; sentiment tracking connected to briefs</p>
+              </div><div style="display:flex;align-items:center;padding-top:20px;color:#ccc;font-size:24px;">&#x2192;</div>
+              <div style="flex:1;text-align:center;">
+                <div style="width:44px;height:44px;border-radius:50%;background:var(--pb-plum);color:var(--white);display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;font-family:var(--font-headline);margin-bottom:12px;">5</div>
+                <h4 class="headline" style="font-size:16px;color:var(--pb-plum);margin-bottom:6px;">Measure &amp; Optimize</h4>
+                <p style="font-size:12px;color:#666;font-weight:300;line-height:1.4;">AI-powered performance reporting with cross-team visibility and Trust Index</p>
+              </div>
+          </div>
+        </div>
+        <img src="http://localhost:3000/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="" style="position:absolute;bottom:20px;left:28px;height:16px;opacity:0.25;z-index:3;pointer-events:none;" />
+        <span class="page-num">14</span>
+      </section>
+<section class="slide slide-dark slide-divider" style="background:var(--pb-black)">
+        <div class="blob blob-blush" style="width:500px;height:500px;top:-200px;right:-100px;position:absolute;"></div>
+        <div class="slide-content">
+          <h2 class="headline divider-title">The Solution</h2>
+          <p class="divider-sub">Center of Excellence — the operating model to complete the transformation</p>
+        </div>
+        <img src="/assets/illustrations/slide14_illustrations_09.png" alt="" style="position:absolute;bottom:32px;right:48px;height:140px;z-index:1;opacity:0.85;pointer-events:none;" />
+        <img src="http://localhost:3000/logos/PB_Logo_Wordmark_Horizontal_White_1.png" alt="" style="position:absolute;bottom:20px;left:28px;height:16px;opacity:0.25;z-index:3;pointer-events:none;" />
+        <span class="page-num">15</span>
+      </section>
+<section class="slide slide-dark" style="background:var(--pb-black)">
+        <div class="slide-content" style="padding:60px 80px;justify-content:flex-start;">
+          <div class="badge" style="color:var(--pb-gold);margin-bottom:20px;">Center of Excellence</div>
+          <p class="headline" style="font-size:32px;margin-bottom:8px;color:var(--white);">One bottleneck. One solution. Four pillars.</p>
+          <p style="font-size:16px;color:rgba(255,255,255,0.5);font-weight:300;margin-bottom:28px;">Internal change adoption is the only thing standing between Walgreens and a fully unified enterprise content operation. The COE addresses it systematically.</p>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px;flex:1;">
+            <div class="card" style="border-top:4px solid var(--pb-blue);">
+                <h3 class="headline" style="font-size:18px;margin-bottom:12px;color:var(--pb-blue);">Strategy &amp; Governance</h3>
+                <p style="font-size:14px;color:#555;font-weight:300;line-height:1.5;">Centralized roadmap ownership, release cycle planning, playbook development and maintenance. Change management discipline baked into every deployment.</p>
+              </div><div class="card" style="border-top:4px solid var(--pb-coral);">
+                <h3 class="headline" style="font-size:18px;margin-bottom:12px;color:var(--pb-coral);">Implementation</h3>
+                <p style="font-size:14px;color:#555;font-weight:300;line-height:1.5;">Discovery, requirements gathering, system design, configuration and new feature launch — executed against a true product model with DevOps and Agile deployment standards.</p>
+              </div><div class="card" style="border-top:4px solid var(--pb-olive);">
+                <h3 class="headline" style="font-size:18px;margin-bottom:12px;color:var(--pb-olive);">Managed Services</h3>
+                <p style="font-size:14px;color:#555;font-weight:300;line-height:1.5;">User onboarding, tool administration, troubleshooting, ongoing education and training. Up to 105 hours/month keeping adoption active across all 12 functions.</p>
+              </div><div class="card" style="border-top:4px solid var(--pb-gold);">
+                <h3 class="headline" style="font-size:18px;margin-bottom:12px;color:var(--pb-gold);">Strategy &amp; Analytics</h3>
+                <p style="font-size:14px;color:#555;font-weight:300;line-height:1.5;">Insights framework development, recurring and ad-hoc reporting delivery, Trust Index maintenance, and SMI support. Up to 150 hours/month turning data into decisions.</p>
+              </div>
+          </div>
+        </div>
+        <img src="http://localhost:3000/logos/PB_Logo_Wordmark_Horizontal_White_1.png" alt="" style="position:absolute;bottom:20px;left:28px;height:16px;opacity:0.25;z-index:3;pointer-events:none;" />
+        <span class="page-num">16</span>
+      </section>
+<section class="slide slide-dark" style="background:var(--pb-black)">
+        <div class="slide-content" style="padding:60px 80px;justify-content:flex-start;">
+          <div class="badge" style="color:var(--pb-coral);margin-bottom:20px;">FY26 Roadmap</div>
+          <p class="headline" style="font-size:28px;margin-bottom:28px;color:var(--white);">From foundation to enterprise-ready — in four phases.</p>
+          <div style="display:flex;gap:24px;flex:1;width:100%;">
+            <div style="flex:1;background:rgba(255,255,255,0.06);border-radius:12px;padding:24px;border-top:4px solid var(--pb-coral);">
+                <h3 class="headline" style="font-size:20px;color:var(--pb-coral);margin-bottom:4px;">Phase 1: Expand the Foundation</h3>
+                <p style="font-size:12px;color:#999;margin-bottom:16px;">FY25 Q4 — Jun–Aug</p>
+                <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+                  <li style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:300;padding-left:12px;border-left:2px solid var(--pb-coral);">Launch In-Store Signage workflow (1A) — discover, design, implement, train</li><li style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:300;padding-left:12px;border-left:2px solid var(--pb-coral);">Launch Site &amp; App workflow (1B) — centralize intake and approvals</li><li style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:300;padding-left:12px;border-left:2px solid var(--pb-coral);">12-week project duration | $385,000 fixed fee</li><li style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:300;padding-left:12px;border-left:2px solid var(--pb-coral);">Resolve Workfront dependency for signage creative specifications</li><li style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:300;padding-left:12px;border-left:2px solid var(--pb-coral);">MS &amp; SAI team initiation for ongoing CoE services</li>
+                </ul>
+              </div><div style="flex:1;background:rgba(255,255,255,0.06);border-radius:12px;padding:24px;border-top:4px solid var(--pb-blue);">
+                <h3 class="headline" style="font-size:20px;color:var(--pb-blue);margin-bottom:4px;">Phase 2: Paid Media — Brand Marketing</h3>
+                <p style="font-size:12px;color:#999;margin-bottom:16px;">FY26 Q1 — Sept–Nov</p>
+                <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+                  <li style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:300;padding-left:12px;border-left:2px solid var(--pb-blue);">Launch BM Paid Social workflow (2A) — content efficiency for Brand Marketing paid team</li><li style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:300;padding-left:12px;border-left:2px solid var(--pb-blue);">Tech enablement for BM Paid via Sprinklr Ads (2B)</li><li style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:300;padding-left:12px;border-left:2px solid var(--pb-blue);">Ads metrics, naming conventions, budget/pacing groups &amp; reporting dashboards</li><li style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:300;padding-left:12px;border-left:2px solid var(--pb-blue);">Managed Services delivery up to 105 hours/month</li><li style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:300;padding-left:12px;border-left:2px solid var(--pb-blue);">Strategy &amp; Analytics delivery up to 150 hours/month</li>
+                </ul>
+              </div><div style="flex:1;background:rgba(255,255,255,0.06);border-radius:12px;padding:24px;border-top:4px solid var(--pb-olive);">
+                <h3 class="headline" style="font-size:20px;color:var(--pb-olive);margin-bottom:4px;">Phase 3: Paid Media — WAG</h3>
+                <p style="font-size:12px;color:#999;margin-bottom:16px;">FY26 Q2–Q3 — Dec–May</p>
+                <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+                  <li style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:300;padding-left:12px;border-left:2px solid var(--pb-olive);">Launch WAG Paid Social workflow (3A) — Walgreens Advertising Group integration</li><li style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:300;padding-left:12px;border-left:2px solid var(--pb-olive);">Tech enablement for WAG via Sprinklr Ads (3B)</li><li style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:300;padding-left:12px;border-left:2px solid var(--pb-olive);">Unified paid initiative/ad variant tagging taxonomy enterprise-wide</li><li style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:300;padding-left:12px;border-left:2px solid var(--pb-olive);">24-week project duration for 2A/B + 3A/B | $452,000 fixed fee</li><li style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:300;padding-left:12px;border-left:2px solid var(--pb-olive);">Continued CoE governance: training, strategy, adoption accountability</li>
+                </ul>
+              </div><div style="flex:1;background:rgba(255,255,255,0.06);border-radius:12px;padding:24px;border-top:4px solid var(--pb-gold);">
+                <h3 class="headline" style="font-size:20px;color:var(--pb-gold);margin-bottom:4px;">Phase 4: Enterprise CoE at Scale</h3>
+                <p style="font-size:12px;color:#999;margin-bottom:16px;">FY26 Q3 Onwards — Ongoing</p>
+                <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+                  <li style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:300;padding-left:12px;border-left:2px solid var(--pb-gold);">Established Center of Excellence with full governance model</li><li style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:300;padding-left:12px;border-left:2px solid var(--pb-gold);">All 12 marketing functions operating in unified Sprinklr ecosystem</li><li style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:300;padding-left:12px;border-left:2px solid var(--pb-gold);">12 recurring Sprinklr-powered reports on regular cadence</li><li style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:300;padding-left:12px;border-left:2px solid var(--pb-gold);">AI-powered insights layer active across all campaigns</li><li style="font-size:13px;color:rgba(255,255,255,0.7);font-weight:300;padding-left:12px;border-left:2px solid var(--pb-gold);">Total FY26 investment: $1,052,000 | Full scope: $1,437,000</li>
+                </ul>
+              </div>
+          </div>
+        </div>
+        <img src="http://localhost:3000/logos/PB_Logo_Wordmark_Horizontal_White_1.png" alt="" style="position:absolute;bottom:20px;left:28px;height:16px;opacity:0.25;z-index:3;pointer-events:none;" />
+        <span class="page-num">17</span>
+      </section>
+<section class="slide " style="background:var(--white)">
+        <div class="slide-content" style="padding:60px 80px;justify-content:flex-start;">
+          <div class="badge" style="color:var(--pb-olive);margin-bottom:24px;">Investment Summary</div>
+          <p class="headline" style="font-size:32px;margin-bottom:24px;color:var(--pb-black);">Full FY26 Scope &amp; Recommended Investment</p>
+          <table class="pb-table">
+            <thead><tr><th>Category</th><th>Product</th><th>Quantity</th><th>Fixed Fee</th></tr></thead>
+            <tbody><tr><td style="color:var(--pb-black);">Implementation</td><td style="color:var(--pb-black);">Enterprise Content — Site &amp; App Workflow (1B)</td><td style="color:var(--pb-black);">12-week project</td><td style="color:var(--pb-black);">$185,000</td></tr><tr><td style="color:var(--pb-black);">Implementation</td><td style="color:var(--pb-black);">Enterprise Content — In-Store Signage Workflow (1A)</td><td style="color:var(--pb-black);">12-week project</td><td style="color:var(--pb-black);">$200,000</td></tr><tr><td style="color:var(--pb-black);">Implementation</td><td style="color:var(--pb-black);">Enterprise Content &amp; Media — BM Paid Social Workflow (2A/B)</td><td style="color:var(--pb-black);">12-week project</td><td style="color:var(--pb-black);">$226,000</td></tr><tr><td style="color:var(--pb-black);">Implementation</td><td style="color:var(--pb-black);">Enterprise Content &amp; Media — WAG Paid Social Workflow (3A/B)</td><td style="color:var(--pb-black);">12-week project</td><td style="color:var(--pb-black);">$226,000</td></tr><tr><td style="color:var(--pb-black);">Sub-Total</td><td style="color:var(--pb-black);">Implementation Costs</td><td style="color:var(--pb-black);"></td><td style="color:var(--pb-black);">$837,000</td></tr><tr><td style="color:var(--pb-black);">Ongoing Services</td><td style="color:var(--pb-black);">Managed Services &amp; Knowledge Enablement</td><td style="color:var(--pb-black);">Up to 105 hpm / 1,260 hrs annually</td><td style="color:var(--pb-black);">$240,000</td></tr><tr><td style="color:var(--pb-black);">Ongoing Services</td><td style="color:var(--pb-black);">Strategy &amp; Analytics — SMI Support</td><td style="color:var(--pb-black);">Up to 150 hpm / 1,800 hrs annually</td><td style="color:var(--pb-black);">$360,000</td></tr><tr><td style="color:var(--pb-black);">Sub-Total</td><td style="color:var(--pb-black);">Ongoing Services Costs</td><td style="color:var(--pb-black);"></td><td style="color:var(--pb-black);">$600,000</td></tr><tr><td style="color:var(--pb-black);">TOTAL</td><td style="color:var(--pb-black);">Total FY26 Services Investment</td><td style="color:var(--pb-black);"></td><td style="color:var(--pb-black);">$1,437,000</td></tr></tbody>
+          </table>
+        </div>
+        <img src="http://localhost:3000/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="" style="position:absolute;bottom:20px;left:28px;height:16px;opacity:0.25;z-index:3;pointer-events:none;" />
+        <span class="page-num">18</span>
+      </section>
+<section class="slide " style="background:var(--white)">
+        <div class="slide-content" style="padding:60px 80px;justify-content:flex-start;">
+          <div class="badge" style="color:var(--pb-coral);margin-bottom:24px;">Next Steps</div>
+          <p class="headline" style="font-size:32px;margin-bottom:32px;color:var(--pb-black);">What needs to happen now.</p>
+          <div style="display:flex;flex-direction:column;gap:0;">
+            <div class="check-item"><div class="check-icon" style="background:var(--pb-coral)"></div><span style="color:var(--pb-black);">Shift the leadership narrative: from 'adoption problem' to 'change management solution' — the platform is proven</span></div><div class="check-item"><div class="check-icon" style="background:var(--pb-coral)"></div><span style="color:var(--pb-black);">Align internal stakeholders on the COE operating model as the vehicle for enterprise-wide adoption</span></div><div class="check-item"><div class="check-icon" style="background:var(--pb-coral)"></div><span style="color:var(--pb-black);">Resolve the Workfront-to-Sprinklr migration for In-Store Signage by addressing creative specification dependencies in workflow configuration</span></div><div class="check-item"><div class="check-icon" style="background:var(--pb-coral)"></div><span style="color:var(--pb-black);">Approve FY25 close-out investment: $385,000 for 1A In-Store Signage + 1B Site &amp; App workflows (12-week sprint)</span></div><div class="check-item"><div class="check-icon" style="background:var(--pb-coral)"></div><span style="color:var(--pb-black);">Confirm FY26 full-year investment path: $1,052,000 through Paid Media expansion + ongoing CoE services</span></div><div class="check-item"><div class="check-icon" style="background:var(--pb-coral)"></div><span style="color:var(--pb-black);">Initiate Managed Services and Strategy &amp; Analytics Initiation (MS + SAI) to begin ongoing CoE delivery</span></div><div class="check-item"><div class="check-icon" style="background:var(--pb-coral)"></div><span style="color:var(--pb-black);">Execute true technological deployment model: DevOps discipline, Agile sprints, Application Lifecycle Management across all 12 teams</span></div><div class="check-item"><div class="check-icon" style="background:var(--pb-coral)"></div><span style="color:var(--pb-black);">Establish agency partner alignment — ensure all 3 partner agencies are driving Sprinklr adoption, not resisting it</span></div>
+          </div>
+        </div>
+        <img src="http://localhost:3000/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="" style="position:absolute;bottom:20px;left:28px;height:16px;opacity:0.25;z-index:3;pointer-events:none;" />
+        <span class="page-num">19</span>
+      </section>
+<section class="slide slide-dark" style="background:var(--pb-black)">
+        <div class="slide-content" style="padding:80px 100px;justify-content:center;">
+          <div class="headline" style="font-size:56px;color:var(--pb-gold);margin-bottom:32px;">The Bottom Line</div>
+          <h2 class="headline" style="font-size:52px;color:var(--white);line-height:1.15;max-width:1000px;">The foundation is built. The ROI is within reach. The only question is execution.</h2>
+          <p style="font-size:20px;color:rgba(255,255,255,0.7);font-weight:300;margin-top:32px;line-height:1.6;max-width:900px;">Workfront manages the production of marketing work. Sprinklr manages the execution of marketing in the customer environment. Walgreens now has both — what it needs is the organizational commitment to close the gap.</p>
+        </div>
+        <img src="/assets/illustrations/slide14_illustrations_09.png" alt="" style="position:absolute;bottom:32px;right:48px;height:120px;z-index:1;opacity:0.85;pointer-events:none;" />
+        <img src="http://localhost:3000/logos/PB_Logo_Wordmark_Horizontal_White_1.png" alt="" style="position:absolute;bottom:20px;left:28px;height:16px;opacity:0.25;z-index:3;pointer-events:none;" />
+        <span class="page-num">20</span>
+      </section>
+<script src="/references/deck-tools.js"></script>
+</body>
+</html>

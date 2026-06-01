@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>Insights as a Service | Starbucks AP | Premium Blend</title>
+<style>
+  /* ── FONTS ── */
+  @font-face { font-family: 'GT Walsheim'; src: url('../../../../Branding/Fonts/GT-Walsheim-Medium.ttf') format('truetype'); font-weight: 500; }
+  @font-face { font-family: 'GT Walsheim'; src: url('../../../../Branding/Fonts/GT-Walsheim-Light.ttf') format('truetype'); font-weight: 300; }
+  @font-face { font-family: 'TT Hoves'; src: url('../../../../Branding/Fonts/TypeType - TT Hoves Medium.otf') format('opentype'); font-weight: 500; }
+  @font-face { font-family: 'TT Hoves'; src: url('../../../../Branding/Fonts/TypeType - TT Hoves Light.otf') format('opentype'); font-weight: 300; }
+  @font-face { font-family: 'TT Hoves'; src: url('../../../../Branding/Fonts/TypeType - TT Hoves Italic.otf') format('opentype'); font-weight: 400; font-style: italic; }
+
+  /* ── VARIABLES ── */
+  :root {
+    --pb-black: #201F1F;
+    --pb-blue: #617EC8;
+    --pb-coral: #F15F40;
+    --pb-olive: #8C9E61;
+    --pb-gold: #FCB415;
+    --pb-plum: #9D5C88;
+    --pb-blush: #ECE3E1;
+    --white: #FFFFFF;
+    --slide-w: 1280px;
+    --slide-h: 720px;
+  }
+
+  /* ── RESET ── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #f0eded;
+    font-family: 'TT Hoves', 'Helvetica Neue', sans-serif;
+    font-weight: 300;
+    color: var(--pb-black);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    padding: 40px 0;
+  }
+
+  /* ── SLIDE BASE ── */
+  .slide {
+    width: var(--slide-w);
+    height: var(--slide-h);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,.12);
+    page-break-after: always;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+    flex-shrink: 0;
+  }
+  .slide--dark { background: var(--pb-black); color: var(--white); }
+  .slide--light { background: var(--white); color: var(--pb-black); }
+  .slide--blue { background: var(--pb-blue); color: var(--white); }
+  .slide--blush { background: var(--pb-blush); color: var(--pb-black); }
+
+  /* ── TYPOGRAPHY ── */
+  h1, h2, h3 { font-family: 'GT Walsheim', sans-serif; font-weight: 500; line-height: 1.15; }
+  h1 { font-size: 52px; }
+  h2 { font-size: 38px; }
+  h3 { font-size: 24px; }
+  p, li { font-family: 'TT Hoves', sans-serif; font-weight: 300; font-size: 16px; line-height: 1.55; }
+
+  /* ── PAGE NUMBER ── */
+  .page-num {
+    position: absolute;
+    bottom: 24px;
+    right: 36px;
+    font-family: 'TT Hoves', sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    opacity: .45;
+  }
+
+  /* ── BLOB ACCENTS ── */
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    opacity: .18;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── BADGE ── */
+  .badge {
+    display: inline-block;
+    font-family: 'TT Hoves', sans-serif;
+    font-weight: 500;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    padding: 6px 18px;
+    border-radius: 100px;
+    margin-bottom: 18px;
+  }
+  .badge--coral { background: var(--pb-coral); color: var(--white); }
+  .badge--blue { background: var(--pb-blue); color: var(--white); }
+  .badge--olive { background: var(--pb-olive); color: var(--white); }
+  .badge--gold { background: var(--pb-gold); color: var(--pb-black); }
+  .badge--plum { background: var(--pb-plum); color: var(--white); }
+
+  /* ── CHIP ── */
+  .chip {
+    display: inline-block;
+    font-family: 'TT Hoves', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    padding: 8px 20px;
+    border-radius: 100px;
+    border: 1.5px solid;
+    margin: 4px 6px 4px 0;
+  }
+
+  /* ── STAT CARD ── */
+  .stat-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 28px 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.06);
+  }
+  .stat-card--dark {
+    background: var(--pb-black);
+    color: var(--white);
+  }
+
+  /* ── LOGO HELPER ── */
+  .pb-logo {
+    position: absolute;
+    bottom: 28px;
+    right: 36px;
+    height: 36px;
+    opacity: .85;
+  }
+  .pb-logo--top-left {
+    top: 28px;
+    left: 36px;
+    bottom: auto;
+    right: auto;
+  }
+
+  /* ── SAVE PDF BUTTON ── */
+  #savePdf {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 9999;
+    background: var(--pb-blue);
+    color: var(--white);
+    border: none;
+    font-family: 'TT Hoves', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 14px 28px;
+    border-radius: 100px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(97,126,200,.45);
+    transition: transform .15s, box-shadow .15s;
+  }
+  #savePdf:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(97,126,200,.55); }
+
+  /* ── PRINT ── */
+  @media print {
+    body { padding: 0; gap: 0; background: white; }
+    .slide { box-shadow: none; }
+    #savePdf { display: none !important; }
+    .blob { display: none !important; }
+  }
+
+  /* ── CONTENT EDITABLE FOCUS ── */
+  [contenteditable]:focus { outline: 2px dashed var(--pb-blue); outline-offset: 4px; border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 1 — TITLE
+     ════════════════════════════════════════════════════════════ -->
+<section class="slide slide--dark" id="s1">
+  <!-- Blobs -->
+  <div class="blob" style="width:420px;height:420px;background:var(--pb-coral);top:-120px;right:-80px;opacity:.14;"></div>
+  <div class="blob" style="width:300px;height:300px;background:var(--pb-blue);bottom:-90px;left:-60px;opacity:.16;"></div>
+  <div class="blob" style="width:200px;height:200px;background:var(--pb-olive);top:340px;right:180px;opacity:.10;"></div>
+  <div class="blob" style="width:160px;height:160px;background:var(--pb-plum);bottom:60px;right:440px;opacity:.12;"></div>
+  <div class="blob" style="width:120px;height:120px;background:var(--pb-gold);top:80px;left:240px;opacity:.13;"></div>
+
+  <div style="position:absolute;top:28px;left:36px;z-index:1;">
+    <span style="font-family:'TT Hoves';font-weight:500;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--white);opacity:.7;" contenteditable="true">Premium Blend</span>
+  </div>
+
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:1;width:860px;">
+    <h1 contenteditable="true" style="font-size:62px;font-weight:500;margin-bottom:12px;letter-spacing:-1px;">Insights as a Service</h1>
+    <div style="width:80px;height:3px;background:var(--pb-coral);margin:20px auto 24px;border-radius:2px;"></div>
+    <p contenteditable="true" style="font-size:18px;font-weight:300;opacity:.7;letter-spacing:.5px;">Proposal Prepared for Starbucks | November 2025</p>
+  </div>
+
+  <img class="pb-logo" src="../../../../Branding/Powerpoint Template/Template Images/Logo/slide04_logo_03.png" alt="PB Logo">
+  <span class="page-num" style="color:var(--white);">01</span>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 2 — TABLE OF CONTENTS
+     ════════════════════════════════════════════════════════════ -->
+<section class="slide slide--light" id="s2">
+  <div class="blob" style="width:280px;height:280px;background:var(--pb-blush);top:-80px;left:-60px;opacity:.35;"></div>
+
+  <div style="display:flex;height:100%;">
+    <!-- Left -->
+    <div style="width:45%;padding:80px 56px;display:flex;align-items:center;">
+      <div>
+        <span class="badge badge--coral" contenteditable="true">Overview</span>
+        <h2 contenteditable="true" style="font-size:44px;color:var(--pb-coral);line-height:1.1;">Table of<br>Contents</h2>
+      </div>
+    </div>
+    <!-- Right -->
+    <div style="width:55%;background:var(--pb-black);color:var(--white);display:flex;align-items:center;padding:60px 52px;border-radius:20px 0 0 20px;margin:32px 0;">
+      <div style="width:100%;">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.1);" contenteditable="true">
+          <span style="font-family:'GT Walsheim';font-weight:500;font-size:20px;">Who Is Premium Blend?</span>
+          <span style="font-family:'TT Hoves';font-weight:300;font-size:15px;opacity:.5;">03</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.1);" contenteditable="true">
+          <span style="font-family:'GT Walsheim';font-weight:500;font-size:20px;">What is Insights as a Service?</span>
+          <span style="font-family:'TT Hoves';font-weight:300;font-size:15px;opacity:.5;">09</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.1);" contenteditable="true">
+          <span style="font-family:'GT Walsheim';font-weight:500;font-size:20px;">Introducing IaaS</span>
+          <span style="font-family:'TT Hoves';font-weight:300;font-size:15px;opacity:.5;">12</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.1);" contenteditable="true">
+          <span style="font-family:'GT Walsheim';font-weight:500;font-size:20px;">Our Offering</span>
+          <span style="font-family:'TT Hoves';font-weight:300;font-size:15px;opacity:.5;">13</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.1);" contenteditable="true">
+          <span style="font-family:'GT Walsheim';font-weight:500;font-size:20px;">IaaS Menu</span>
+          <span style="font-family:'TT Hoves';font-weight:300;font-size:15px;opacity:.5;">13</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;padding:18px 0;" contenteditable="true">
+          <span style="font-family:'GT Walsheim';font-weight:500;font-size:20px;">The Proposal</span>
+          <span style="font-family:'TT Hoves';font-weight:300;font-size:15px;opacity:.5;">14</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">02</span>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 3 — SECTION DIVIDER: WHO IS PB?
+     ════════════════════════════════════════════════════════════ -->
+<section class="slide slide--blue" id="s3">
+  <div class="blob" style="width:500px;height:500px;background:var(--white);top:-160px;right:-100px;opacity:.06;"></div>
+  <div class="blob" style="width:300px;height:300px;background:var(--pb-gold);bottom:-100px;left:-60px;opacity:.10;"></div>
+
+  <div style="display:flex;align-items:center;justify-content:center;height:100%;padding:0 80px;">
+    <h1 contenteditable="true" style="font-size:56px;text-align:center;letter-spacing:-1px;">Who Is Premium Blend?</h1>
+  </div>
+  <span class="page-num" style="color:var(--white);">03</span>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 4 — SETTING THE RECORD STRAIGHT
+     ════════════════════════════════════════════════════════════ -->
+<section class="slide slide--dark" id="s4">
+  <div class="blob" style="width:350px;height:350px;background:var(--pb-coral);top:-120px;left:-80px;opacity:.10;"></div>
+  <div class="blob" style="width:250px;height:250px;background:var(--pb-blue);bottom:-60px;right:-40px;opacity:.12;"></div>
+
+  <div style="padding:64px 72px;position:relative;z-index:1;">
+    <span class="badge badge--coral" contenteditable="true">Setting the Record Straight</span>
+    <div style="margin-top:32px;display:flex;flex-direction:column;gap:28px;">
+
+      <div style="display:flex;align-items:flex-start;gap:20px;">
+        <div style="min-width:48px;height:48px;border-radius:50%;background:var(--pb-coral);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:500;color:var(--white);font-family:'GT Walsheim';">&#10005;</div>
+        <div>
+          <p contenteditable="true" style="font-size:22px;font-weight:500;font-family:'GT Walsheim';line-height:1.35;">We are <span style="color:var(--pb-coral);">not</span> an agency trying to drive more creative/content services.</p>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:flex-start;gap:20px;">
+        <div style="min-width:48px;height:48px;border-radius:50%;background:var(--pb-coral);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:500;color:var(--white);font-family:'GT Walsheim';">&#10005;</div>
+        <div>
+          <p contenteditable="true" style="font-size:22px;font-weight:500;font-family:'GT Walsheim';line-height:1.35;">We are <span style="color:var(--pb-coral);">not</span> a global systems integrator treating Sprinklr as a line-item in a massive IT transformation.</p>
+        </div>
+      </div>
+
+      <div style="width:100%;height:1px;background:rgba(255,255,255,.1);margin:8px 0;"></div>
+
+      <div style="display:flex;align-items:flex-start;gap:20px;">
+        <div style="min-width:48px;height:48px;border-radius:50%;background:var(--pb-olive);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:500;color:var(--white);font-family:'GT Walsheim';">&#10003;</div>
+        <div>
+          <p contenteditable="true" style="font-size:22px;font-weight:500;font-family:'GT Walsheim';line-height:1.35;color:var(--pb-olive);">We are the only Social-First B-Corp Certified Tech Consultancy that cares about your customers as much as you do.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <span class="page-num" style="color:var(--white);">04</span>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 5 — WHO WE ARE + OUR PROMISE
+     ════════════════════════════════════════════════════════════ -->
+<section class="slide slide--light" id="s5">
+  <div class="blob" style="width:260px;height:260px;background:var(--pb-blush);bottom:-60px;right:-40px;opacity:.4;"></div>
+
+  <div style="padding:56px 72px;display:flex;flex-direction:column;gap:24px;position:relative;z-index:1;">
+    <span class="badge badge--blue" contenteditable="true">About Us</span>
+
+    <!-- Card 1 -->
+    <div style="background:var(--pb-blush);border-radius:16px;padding:32px 36px;">
+      <h3 contenteditable="true" style="margin-bottom:12px;font-size:20px;">Who We Are</h3>
+      <p contenteditable="true" style="font-size:15px;line-height:1.65;max-width:960px;">We know how heavy customer experience can feel. Our team has led hundreds of implementations, guided some of the world's biggest brands, and learned how to take the weight off leaders and teams so the work feels doable, human, and worth it. As the only certified B-Corp in our space, we believe the right technology can be a force for good.</p>
+    </div>
+
+    <!-- Card 2 -->
+    <div style="background:var(--pb-gold);border-radius:16px;padding:32px 36px;">
+      <h3 contenteditable="true" style="margin-bottom:12px;font-size:20px;">Our Promise</h3>
+      <p contenteditable="true" style="font-size:15px;line-height:1.65;max-width:960px;">By working with us you can breathe deep and relax your shoulders, let your teams connect genuinely with your customers, and watch them stay loyal for years to come. Trust is within reach, and it starts here.</p>
+    </div>
+  </div>
+  <span class="page-num">05</span>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 6 — OUR PHILOSOPHY
+     ════════════════════════════════════════════════════════════ -->
+<section class="slide slide--light" id="s6">
+  <div class="blob" style="width:320px;height:320px;background:var(--pb-olive);top:-100px;right:-60px;opacity:.08;"></div>
+
+  <div style="padding:56px 72px;position:relative;z-index:1;">
+    <span class="badge badge--olive" contenteditable="true">Our Philosophy</span>
+
+    <div style="display:flex;gap:56px;margin-top:20px;">
+      <!-- Left -->
+      <div style="flex:1.1;">
+        <h2 contenteditable="true" style="font-size:32px;line-height:1.2;max-width:420px;">We help the world's biggest brands become category leaders by creating life-long customer loyalty with Sprinklr.</h2>
+      </div>
+      <!-- Right -->
+      <div style="flex:1;display:flex;flex-direction:column;gap:20px;">
+        <!-- Simplify -->
+        <div style="display:flex;gap:16px;align-items:flex-start;">
+          <div style="min-width:10px;height:100%;border-radius:5px;background:var(--pb-coral);"></div>
+          <div>
+            <h3 contenteditable="true" style="font-size:17px;color:var(--pb-coral);margin-bottom:4px;">Simplify</h3>
+            <p contenteditable="true" style="font-size:14px;line-height:1.55;">Your leadership stops spinning, teams know where to start, and the path forward is clear.</p>
+          </div>
+        </div>
+        <!-- Shape -->
+        <div style="display:flex;gap:16px;align-items:flex-start;">
+          <div style="min-width:10px;height:100%;border-radius:5px;background:var(--pb-olive);"></div>
+          <div>
+            <h3 contenteditable="true" style="font-size:17px;color:var(--pb-olive);margin-bottom:4px;">Shape</h3>
+            <p contenteditable="true" style="font-size:14px;line-height:1.55;">Clarity and actionable insights leadership can see. CX initiatives proven to fuel loyalty and growth.</p>
+          </div>
+        </div>
+        <!-- Scale -->
+        <div style="display:flex;gap:16px;align-items:flex-start;">
+          <div style="min-width:10px;height:100%;border-radius:5px;background:var(--pb-blue);"></div>
+          <div>
+            <h3 contenteditable="true" style="font-size:17px;color:var(--pb-blue);margin-bottom:4px;">Scale</h3>
+            <p contenteditable="true" style="font-size:14px;line-height:1.55;">Every interaction builds belief, loyalty, and lasting connection. Your brand achieves relevance and growth.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">06</span>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 7 — HOW WE HELP
+     ════════════════════════════════════════════════════════════ -->
+<section class="slide slide--light" id="s7">
+  <div class="blob" style="width:200px;height:200px;background:var(--pb-gold);bottom:-50px;left:-30px;opacity:.10;"></div>
+
+  <div style="padding:48px 56px;position:relative;z-index:1;">
+    <span class="badge badge--blue" contenteditable="true">How We Help</span>
+    <h2 contenteditable="true" style="font-size:30px;margin-bottom:28px;">Four pillars of partnership</h2>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;">
+      <!-- Card 1 -->
+      <div class="stat-card" style="border-top:4px solid var(--pb-coral);text-align:center;padding:24px 18px;">
+        <svg width="44" height="44" viewBox="0 0 44 44" style="margin-bottom:12px;"><circle cx="22" cy="22" r="20" fill="none" stroke="var(--pb-coral)" stroke-width="2"/><path d="M14 22 l4 4 l10-10" stroke="var(--pb-coral)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3 contenteditable="true" style="font-size:15px;margin-bottom:8px;">Change Management Strategy</h3>
+        <p contenteditable="true" style="font-size:13px;line-height:1.5;">Navigate change with strategists who refine your vision and manage a roadmap.</p>
+      </div>
+      <!-- Card 2 -->
+      <div class="stat-card" style="border-top:4px solid var(--pb-olive);text-align:center;padding:24px 18px;">
+        <svg width="44" height="44" viewBox="0 0 44 44" style="margin-bottom:12px;"><circle cx="22" cy="22" r="20" fill="none" stroke="var(--pb-olive)" stroke-width="2"/><path d="M16 28 v-12 h12 v12 z M20 16 v-4 h4 v4" stroke="var(--pb-olive)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3 contenteditable="true" style="font-size:15px;margin-bottom:8px;">Implementation &amp; Integration</h3>
+        <p contenteditable="true" style="font-size:13px;line-height:1.5;">Empower your business to transform through change with comprehensive roadmaps.</p>
+      </div>
+      <!-- Card 3 -->
+      <div class="stat-card" style="border-top:4px solid var(--pb-blue);text-align:center;padding:24px 18px;">
+        <svg width="44" height="44" viewBox="0 0 44 44" style="margin-bottom:12px;"><circle cx="22" cy="22" r="20" fill="none" stroke="var(--pb-blue)" stroke-width="2"/><path d="M12 30 l6-8 l5 4 l6-10 l4 6" stroke="var(--pb-blue)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3 contenteditable="true" style="font-size:15px;margin-bottom:8px;">Analytics &amp; Insights</h3>
+        <p contenteditable="true" style="font-size:13px;line-height:1.5;">Uncover actionable insights from extensive data sets for data-driven decision-making.</p>
+      </div>
+      <!-- Card 4 -->
+      <div class="stat-card" style="border-top:4px solid var(--pb-gold);text-align:center;padding:24px 18px;">
+        <svg width="44" height="44" viewBox="0 0 44 44" style="margin-bottom:12px;"><circle cx="22" cy="22" r="20" fill="none" stroke="var(--pb-gold)" stroke-width="2"/><path d="M18 18 a4 4 0 1 1 8 0 a4 4 0 1 1 -8 0 M15 30 c0-4 3.5-6 7-6 s7 2 7 6" stroke="var(--pb-gold)" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+        <h3 contenteditable="true" style="font-size:15px;margin-bottom:8px;">Resource &amp; Staff Augmentation</h3>
+        <p contenteditable="true" style="font-size:13px;line-height:1.5;">Amplify your team's ability with the right skills in the right places.</p>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">07</span>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 8 — PARTNERS
+     ════════════════════════════════════════════════════════════ -->
+<section class="slide slide--light" id="s8">
+  <div class="blob" style="width:280px;height:280px;background:var(--pb-plum);top:-80px;right:-60px;opacity:.08;"></div>
+  <div class="blob" style="width:200px;height:200px;background:var(--pb-coral);bottom:-50px;left:-40px;opacity:.08;"></div>
+
+  <div style="padding:64px 72px;position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;">
+    <span class="badge badge--plum" contenteditable="true">Trusted By</span>
+    <h2 contenteditable="true" style="font-size:30px;margin-bottom:40px;text-align:center;">Some of our more recent partners.</h2>
+
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:20px;width:100%;max-width:960px;">
+      <div style="background:var(--pb-blush);border-radius:12px;padding:20px;text-align:center;font-family:'GT Walsheim';font-weight:500;font-size:16px;" contenteditable="true">Sam's Club</div>
+      <div style="background:var(--pb-blush);border-radius:12px;padding:20px;text-align:center;font-family:'GT Walsheim';font-weight:500;font-size:16px;" contenteditable="true">Microsoft</div>
+      <div style="background:var(--pb-blush);border-radius:12px;padding:20px;text-align:center;font-family:'GT Walsheim';font-weight:500;font-size:16px;" contenteditable="true">Mars</div>
+      <div style="background:var(--pb-blush);border-radius:12px;padding:20px;text-align:center;font-family:'GT Walsheim';font-weight:500;font-size:16px;" contenteditable="true">Spotify</div>
+      <div style="background:var(--pb-blush);border-radius:12px;padding:20px;text-align:center;font-family:'GT Walsheim';font-weight:500;font-size:16px;" contenteditable="true">AT&amp;T</div>
+      <div style="background:var(--pb-blush);border-radius:12px;padding:20px;text-align:center;font-family:'GT Walsheim';font-weight:500;font-size:16px;" contenteditable="true">Hilton</div>
+      <div style="background:var(--pb-blush);border-radius:12px;padding:20px;text-align:center;font-family:'GT Walsheim';font-weight:500;font-size:16px;" contenteditable="true">Chewy</div>
+      <div style="background:var(--pb-blush);border-radius:12px;padding:20px;text-align:center;font-family:'GT Walsheim';font-weight:500;font-size:16px;color:var(--pb-blue);" contenteditable="true">Starbucks</div>
+      <div style="background:var(--pb-blush);border-radius:12px;padding:20px;text-align:center;font-family:'GT Walsheim';font-weight:500;font-size:16px;" contenteditable="true">Walgreens</div>
+      <div style="background:var(--pb-blush);border-radius:12px;padding:20px;text-align:center;font-family:'GT Walsheim';font-weight:500;font-size:16px;" contenteditable="true">SoFi</div>
+    </div>
+  </div>
+  <span class="page-num">08</span>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 9 — SECTION DIVIDER: WHAT IS IaaS?
+     ════════════════════════════════════════════════════════════ -->
+<section class="slide slide--blue" id="s9">
+  <div class="blob" style="width:440px;height:440px;background:var(--white);bottom:-140px;left:-100px;opacity:.06;"></div>
+  <div class="blob" style="width:260px;height:260px;background:var(--pb-coral);top:-80px;right:-40px;opacity:.10;"></div>
+
+  <div style="display:flex;align-items:center;justify-content:center;height:100%;padding:0 80px;">
+    <h1 contenteditable="true" style="font-size:52px;text-align:center;letter-spacing:-1px;">What Is Insights<br>as a Service?</h1>
+  </div>
+  <span class="page-num" style="color:var(--white);">09</span>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 10 — INSIGHT OVERLOAD
+     ════════════════════════════════════════════════════════════ -->
+<section class="slide slide--light" id="s10">
+  <div class="blob" style="width:300px;height:300px;background:var(--pb-coral);top:-100px;right:-60px;opacity:.07;"></div>
+
+  <div style="padding:48px 72px;position:relative;z-index:1;">
+    <span class="badge badge--coral" contenteditable="true">The Problem</span>
+    <h2 contenteditable="true" style="font-size:34px;margin-bottom:10px;">We solve insight overload.</h2>
+    <p contenteditable="true" style="font-size:15px;max-width:740px;margin-bottom:28px;opacity:.75;">Brands are drowning in data but starving for clarity. Tools present complexity, leaving teams uncertain about what matters, how to act, or how to prove value.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;">
+      <div class="stat-card" style="border-left:4px solid var(--pb-coral);display:flex;align-items:center;gap:16px;padding:20px 24px;">
+        <div style="min-width:40px;height:40px;border-radius:50%;background:rgba(241,95,64,.12);display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" viewBox="0 0 20 20"><rect x="2" y="8" width="4" height="10" rx="1" fill="var(--pb-coral)"/><rect x="8" y="4" width="4" height="14" rx="1" fill="var(--pb-coral)" opacity=".7"/><rect x="14" y="1" width="4" height="17" rx="1" fill="var(--pb-coral)" opacity=".4"/></svg>
+        </div>
+        <p contenteditable="true" style="font-size:14px;font-weight:500;">Too many dashboards, too little direction</p>
+      </div>
+      <div class="stat-card" style="border-left:4px solid var(--pb-coral);display:flex;align-items:center;gap:16px;padding:20px 24px;">
+        <div style="min-width:40px;height:40px;border-radius:50%;background:rgba(241,95,64,.12);display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="7" r="4" fill="none" stroke="var(--pb-coral)" stroke-width="1.5"/><path d="M3 18 c0-4 3-7 7-7 s7 3 7 7" fill="none" stroke="var(--pb-coral)" stroke-width="1.5"/></svg>
+        </div>
+        <p contenteditable="true" style="font-size:14px;font-weight:500;">Teams dependent on external agencies</p>
+      </div>
+      <div class="stat-card" style="border-left:4px solid var(--pb-coral);display:flex;align-items:center;gap:16px;padding:20px 24px;">
+        <div style="min-width:40px;height:40px;border-radius:50%;background:rgba(241,95,64,.12);display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="var(--pb-coral)" stroke-width="1.5"/><path d="M10 6 v5 l3 3" stroke="var(--pb-coral)" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        </div>
+        <p contenteditable="true" style="font-size:14px;font-weight:500;">Leaders unsure of what the data truly means</p>
+      </div>
+      <div class="stat-card" style="border-left:4px solid var(--pb-coral);display:flex;align-items:center;gap:16px;padding:20px 24px;">
+        <div style="min-width:40px;height:40px;border-radius:50%;background:rgba(241,95,64,.12);display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" viewBox="0 0 20 20"><path d="M4 10 h12 M10 4 v12" stroke="var(--pb-coral)" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="10" r="8" fill="none" stroke="var(--pb-coral)" stroke-width="1.5"/></svg>
+        </div>
+        <p contenteditable="true" style="font-size:14px;font-weight:500;">Decisions delayed due to lack of insight clarity</p>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">10</span>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 11 — BROKEN CYCLE
+     ════════════════════════════════════════════════════════════ -->
+<section class="slide slide--light" id="s11">
+  <div class="blob" style="width:240px;height:240px;background:var(--pb-blue);bottom:-80px;right:-40px;opacity:.08;"></div>
+
+  <div style="padding:48px 72px;position:relative;z-index:1;">
+    <span class="badge badge--plum" contenteditable="true">The Cycle</span>
+    <h2 contenteditable="true" style="font-size:34px;margin-bottom:28px;">Transforming a broken cycle.</h2>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <!-- Left card -->
+      <div style="background:var(--pb-black);color:var(--white);border-radius:16px;padding:36px 32px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:var(--pb-coral);display:flex;align-items:center;justify-content:center;">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M4 4 l10 10 M14 4 l-10 10" stroke="var(--white)" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <h3 contenteditable="true" style="font-size:20px;">Agency Black Box</h3>
+        </div>
+        <p contenteditable="true" style="font-size:15px;line-height:1.6;opacity:.85;">When data becomes dependent, trust disappears. Agencies become interpreters of your data, keeping insight out of reach. This breeds dependency, confusion, and distrust.</p>
+      </div>
+      <!-- Right card -->
+      <div style="background:var(--white);border:2px solid var(--pb-blush);border-radius:16px;padding:36px 32px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:var(--pb-olive);display:flex;align-items:center;justify-content:center;">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M4 9 l4 4 l7-8" stroke="var(--white)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3 contenteditable="true" style="font-size:20px;">The Brand Team</h3>
+        </div>
+        <p contenteditable="true" style="font-size:15px;line-height:1.6;">You already have the data. You just need the clarity. Our clients are brand and insights teams who have the tools but want to see the story behind their data clearly.</p>
+      </div>
+    </div>
+  </div>
+  <span class="page-num">11</span>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 12 — INTRODUCING IaaS
+     ════════════════════════════════════════════════════════════ -->
+<section class="slide slide--light" id="s12">
+  <div class="blob" style="width:360px;height:360px;background:var(--pb-olive);top:-120px;left:-80px;opacity:.06;"></div>
+
+  <div style="padding:48px 72px;position:relative;z-index:1;">
+    <span class="badge badge--olive" contenteditable="true">The Solution</span>
+    <h2 contenteditable="true" style="font-size:36px;margin-bottom:6px;">Introducing Insights as a Service.</h2>
+    <p contenteditable="true" style="font-size:17px;font-style:italic;font-family:'TT Hoves';color:var(--pb-olive);margin-bottom:20px;">We help you see what is already there, more clearly.</p>
+
+    <p contenteditable="true" style="font-size:15px;line-height:1.65;max-width:880px;margin-bottom:32px;">IaaS is a tiered, subscription model that transforms Sprinklr data into decision-ready insights complete with clear "why it happened" and "what to do next," delivered with consistency and regularity.</p>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <span class="chip" style="border-color:var(--pb-blue);color:var(--pb-blue);background:rgba(97,126,200,.06);" contenteditable="true">Transparency by design</span>
+      <span class="chip" style="border-color:var(--pb-olive);color:var(--pb-olive);background:rgba(140,158,97,.06);" contenteditable="true">Collaboration not outsourcing</span>
+      <span class="chip" style="border-color:var(--pb-coral);color:var(--pb-coral);background:rgba(241,95,64,.06);" contenteditable="true">Empowerment over dependency</span>
+      <span class="chip" style="border-color:var(--pb-gold);color:var(--pb-gold);background:rgba(252,180,21,.06);" contenteditable="true">Actionable insights not endless reports</span>
+    </div>
+  </div>
+
+  <img class="pb-logo" src="../../../../Branding/Powerpoint Template/Template Images/Logo/slide04_logo_03.png" alt="PB Logo">
+  <span class="page-num">12</span>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 13 — DATA FLOW PROBLEM
+     ════════════════════════════════════════════════════════════ -->
+<section class="slide slide--light" id="s13">
+  <div class="blob" style="width:400px;height:400px;background:var(--pb-blush);top:50%;left:50%;transform:translate(-50%,-50%);opacity:.3;"></div>
+
+  <div style="padding:40px 56px;position:relative;z-index:1;height:100%;display:flex;flex-direction:column;">
+    <span class="badge badge--coral" contenteditable="true">The Problem Visualized</span>
+    <h2 contenteditable="true" style="font-size:26px;margin-bottom:16px;">Too many cooks. No recipe.</h2>
+
+    <div style="flex:1;position:relative;display:flex;align-items:center;justify-content:center;">
+      <svg width="900" height="460" viewBox="0 0 900 460" style="overflow:visible;">
+        <!-- Connection lines (chaos) -->
+        <g stroke="var(--pb-black)" stroke-width="1.2" opacity=".15" fill="none">
+          <path d="M200,80 C350,120 400,300 700,100"/>
+          <path d="M150,200 C300,50 500,350 750,220"/>
+          <path d="M200,350 C400,200 300,100 700,320"/>
+          <path d="M700,100 C550,250 350,150 150,350"/>
+          <path d="M450,60 C300,200 600,300 450,420"/>
+          <path d="M150,200 C250,300 650,100 750,340"/>
+          <path d="M200,80 C400,400 600,50 750,340"/>
+          <path d="M700,320 C500,200 300,300 200,350"/>
+          <path d="M450,60 C200,150 700,250 450,420"/>
+          <path d="M150,350 C400,100 500,400 750,220"/>
+          <path d="M200,80 C300,300 700,200 750,340"/>
+          <path d="M700,100 C400,350 200,200 450,420"/>
+        </g>
+
+        <!-- Nodes -->
+        <g font-family="TT Hoves, sans-serif" font-size="11" font-weight="500" text-anchor="middle">
+          <!-- Customer Care -->
+          <circle cx="200" cy="80" r="44" fill="var(--pb-blue)" opacity=".9"/>
+          <text x="200" y="76" fill="white" font-size="10">Customer</text>
+          <text x="200" y="89" fill="white" font-size="10">Care</text>
+
+          <!-- Paid Media Agency -->
+          <circle cx="450" cy="60" r="44" fill="var(--pb-plum)" opacity=".9"/>
+          <text x="450" y="56" fill="white" font-size="10">Paid Media</text>
+          <text x="450" y="69" fill="white" font-size="10">Agency</text>
+
+          <!-- Brand Managers -->
+          <circle cx="700" cy="100" r="44" fill="var(--pb-olive)" opacity=".9"/>
+          <text x="700" y="96" fill="white" font-size="10">Brand</text>
+          <text x="700" y="109" fill="white" font-size="10">Managers</text>
+
+          <!-- Creative Agency -->
+          <circle cx="150" cy="200" r="44" fill="var(--pb-gold)" opacity=".9"/>
+          <text x="150" y="196" fill="var(--pb-black)" font-size="10">Creative</text>
+          <text x="150" y="209" fill="var(--pb-black)" font-size="10">Agency</text>
+
+          <!-- Strategists -->
+          <circle cx="750" cy="220" r="44" fill="var(--pb-coral)" opacity=".9"/>
+          <text x="750" y="223" fill="white" font-size="11">Strategists</text>
+
+          <!-- Influencer Agency -->
+          <circle cx="200" cy="350" r="44" fill="var(--pb-plum)" opacity=".7"/>
+          <text x="200" y="346" fill="white" font-size="10">Influencer</text>
+          <text x="200" y="359" fill="white" font-size="10">Agency</text>
+
+          <!-- Social Media Agency -->
+          <circle cx="450" cy="420" r="44" fill="var(--pb-blue)" opacity=".7"/>
+          <text x="450" y="416" fill="white" font-size="10">Social Media</text>
+          <text x="450" y="429" fill="white" font-size="10">Agency</text>
+
+          <!-- Community Managers -->
+          <circle cx="700" cy="320" r="44" fill="var(--pb-olive)" opacity=".7"/>
+          <text x="700" y="316" fill="white" font-size="10">Community</text>
+          <text x="700" y="329" fill="white" font-size="10">Managers</text>
+        </g>
+
+        <!-- Sad face center -->
+        <circle cx="450" cy="230" r="36" fill="var(--pb-coral)"/>
+        <circle cx="438" cy="222" r="3" fill="white"/>
+        <circle cx="462" cy="222" r="3" fill="white"/>
+        <path d="M436,242 Q450,232 464,242" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>
+  <span class="page-num">13</span>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 14 — CLOSE
+     ════════════════════════════════════════════════════════════ -->
+<section class="slide slide--dark" id="s14">
+  <div class="blob" style="width:500px;height:500px;background:var(--pb-blue);top:-150px;left:-120px;opacity:.12;"></div>
+  <div class="blob" style="width:380px;height:380px;background:var(--pb-coral);bottom:-120px;right:-80px;opacity:.10;"></div>
+  <div class="blob" style="width:200px;height:200px;background:var(--pb-gold);top:200px;right:300px;opacity:.08;"></div>
+
+  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;padding:0 100px;position:relative;z-index:1;">
+    <h1 contenteditable="true" style="font-size:48px;line-height:1.15;margin-bottom:20px;max-width:800px;">It is not a lack of data.<br>It is knowing what to do.</h1>
+    <div style="width:60px;height:3px;background:var(--pb-coral);border-radius:2px;margin-bottom:24px;"></div>
+    <p contenteditable="true" style="font-size:20px;font-weight:300;opacity:.65;">Let Premium Blend bring the clarity.</p>
+  </div>
+
+  <img class="pb-logo" src="../../../../Branding/Powerpoint Template/Template Images/Logo/slide04_logo_03.png" alt="PB Logo">
+  <span class="page-num" style="color:var(--white);">14</span>
+</section>
+
+<!-- SAVE PDF BUTTON -->
+<button id="savePdf" onclick="window.print()">Save as PDF</button>
+
+</body>
+</html>

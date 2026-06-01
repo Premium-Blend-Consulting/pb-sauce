@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Progressive x Premium Blend - SP&E Project Wrap Up</title>
+<style>
+  @font-face {
+    font-family: "GT Walsheim";
+    src: url("../../../../Branding/Fonts/GT-Walsheim-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "GT Walsheim";
+    src: url("../../../../Branding/Fonts/GT-Walsheim-Light.ttf") format("truetype");
+    font-weight: 300;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "TT Hoves";
+    src: url("../../../../Branding/Fonts/TypeType - TT Hoves Medium.otf") format("opentype");
+    font-weight: 500;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "TT Hoves";
+    src: url("../../../../Branding/Fonts/TypeType - TT Hoves Light.otf") format("opentype");
+    font-weight: 300;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "TT Hoves";
+    src: url("../../../../Branding/Fonts/TypeType - TT Hoves Italic.otf") format("opentype");
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  :root {
+    --pb-black: #201F1F;
+    --pb-blue: #617EC8;
+    --pb-coral: #F15F40;
+    --pb-olive: #8C9E61;
+    --pb-gold: #FCB415;
+    --pb-plum: #9D5C88;
+    --pb-blush: #ECE3E1;
+    --white: #FFFFFF;
+    --font-headline: "GT Walsheim", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+    --font-body: "TT Hoves", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+  }
+
+  @page { size: landscape; margin: 0; background: #FFFFFF; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: #FFFFFF;
+    overflow-x: hidden;
+    font-family: var(--font-body);
+    color: var(--pb-black);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .slide {
+    width: 1280px;
+    height: 720px;
+    margin: 20px auto;
+    position: relative;
+    overflow: hidden;
+    background: var(--white);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    page-break-after: always;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .save-pdf-btn {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: 9999;
+    background: var(--pb-blue);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 28px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    transition: background 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .save-pdf-btn:hover { background: #4e6ab5; }
+  .save-pdf-btn::before { content: "\2193  "; }
+
+  @media print {
+    html, body { background: #FFFFFF !important; margin: 0 !important; padding: 0 !important; overflow: visible !important; }
+    .save-pdf-btn { display: none !important; }
+    .slide { margin: 0; box-shadow: none; width: 100%; height: 100vh; }
+    .blob { opacity: 0 !important; }
+  }
+
+  .headline { font-family: var(--font-headline); font-weight: 500; line-height: 1.1; }
+  .label { text-transform: uppercase; letter-spacing: 0.1em; font-size: 13px; font-weight: 500; }
+  .badge {
+    display: inline-block;
+    padding: 6px 18px;
+    border: 2px solid currentColor;
+    border-radius: 20px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 500;
+    font-family: var(--font-body);
+  }
+  .page-num {
+    position: absolute;
+    bottom: 20px;
+    right: 32px;
+    font-size: 11px;
+    color: rgba(0,0,0,0.25);
+    font-family: var(--font-body);
+    font-weight: 500;
+    z-index: 10;
+  }
+  .slide-blue .page-num { color: rgba(255,255,255,0.3); }
+
+  .blob {
+    position: absolute;
+    border-radius: 50% 40% 60% 45% / 55% 50% 45% 50%;
+    opacity: 0.15;
+    z-index: 0;
+  }
+  .blob-blush { background: var(--pb-blush); opacity: 0.5; }
+  .blob-coral { background: var(--pb-coral); }
+  .blob-olive { background: var(--pb-olive); }
+  .blob-blue { background: var(--pb-blue); }
+  .blob-plum { background: var(--pb-plum); }
+  .blob-gold { background: var(--pb-gold); }
+
+  .slide-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    padding: 60px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 28px 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .card-dark {
+    background: var(--pb-black);
+    color: var(--white);
+    border-radius: 12px;
+    padding: 28px 24px;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    line-height: 1.45;
+  }
+  .check-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--pb-olive);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+  .check-icon::after {
+    content: "\2713";
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .pb-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .pb-table th {
+    background: var(--pb-blue);
+    color: var(--white);
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .pb-table th:first-child { border-radius: 8px 0 0 0; }
+  .pb-table th:last-child { border-radius: 0 8px 0 0; }
+  .pb-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+  }
+  .pb-table tr:nth-child(even) td { background: #fafafa; }
+  .pb-table tr:last-child td { border-bottom: none; }
+
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+  }
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .col-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+  }
+  .col-card-title {
+    font-family: var(--font-headline);
+    font-weight: 500;
+    font-size: 15px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+  }
+  .border-coral { border-top: 4px solid var(--pb-coral); }
+  .border-blue { border-top: 4px solid var(--pb-blue); }
+  .border-olive { border-top: 4px solid var(--pb-olive); }
+  .border-left-coral { border-left: 4px solid var(--pb-coral); }
+  .border-left-blue { border-left: 4px solid var(--pb-blue); }
+
+  .mini-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+    color: var(--pb-blue);
+    margin-bottom: 4px;
+  }
+  .mini-item {
+    font-size: 12px;
+    line-height: 1.5;
+    margin-bottom: 6px;
+    padding-left: 12px;
+    position: relative;
+  }
+  .mini-item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--pb-blue);
+    opacity: 0.5;
+  }
+  .mini-item strong {
+    font-weight: 500;
+  }
+
+  .timeline-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+  .timeline-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .timeline-dot.done { background: var(--pb-olive); }
+  .timeline-dot.live { background: var(--pb-coral); }
+
+  .support-item {
+    margin-bottom: 14px;
+  }
+  .support-item-title {
+    font-weight: 500;
+    font-size: 13px;
+    margin-bottom: 3px;
+    color: var(--pb-black);
+  }
+  .support-item-desc {
+    font-size: 12px;
+    line-height: 1.45;
+    color: rgba(32,31,31,0.7);
+    font-weight: 300;
+  }
+
+  .numbered-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .step-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--pb-blue);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+  .step-text {
+    font-size: 14px;
+    line-height: 1.5;
+    padding-top: 3px;
+  }
+</style>
+</head>
+<body>
+
+<button class="save-pdf-btn" onclick="window.print()">Save PDF</button>
+
+<!-- ============================================================ -->
+<!-- SLIDE 1: Title -->
+<!-- ============================================================ -->
+<div class="slide slide-blue" style="background: var(--pb-blue);">
+  <div class="blob blob-blush" style="width: 400px; height: 400px; top: -100px; right: -80px; opacity: 0.08;"></div>
+  <div class="blob" style="width: 300px; height: 300px; bottom: -60px; left: -40px; background: var(--pb-plum); opacity: 0.1;"></div>
+  <div class="blob" style="width: 200px; height: 200px; bottom: 80px; right: 200px; background: var(--pb-gold); opacity: 0.08;"></div>
+  <div class="slide-content" style="justify-content: space-between;" contenteditable="true">
+    <div>
+      <div class="label" style="color: rgba(255,255,255,0.7); margin-bottom: 8px;">Premium Blend</div>
+    </div>
+    <div style="padding-bottom: 40px;">
+      <div class="headline" style="font-size: 72px; color: var(--white); margin-bottom: 4px;">Progressive</div>
+      <div class="headline" style="font-size: 42px; color: rgba(255,255,255,0.75); font-weight: 300; margin-bottom: 20px;">Services, SP&amp;E</div>
+      <div style="width: 60px; height: 3px; background: var(--pb-gold); border-radius: 2px; margin-bottom: 20px;"></div>
+      <div style="font-size: 22px; color: var(--white); font-weight: 500; margin-bottom: 8px;">Project Wrap Up</div>
+      <div style="font-size: 16px; color: rgba(255,255,255,0.6); font-weight: 300;">April 17th, 2025</div>
+    </div>
+  </div>
+  <div class="page-num">01</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 2: Agenda -->
+<!-- ============================================================ -->
+<div class="slide">
+  <div class="blob blob-blush" style="width: 350px; height: 350px; top: -120px; left: -80px;"></div>
+  <div class="blob blob-blue" style="width: 180px; height: 180px; bottom: -40px; right: 100px; opacity: 0.08;"></div>
+  <div class="slide-content" style="flex-direction: row; align-items: center; gap: 60px;" contenteditable="true">
+    <div style="flex: 1;">
+      <div class="badge" style="color: var(--pb-blue); margin-bottom: 24px;">Today's Session</div>
+      <div class="headline" style="font-size: 48px; line-height: 1.05;">Our Agenda<br>for Today.</div>
+    </div>
+    <div style="flex: 1;">
+      <div class="card-dark" style="padding: 36px 32px;">
+        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--pb-coral); display: flex; align-items: center; justify-content: center; color: white; font-weight: 500; font-size: 15px;">1</div>
+          <div style="font-size: 17px; font-weight: 500;">Project Achievements</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--pb-blue); display: flex; align-items: center; justify-content: center; color: white; font-weight: 500; font-size: 15px;">2</div>
+          <div style="font-size: 17px; font-weight: 500;">Key Configuration Information</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--pb-olive); display: flex; align-items: center; justify-content: center; color: white; font-weight: 500; font-size: 15px;">3</div>
+          <div style="font-size: 17px; font-weight: 500;">Recommendations</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--pb-gold); display: flex; align-items: center; justify-content: center; color: white; font-weight: 500; font-size: 15px;">4</div>
+          <div style="font-size: 17px; font-weight: 500;">Post Implementation Support</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-num">02</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 3: Project Achievements -->
+<!-- ============================================================ -->
+<div class="slide">
+  <div class="blob blob-blush" style="width: 300px; height: 300px; bottom: -100px; right: -60px;"></div>
+  <div class="blob blob-gold" style="width: 150px; height: 150px; top: 20px; right: 40px; opacity: 0.06;"></div>
+  <div class="slide-content" style="justify-content: flex-start; padding-top: 48px; padding-bottom: 32px;" contenteditable="true">
+    <div style="margin-bottom: 20px;">
+      <div class="badge" style="color: var(--pb-coral);">Achievements</div>
+    </div>
+    <div class="three-col" style="flex: 1;">
+      <!-- Column 1: Achievements -->
+      <div class="col-card border-coral" style="overflow-y: auto;">
+        <div class="col-card-title" style="border-bottom: 1px solid #eee;">Achievements</div>
+        <div class="mini-item"><strong>Accelerated Delivery Timeline:</strong> Go Live with Sprinklr by March 31 for seamless transition as previous platform expired April 1.</div>
+        <div class="mini-item"><strong>Improved Routing Efficiency:</strong> Enhanced case routing to reduce excessive transfers, streamlining issue resolution.</div>
+        <div class="mini-item"><strong>Migration to Case Workflow:</strong> Transitioned from message-based to Sprinklr Case, boosting operational efficiency.</div>
+        <div class="mini-item"><strong>Customized Reporting:</strong> Tailored dashboards for each team with detailed Care metrics.</div>
+      </div>
+
+      <!-- Column 2: Products Implemented -->
+      <div class="col-card border-blue" style="overflow-y: auto;">
+        <div class="col-card-title" style="border-bottom: 1px solid #eee;">Products Implemented</div>
+        <div class="mini-label" style="margin-top: 2px;">Sprinklr Services</div>
+        <div style="font-size: 11px; color: rgba(32,31,31,0.65); margin-bottom: 6px;">50 users added from 80 seats</div>
+        <div style="font-size: 11px; margin-bottom: 2px; font-weight: 500; color: var(--pb-olive);">Implemented:</div>
+        <div style="font-size: 11px; margin-bottom: 8px; line-height: 1.5; color: rgba(32,31,31,0.75);">Assignment &amp; routing rules, Care Reporting, Case Tagging</div>
+        <div style="font-size: 11px; margin-bottom: 2px; font-weight: 500; color: var(--pb-coral);">Not Implemented:</div>
+        <div style="font-size: 11px; margin-bottom: 14px; line-height: 1.5; color: rgba(32,31,31,0.75);">Audit Checklist, Survey, Auto Translate, Smart Responses, Intuition</div>
+
+        <div class="mini-label">Sprinklr Publishing &amp; Engagement</div>
+        <div style="font-size: 11px; color: rgba(32,31,31,0.65); margin-bottom: 6px;">9 users added out of 13 seats</div>
+        <div style="font-size: 11px; margin-bottom: 2px; font-weight: 500; color: var(--pb-olive);">Implemented:</div>
+        <div style="font-size: 11px; margin-bottom: 8px; line-height: 1.5; color: rgba(32,31,31,0.75);">Approval workflows, Reporting</div>
+        <div style="font-size: 11px; margin-bottom: 2px; font-weight: 500; color: var(--pb-coral);">Not Implemented:</div>
+        <div style="font-size: 11px; line-height: 1.5; color: rgba(32,31,31,0.75);">Intuition</div>
+      </div>
+
+      <!-- Column 3: Project Timeline -->
+      <div class="col-card border-olive" style="overflow-y: auto;">
+        <div class="col-card-title" style="border-bottom: 1px solid #eee;">Project Timeline</div>
+        <div class="timeline-item"><div class="timeline-dot done"></div><strong>Mar 5</strong>&nbsp; Project Kick Off</div>
+        <div class="timeline-item"><div class="timeline-dot done"></div><strong>Mar 19</strong>&nbsp; Platform Review</div>
+        <div class="timeline-item"><div class="timeline-dot done"></div><strong>Mar 20-21</strong>&nbsp; UAT Sessions (4 sessions)</div>
+        <div class="timeline-item"><div class="timeline-dot done"></div><strong>Mar 24, 26, 27</strong>&nbsp; Services Trainings</div>
+        <div class="timeline-item"><div class="timeline-dot done"></div><strong>Mar 28, Apr 3, 7</strong>&nbsp; SP&amp;E Trainings</div>
+        <div class="timeline-item"><div class="timeline-dot live"></div><strong>Mar 31</strong>&nbsp; Go Live</div>
+        <div class="timeline-item"><div class="timeline-dot done"></div><strong>Apr 1, 8, 11, 15</strong>&nbsp; Empower Sessions</div>
+        <div class="timeline-item"><div class="timeline-dot live"></div><strong>Apr 17</strong>&nbsp; Project Wrap Up</div>
+      </div>
+    </div>
+  </div>
+  <div class="page-num">03</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 4: Key Configuration -->
+<!-- ============================================================ -->
+<div class="slide">
+  <div class="blob blob-blush" style="width: 280px; height: 280px; top: -80px; right: -60px;"></div>
+  <div class="blob blob-olive" style="width: 160px; height: 160px; bottom: -30px; left: 60px; opacity: 0.08;"></div>
+  <div class="slide-content" style="justify-content: flex-start; padding-top: 48px; padding-bottom: 32px;" contenteditable="true">
+    <div style="margin-bottom: 20px;">
+      <div class="badge" style="color: var(--pb-blue);">Configuration</div>
+    </div>
+    <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06);">
+      <table class="pb-table">
+        <thead>
+          <tr>
+            <th style="width: 22%;">Key Item</th>
+            <th style="width: 18%;">Section</th>
+            <th style="width: 48%;">Description</th>
+            <th style="width: 12%;">Link</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight: 500;">Commercial Lines Email Notifications</td>
+            <td>Rules</td>
+            <td>Cases transferred or escalated in the CL workflow receive an email notification.</td>
+            <td style="color: var(--pb-blue); font-weight: 500;">View</td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">CRM Email Notifications</td>
+            <td>Rules</td>
+            <td>Escalated cases or Internal Hold queue cases exceeding 24 hours receive an email notification.</td>
+            <td style="color: var(--pb-blue); font-weight: 500;">View</td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Engagement Approvals</td>
+            <td>Rules / Engagement</td>
+            <td>Approvals configured for all 4 teams. "In Training = Yes" custom field forces approvals.</td>
+            <td style="color: var(--pb-blue); font-weight: 500;">View</td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">CRM Sub-Team</td>
+            <td>Custom Field</td>
+            <td>Routes Cases based on CRM, Property, or Escalation case type.</td>
+            <td style="color: var(--pb-blue); font-weight: 500;">View</td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Google Reviews</td>
+            <td>Custom Field / Rules</td>
+            <td>Google Review accounts tagged; skills Case to users with Google Review skills.</td>
+            <td style="color: var(--pb-blue); font-weight: 500;">View</td>
+          </tr>
+          <tr>
+            <td style="font-weight: 500;">Custom Reporting</td>
+            <td>Reporting</td>
+            <td>Each team has a custom template Reporting Dashboard for Case Reporting (Claims, Commercial Lines, CRM, Social Digital).</td>
+            <td style="color: var(--pb-blue); font-weight: 500;">View</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="page-num">04</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 5: Recommendations -->
+<!-- ============================================================ -->
+<div class="slide">
+  <div class="blob blob-blush" style="width: 320px; height: 320px; bottom: -80px; left: -60px;"></div>
+  <div class="blob blob-plum" style="width: 180px; height: 180px; top: -40px; right: 120px; opacity: 0.07;"></div>
+  <div class="slide-content" style="justify-content: flex-start; padding-top: 48px;" contenteditable="true">
+    <div style="margin-bottom: 28px;">
+      <div class="badge" style="color: var(--pb-plum);">Recommendations</div>
+    </div>
+    <div class="two-col" style="flex: 1; align-items: stretch;">
+      <!-- Recommendation 1 -->
+      <div class="col-card border-left-coral" style="padding: 32px 28px;">
+        <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--pb-coral); font-weight: 500; margin-bottom: 10px;">Recommendation #1</div>
+        <div class="headline" style="font-size: 22px; margin-bottom: 16px;">Agent Nudges</div>
+        <div style="font-size: 15px; line-height: 1.6; color: rgba(32,31,31,0.8); font-weight: 300;">
+          Nudges leverage keyword analysis, CSAT scores, AI, and other signals to deliver the next best action directly in Care Console, assisting agents proactively during live interactions.
+        </div>
+        <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee;">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <span style="font-size: 11px; background: rgba(241,95,64,0.1); color: var(--pb-coral); padding: 4px 12px; border-radius: 12px; font-weight: 500;">Keyword-Driven</span>
+            <span style="font-size: 11px; background: rgba(241,95,64,0.1); color: var(--pb-coral); padding: 4px 12px; border-radius: 12px; font-weight: 500;">CSAT</span>
+            <span style="font-size: 11px; background: rgba(241,95,64,0.1); color: var(--pb-coral); padding: 4px 12px; border-radius: 12px; font-weight: 500;">AI-Assisted</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recommendation 2 -->
+      <div class="col-card border-left-blue" style="padding: 32px 28px;">
+        <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--pb-blue); font-weight: 500; margin-bottom: 10px;">Recommendation #2</div>
+        <div class="headline" style="font-size: 22px; margin-bottom: 16px;">Intent-Based Automated Routing</div>
+        <div style="font-size: 15px; line-height: 1.6; color: rgba(32,31,31,0.8); font-weight: 300;">
+          Deploy intent recognition to power automated routing within Sprinklr, ensuring messages are directed to the appropriate team based on content, context, and urgency. Reduces manual triage, increases speed-to-resolution, and enhances customer satisfaction.
+        </div>
+        <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee;">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <span style="font-size: 11px; background: rgba(97,126,200,0.1); color: var(--pb-blue); padding: 4px 12px; border-radius: 12px; font-weight: 500;">Intent Recognition</span>
+            <span style="font-size: 11px; background: rgba(97,126,200,0.1); color: var(--pb-blue); padding: 4px 12px; border-radius: 12px; font-weight: 500;">Auto-Routing</span>
+            <span style="font-size: 11px; background: rgba(97,126,200,0.1); color: var(--pb-blue); padding: 4px 12px; border-radius: 12px; font-weight: 500;">Speed-to-Resolution</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-num">05</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 6: Post Implementation Support - SM & AE -->
+<!-- ============================================================ -->
+<div class="slide">
+  <div class="blob blob-blush" style="width: 300px; height: 300px; top: -100px; right: -80px;"></div>
+  <div class="blob blob-gold" style="width: 140px; height: 140px; bottom: 40px; left: 40px; opacity: 0.07;"></div>
+  <div class="slide-content" style="justify-content: flex-start; padding-top: 48px;" contenteditable="true">
+    <div style="margin-bottom: 24px;">
+      <div class="badge" style="color: var(--pb-olive);">Ongoing Support</div>
+      <div class="headline" style="font-size: 28px; margin-top: 12px;">Success Manager &amp; Account Executive</div>
+    </div>
+    <div class="two-col" style="flex: 1;">
+      <!-- Success Manager -->
+      <div class="col-card border-olive" style="padding: 28px 24px;">
+        <div class="col-card-title" style="border-bottom: 1px solid #eee; color: var(--pb-olive);">Success Manager</div>
+        <div class="support-item">
+          <div class="support-item-title">Business Goal Alignment</div>
+          <div class="support-item-desc">Collaborate to understand objectives, priorities, and KPIs.</div>
+        </div>
+        <div class="support-item">
+          <div class="support-item-title">Strategy &amp; Best Practices</div>
+          <div class="support-item-desc">Strategic guidance and long-term roadmaps.</div>
+        </div>
+        <div class="support-item">
+          <div class="support-item-title">Adoption &amp; Value Realization</div>
+          <div class="support-item-desc">Review usage metrics, identify adoption gaps.</div>
+        </div>
+        <div class="support-item">
+          <div class="support-item-title">Customer Satisfaction</div>
+          <div class="support-item-desc">Advocate internally for customer needs.</div>
+        </div>
+      </div>
+
+      <!-- Account Executive -->
+      <div class="col-card border-blue" style="padding: 28px 24px;">
+        <div class="col-card-title" style="border-bottom: 1px solid #eee; color: var(--pb-blue);">Account Executive</div>
+        <div class="support-item">
+          <div class="support-item-title">Business Goal Alignment</div>
+          <div class="support-item-desc">Commercial conversations grounded in customer goals.</div>
+        </div>
+        <div class="support-item">
+          <div class="support-item-title">Resource Need Fulfillment</div>
+          <div class="support-item-desc">Ensure necessary tools and team backing.</div>
+        </div>
+        <div class="support-item">
+          <div class="support-item-title">Ongoing Expansion Planning</div>
+          <div class="support-item-desc">Cross-sell, upsell, multi-year commitments.</div>
+        </div>
+        <div class="support-item">
+          <div class="support-item-title">Contracting and Renewal</div>
+          <div class="support-item-desc">Timely and accurate execution.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-num">06</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 7: Post Implementation Support - Managed Services & Support -->
+<!-- ============================================================ -->
+<div class="slide">
+  <div class="blob blob-blush" style="width: 260px; height: 260px; bottom: -80px; left: -40px;"></div>
+  <div class="blob blob-coral" style="width: 160px; height: 160px; top: -20px; right: 80px; opacity: 0.06;"></div>
+  <div class="slide-content" style="justify-content: flex-start; padding-top: 48px;" contenteditable="true">
+    <div style="margin-bottom: 24px;">
+      <div class="badge" style="color: var(--pb-olive);">Ongoing Support</div>
+      <div class="headline" style="font-size: 28px; margin-top: 12px;">Managed Services &amp; Support Team</div>
+    </div>
+    <div class="two-col" style="flex: 1;">
+      <!-- Managed Services -->
+      <div class="col-card border-coral" style="padding: 28px 24px;">
+        <div class="col-card-title" style="border-bottom: 1px solid #eee; color: var(--pb-coral);">Managed Services</div>
+        <div class="support-item">
+          <div class="support-item-title">Project Administration</div>
+          <div class="support-item-desc">Stakeholder alignment, weekly tasks, feature monitoring.</div>
+        </div>
+        <div class="support-item">
+          <div class="support-item-title">Platform Configuration</div>
+          <div class="support-item-desc">End-user support, optimization proposals, best practice guidance.</div>
+        </div>
+        <div class="support-item">
+          <div class="support-item-title">Education and Adoption</div>
+          <div class="support-item-desc">Onboarding, training plans, office hours.</div>
+        </div>
+        <div class="support-item">
+          <div class="support-item-title">Issue Triage</div>
+          <div class="support-item-desc">Issue escalation, proactive trend analysis.</div>
+        </div>
+      </div>
+
+      <!-- Support Team -->
+      <div class="col-card border-gold" style="padding: 28px 24px; border-top: 4px solid var(--pb-gold);">
+        <div class="col-card-title" style="border-bottom: 1px solid #eee; color: var(--pb-gold);">Support Team</div>
+        <div class="support-item">
+          <div class="support-item-title">24x7 Support</div>
+          <div class="support-item-desc">Global coverage and SLAs.</div>
+        </div>
+        <div class="support-item">
+          <div class="support-item-title">Addressing Technical Cases</div>
+          <div class="support-item-desc">Collaborate with engineering on complex cases.</div>
+        </div>
+        <div class="support-item">
+          <div class="support-item-title">Product Questions</div>
+          <div class="support-item-desc">Answer capability and configuration inquiries.</div>
+        </div>
+        <div class="support-item">
+          <div class="support-item-title">Support for Issues &amp; Triage</div>
+          <div class="support-item-desc">Diagnose user error vs bug vs defect, escalate critical issues.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-num">07</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 8: Support Ticket Best Practices -->
+<!-- ============================================================ -->
+<div class="slide">
+  <div class="blob blob-blush" style="width: 280px; height: 280px; top: -60px; left: -80px;"></div>
+  <div class="blob blob-blue" style="width: 150px; height: 150px; bottom: -20px; right: 60px; opacity: 0.07;"></div>
+  <div class="slide-content" style="justify-content: flex-start; padding-top: 48px; padding-bottom: 36px;" contenteditable="true">
+    <div style="margin-bottom: 24px;">
+      <div class="badge" style="color: var(--pb-gold);">Best Practices</div>
+      <div class="headline" style="font-size: 28px; margin-top: 12px;">Support Ticket Best Practices</div>
+    </div>
+
+    <div class="two-col" style="flex: 1; align-items: start;">
+      <!-- Before Submitting -->
+      <div>
+        <div class="card-dark" style="padding: 28px 24px; margin-bottom: 20px;">
+          <div style="font-size: 14px; font-weight: 500; margin-bottom: 18px; color: var(--pb-gold);">Before Submitting a Ticket</div>
+          <div class="numbered-step">
+            <div class="step-circle" style="background: var(--pb-coral);">1</div>
+            <div class="step-text" style="color: rgba(255,255,255,0.9);">Log out of the platform</div>
+          </div>
+          <div class="numbered-step">
+            <div class="step-circle" style="background: var(--pb-coral);">2</div>
+            <div class="step-text" style="color: rgba(255,255,255,0.9);">Clear your cache or open Incognito</div>
+          </div>
+          <div class="numbered-step" style="margin-bottom: 0;">
+            <div class="step-circle" style="background: var(--pb-coral);">3</div>
+            <div class="step-text" style="color: rgba(255,255,255,0.9);">Attempt the task once more</div>
+          </div>
+        </div>
+
+        <!-- Additional Resources -->
+        <div style="padding: 16px 20px; background: rgba(97,126,200,0.06); border-radius: 10px;">
+          <div style="font-size: 12px; font-weight: 500; margin-bottom: 8px; color: var(--pb-blue);">Additional Resources</div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <span style="font-size: 11px; background: white; padding: 5px 14px; border-radius: 8px; font-weight: 500; box-shadow: 0 1px 4px rgba(0,0,0,0.06);">Sprinklr University</span>
+            <span style="font-size: 11px; background: white; padding: 5px 14px; border-radius: 8px; font-weight: 500; box-shadow: 0 1px 4px rgba(0,0,0,0.06);">Knowledge Portal</span>
+            <span style="font-size: 11px; background: white; padding: 5px 14px; border-radius: 8px; font-weight: 500; box-shadow: 0 1px 4px rgba(0,0,0,0.06);">Community</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- If Issue Persists -->
+      <div class="col-card" style="padding: 28px 24px;">
+        <div style="font-size: 14px; font-weight: 500; margin-bottom: 6px;">If the issue persists</div>
+        <div style="font-size: 13px; line-height: 1.6; margin-bottom: 16px; color: rgba(32,31,31,0.7);">
+          Submit to <strong style="color: var(--pb-blue);">tickets@sprinklr.com</strong><br>
+          CC your Success Manager.
+        </div>
+        <div style="font-size: 12px; font-weight: 500; margin-bottom: 10px; color: var(--pb-black);">Include in your ticket:</div>
+        <div class="check-item" style="font-size: 12px;">
+          <div class="check-icon" style="width: 18px; height: 18px;"></div>
+          <span>Customer Name</span>
+        </div>
+        <div class="check-item" style="font-size: 12px;">
+          <div class="check-icon" style="width: 18px; height: 18px;"></div>
+          <span>Workspace Name</span>
+        </div>
+        <div class="check-item" style="font-size: 12px;">
+          <div class="check-icon" style="width: 18px; height: 18px;"></div>
+          <span>User email</span>
+        </div>
+        <div class="check-item" style="font-size: 12px;">
+          <div class="check-icon" style="width: 18px; height: 18px;"></div>
+          <span>Section of platform</span>
+        </div>
+        <div class="check-item" style="font-size: 12px;">
+          <div class="check-icon" style="width: 18px; height: 18px;"></div>
+          <span>Brief summary with steps to reproduce</span>
+        </div>
+        <div class="check-item" style="font-size: 12px;">
+          <div class="check-icon" style="width: 18px; height: 18px;"></div>
+          <span>Expected behavior</span>
+        </div>
+        <div class="check-item" style="font-size: 12px; margin-bottom: 0;">
+          <div class="check-icon" style="width: 18px; height: 18px;"></div>
+          <span>Screenshots where possible</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-num">08</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 9: Thank You -->
+<!-- ============================================================ -->
+<div class="slide" style="display: flex;">
+  <!-- Left Panel: Blue -->
+  <div style="width: 55%; height: 100%; background: var(--pb-blue); position: relative; overflow: hidden;">
+    <div class="blob" style="width: 300px; height: 300px; bottom: -80px; left: -60px; background: var(--pb-plum); opacity: 0.12;"></div>
+    <div class="blob" style="width: 200px; height: 200px; top: -40px; right: -40px; background: var(--pb-gold); opacity: 0.1;"></div>
+    <div style="position: relative; z-index: 2; padding: 80px 60px; height: 100%; display: flex; flex-direction: column; justify-content: space-between;" contenteditable="true">
+      <div>
+        <div class="label" style="color: rgba(255,255,255,0.6); margin-bottom: 8px;">Premium Blend</div>
+      </div>
+      <div>
+        <div class="headline" style="font-size: 56px; color: var(--white); margin-bottom: 16px;">Thank You</div>
+        <div style="width: 50px; height: 3px; background: var(--pb-gold); border-radius: 2px; margin-bottom: 20px;"></div>
+        <div style="font-size: 16px; color: rgba(255,255,255,0.8); font-weight: 300;">mirele@premium-blend.com</div>
+      </div>
+      <div></div>
+    </div>
+  </div>
+  <!-- Right Panel: Light -->
+  <div style="width: 45%; height: 100%; background: var(--pb-blush); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+    <div class="blob blob-blush" style="width: 250px; height: 250px; top: -60px; right: -40px; opacity: 0.6;"></div>
+    <div style="position: relative; z-index: 2; text-align: center;" contenteditable="true">
+      <img src="../../../../Branding/Powerpoint Template/Template Images/Logo/slide04_logo_03.png" alt="Premium Blend" style="width: 180px; opacity: 0.85; margin-bottom: 24px;">
+      <img src="../../../../Branding/Powerpoint Template/Template Images/Illustrations/slide13_illustrations_01.png" alt="Illustration" style="width: 220px; display: block; margin: 0 auto; opacity: 0.7;">
+    </div>
+  </div>
+  <div class="page-num" style="color: rgba(255,255,255,0.3);">09</div>
+</div>
+
+</body>
+</html>

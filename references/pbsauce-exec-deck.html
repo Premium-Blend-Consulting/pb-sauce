@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PB Sauce — Executive Summary</title>
+<style>
+  @font-face {
+    font-family: "GT Walsheim";
+    src: url("/fonts/GT-Walsheim-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "GT Walsheim";
+    src: url("/fonts/GT-Walsheim-Light.ttf") format("truetype");
+    font-weight: 300;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "TT Hoves";
+    src: url("/fonts/TT-Hoves-Medium.otf") format("opentype");
+    font-weight: 500;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "TT Hoves";
+    src: url("/fonts/TT-Hoves-Light.otf") format("opentype");
+    font-weight: 300;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "TT Hoves";
+    src: url("/fonts/TT-Hoves-Italic.otf") format("opentype");
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  :root {
+    --pb-black: #201F1F;
+    --pb-blue: #617EC8;
+    --pb-coral: #F15F40;
+    --pb-olive: #8C9E61;
+    --pb-gold: #FCB415;
+    --pb-plum: #9D5C88;
+    --pb-blush: #ECE3E1;
+    --white: #FFFFFF;
+    --font-headline: "GT Walsheim", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+    --font-body: "TT Hoves", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+  }
+
+  @page {
+    size: landscape;
+    margin: 0;
+    background: #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: #FFFFFF;
+    overflow-x: hidden;
+    font-family: var(--font-body);
+    color: var(--pb-black);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .slide {
+    width: 1280px;
+    height: 720px;
+    margin: 20px auto;
+    position: relative;
+    overflow: hidden;
+    background: var(--white);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    page-break-after: always;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .slide-dark .page-num,
+  .slide-divider .page-num {
+    color: rgba(255,255,255,0.3);
+  }
+
+  .save-pdf-btn {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: 9999;
+    background: var(--pb-blue);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 28px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    transition: background 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .save-pdf-btn:hover { background: #4e6ab5; }
+  .save-pdf-btn::before { content: "\2193 "; }
+
+  @media print {
+    html, body {
+      background: #FFFFFF !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: visible !important;
+    }
+    .save-pdf-btn { display: none !important; }
+    .slide {
+      margin: 0;
+      box-shadow: none;
+      width: 100%;
+      height: 100vh;
+    }
+    .blob { opacity: 0 !important; }
+  }
+
+  .headline {
+    font-family: var(--font-headline);
+    font-weight: 500;
+    line-height: 1.1;
+  }
+  .label {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .badge {
+    display: inline-block;
+    padding: 6px 18px;
+    border: 2px solid currentColor;
+    border-radius: 20px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 500;
+    font-family: var(--font-body);
+  }
+
+  .page-num {
+    position: absolute;
+    bottom: 20px;
+    right: 32px;
+    font-size: 11px;
+    color: rgba(0,0,0,0.25);
+    font-family: var(--font-body);
+    font-weight: 500;
+    z-index: 10;
+  }
+
+  .blob {
+    position: absolute;
+    border-radius: 50% 40% 60% 45% / 55% 50% 45% 50%;
+    opacity: 0.15;
+    z-index: 0;
+  }
+  .blob-blush { background: var(--pb-blush); opacity: 0.5; }
+  .blob-coral { background: var(--pb-coral); }
+  .blob-olive { background: var(--pb-olive); }
+  .blob-blue { background: var(--pb-blue); }
+  .blob-plum { background: var(--pb-plum); }
+  .blob-gold { background: var(--pb-gold); }
+
+  .asset-img {
+    position: absolute;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .slide-logo {
+    position: absolute;
+    bottom: 18px;
+    left: 32px;
+    height: 16px;
+    opacity: 0.25;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  .slide-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    padding: 60px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 28px 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .card-dark {
+    background: var(--pb-black);
+    color: var(--white);
+    border-radius: 12px;
+    padding: 28px 24px;
+  }
+
+  .step-num {
+    font-family: var(--font-headline);
+    font-size: 40px;
+    font-weight: 500;
+    color: var(--pb-gold);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .pb-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .pb-table th {
+    background: var(--pb-blue);
+    color: var(--white);
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .pb-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid #eee;
+  }
+  .pb-table tr:last-child td {
+    border-bottom: none;
+    font-weight: 500;
+  }
+
+  .bar-track {
+    width: 100%;
+    height: 16px;
+    background: #f0f0f0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 8px;
+  }
+
+  .slide-divider .slide-content {
+    justify-content: center;
+    align-items: flex-start;
+    padding: 80px 100px;
+  }
+  .slide-divider .divider-title {
+    font-size: 64px;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+  .slide-divider .divider-sub {
+    font-size: 22px;
+    color: rgba(255,255,255,0.8);
+    font-weight: 300;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 14px;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .check-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--pb-olive);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+  .check-icon::after {
+    content: "\2713";
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .timeline {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    width: 100%;
+  }
+  .timeline-phase {
+    flex: 1;
+    text-align: center;
+    position: relative;
+  }
+  .timeline-phase::before {
+    content: "";
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--pb-blue);
+    z-index: 0;
+  }
+  .timeline-phase:first-child::before { left: 50%; }
+  .timeline-phase:last-child::before { right: 50%; }
+  .timeline-node {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--pb-blue);
+    color: var(--white);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 14px;
+    position: relative;
+    z-index: 1;
+  }
+  .timeline-label {
+    font-size: 11px;
+    margin-top: 10px;
+    line-height: 1.3;
+    color: var(--pb-black);
+  }
+  .timeline-gate {
+    font-size: 10px;
+    color: var(--pb-olive);
+    margin-top: 4px;
+    font-weight: 500;
+  }
+
+  .arch-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+  }
+  .arch-box {
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 11px;
+    text-align: center;
+    font-weight: 500;
+    line-height: 1.3;
+    flex-shrink: 0;
+  }
+  .arch-arrow {
+    font-size: 18px;
+    color: #ccc;
+    padding: 0 6px;
+    flex-shrink: 0;
+  }
+  .arch-arrow-down {
+    text-align: center;
+    font-size: 18px;
+    color: #ccc;
+    padding: 4px 0;
+  }
+
+  .appendix-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .appendix-table th {
+    background: var(--pb-black);
+    color: var(--white);
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .appendix-table td {
+    padding: 7px 12px;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+    line-height: 1.4;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- SLIDE 1 — Cover -->
+<!-- ============================================================ -->
+<section class="slide" style="background: var(--pb-blush);">
+  <!-- Decorative circles -->
+  <div style="position:absolute; width:320px; height:320px; border-radius:50%; background:var(--pb-coral); opacity:0.12; top:-80px; right:200px;"></div>
+  <div style="position:absolute; width:200px; height:200px; border-radius:50%; background:var(--pb-blue); opacity:0.10; top:60px; right:80px;"></div>
+  <div style="position:absolute; width:160px; height:160px; border-radius:50%; background:var(--pb-olive); opacity:0.10; bottom:120px; right:300px;"></div>
+  <div style="position:absolute; width:240px; height:240px; border-radius:50%; background:var(--pb-gold); opacity:0.08; bottom:-60px; left:600px;"></div>
+  <div style="position:absolute; width:140px; height:140px; border-radius:50%; background:var(--pb-plum); opacity:0.08; top:200px; left:-40px;"></div>
+  <img class="asset-img" src="/assets/illustrations/slide13_illustrations_01.png" alt="" style="width:220px; bottom:30px; right:60px; opacity:0.5;">
+  <div class="slide-content" contenteditable="true" style="justify-content:center; align-items:flex-start; padding:80px 100px;">
+    <div class="label" style="color:var(--pb-coral); margin-bottom:20px; letter-spacing:0.15em;">Premium Blend</div>
+    <h1 class="headline" style="font-size:84px; color:var(--pb-black); margin-bottom:12px;">PB Sauce</h1>
+    <p style="font-size:26px; color:var(--pb-black); font-weight:300; margin-bottom:56px; opacity:0.75;">Add our sauce to your deck idea.</p>
+    <div style="display:flex; gap:40px; align-items:center;">
+      <p style="font-size:15px; color:rgba(32,31,31,0.55);">Prepared by Joe, Director of Strategy &amp; Insights</p>
+      <p style="font-size:15px; color:rgba(32,31,31,0.55);">March 2026</p>
+    </div>
+  </div>
+  <img class="slide-logo" src="/assets/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="PB">
+  <span class="page-num">1</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 2 — Table of Contents -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding:60px 100px;">
+    <div class="badge" style="color:var(--pb-blue); margin-bottom:36px;">Contents</div>
+    <div style="display:flex; gap:60px;">
+      <div style="flex:1;">
+        <div style="margin-bottom:28px;">
+          <div class="label" style="color:var(--pb-coral); margin-bottom:12px;">The Vision</div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px dotted #ddd; padding-bottom:6px;">
+              <span style="font-size:15px;">The Problem</span><span style="font-size:13px; color:#999;">03</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px dotted #ddd; padding-bottom:6px;">
+              <span style="font-size:15px;">The Vision Statement</span><span style="font-size:13px; color:#999;">04</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px dotted #ddd; padding-bottom:6px;">
+              <span style="font-size:15px;">Origin Story</span><span style="font-size:13px; color:#999;">05</span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-bottom:28px;">
+          <div class="label" style="color:var(--pb-blue); margin-bottom:12px;">Who This Serves</div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px dotted #ddd; padding-bottom:6px;">
+              <span style="font-size:15px;">The Executive</span><span style="font-size:13px; color:#999;">07</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px dotted #ddd; padding-bottom:6px;">
+              <span style="font-size:15px;">The Project Manager</span><span style="font-size:13px; color:#999;">08</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px dotted #ddd; padding-bottom:6px;">
+              <span style="font-size:15px;">The Account Manager</span><span style="font-size:13px; color:#999;">09</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="label" style="color:var(--pb-olive); margin-bottom:12px;">What We Built</div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px dotted #ddd; padding-bottom:6px;">
+              <span style="font-size:15px;">Generation Pipeline</span><span style="font-size:13px; color:#999;">11</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px dotted #ddd; padding-bottom:6px;">
+              <span style="font-size:15px;">19 Slide Types</span><span style="font-size:13px; color:#999;">12</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px dotted #ddd; padding-bottom:6px;">
+              <span style="font-size:15px;">Brand Integration</span><span style="font-size:13px; color:#999;">13</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px dotted #ddd; padding-bottom:6px;">
+              <span style="font-size:15px;">Editing &amp; Export</span><span style="font-size:13px; color:#999;">14</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="flex:1;">
+        <div style="margin-bottom:28px;">
+          <div class="label" style="color:var(--pb-plum); margin-bottom:12px;">How It Works</div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px dotted #ddd; padding-bottom:6px;">
+              <span style="font-size:15px;">Generation Architecture</span><span style="font-size:13px; color:#999;">16</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px dotted #ddd; padding-bottom:6px;">
+              <span style="font-size:15px;">RAG Loop</span><span style="font-size:13px; color:#999;">17</span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-bottom:28px;">
+          <div class="label" style="color:var(--pb-gold); margin-bottom:12px;">The Learning Engine</div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px dotted #ddd; padding-bottom:6px;">
+              <span style="font-size:15px;">Compounding Effect</span><span style="font-size:13px; color:#999;">19</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px dotted #ddd; padding-bottom:6px;">
+              <span style="font-size:15px;">Cost Comparison</span><span style="font-size:13px; color:#999;">20</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px dotted #ddd; padding-bottom:6px;">
+              <span style="font-size:15px;">The Bottom Line</span><span style="font-size:13px; color:#999;">21</span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-bottom:28px;">
+          <div class="label" style="color:var(--pb-coral); margin-bottom:12px;">Where It Stands</div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px dotted #ddd; padding-bottom:6px;">
+              <span style="font-size:15px;">Current vs. Deployed</span><span style="font-size:13px; color:#999;">22</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px dotted #ddd; padding-bottom:6px;">
+              <span style="font-size:15px;">What's Needed to Deploy</span><span style="font-size:13px; color:#999;">23</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="label" style="color:var(--pb-olive); margin-bottom:12px;">How We Built It</div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px dotted #ddd; padding-bottom:6px;">
+              <span style="font-size:15px;">Build Stats &amp; Phases</span><span style="font-size:13px; color:#999;">24</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px dotted #ddd; padding-bottom:6px;">
+              <span style="font-size:15px;">Closing Statement</span><span style="font-size:13px; color:#999;">25</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <img class="slide-logo" src="/assets/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="PB">
+  <span class="page-num">2</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 3 — The Problem -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="blob blob-coral" style="width:400px; height:400px; top:-150px; right:-100px;"></div>
+  <div class="slide-content" contenteditable="true" style="padding:50px 70px;">
+    <div class="badge" style="color:var(--pb-coral); margin-bottom:24px;">The Problem</div>
+    <h2 class="headline" style="font-size:36px; margin-bottom:32px;">Five problems. One tool.</h2>
+    <div style="display:flex; gap:16px;">
+      <div style="flex:1; border-radius:12px; padding:20px 18px; border:1px solid #eee; border-top:4px solid var(--pb-coral);">
+        <div style="font-size:28px; margin-bottom:8px;">&#9200;</div>
+        <h4 style="font-size:15px; font-weight:500; margin-bottom:8px; color:var(--pb-coral);">Time</h4>
+        <p style="font-size:13px; color:#666; line-height:1.5;">A polished deck takes 3-5 hours. Formatting eats more time than thinking.</p>
+      </div>
+      <div style="flex:1; border-radius:12px; padding:20px 18px; border:1px solid #eee; border-top:4px solid var(--pb-blue);">
+        <div style="font-size:28px; margin-bottom:8px;">&#127912;</div>
+        <h4 style="font-size:15px; font-weight:500; margin-bottom:8px; color:var(--pb-blue);">Consistency</h4>
+        <p style="font-size:13px; color:#666; line-height:1.5;">Same brand, different outputs. No two decks look like they came from the same agency.</p>
+      </div>
+      <div style="flex:1; border-radius:12px; padding:20px 18px; border:1px solid #eee; border-top:4px solid var(--pb-gold);">
+        <div style="font-size:28px; margin-bottom:8px;">&#128259;</div>
+        <h4 style="font-size:15px; font-weight:500; margin-bottom:8px; color:var(--pb-gold);">Format Wars</h4>
+        <p style="font-size:13px; color:#666; line-height:1.5;">Slides vs. PPT vs. Keynote vs. PDF. Every handoff breaks something.</p>
+      </div>
+      <div style="flex:1; border-radius:12px; padding:20px 18px; border:1px solid #eee; border-top:4px solid var(--pb-plum);">
+        <div style="font-size:28px; margin-bottom:8px;">&#128295;</div>
+        <h4 style="font-size:15px; font-weight:500; margin-bottom:8px; color:var(--pb-plum);">Font Distribution</h4>
+        <p style="font-size:13px; color:#666; line-height:1.5;">GT Walsheim and TT Hoves aren't on every machine. Brand kit becomes a suggestion.</p>
+      </div>
+      <div style="flex:1; border-radius:12px; padding:20px 18px; border:1px solid #eee; border-top:4px solid var(--pb-olive);">
+        <div style="font-size:28px; margin-bottom:8px;">&#128450;</div>
+        <h4 style="font-size:15px; font-weight:500; margin-bottom:8px; color:var(--pb-olive);">File Chaos</h4>
+        <p style="font-size:13px; color:#666; line-height:1.5;">Decks live in Drives, Slacks, desktops, and emails. No one knows which version is current.</p>
+      </div>
+    </div>
+  </div>
+  <img class="slide-logo" src="/assets/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="PB">
+  <span class="page-num">3</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 4 — The Vision Statement -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="blob blob-blue" style="width:500px; height:500px; top:-200px; left:-150px;"></div>
+  <div class="blob blob-gold" style="width:300px; height:300px; bottom:-100px; right:-80px;"></div>
+  <img class="asset-img" src="/assets/illustrations/slide14_illustrations_05.png" alt="" style="width:200px; bottom:40px; right:60px; opacity:0.35;">
+  <div class="slide-content" contenteditable="true" style="padding:80px 100px; padding-right:320px;">
+    <div class="badge" style="color:var(--pb-blue); margin-bottom:32px;">The Vision</div>
+    <p class="headline" style="font-size:34px; line-height:1.35; color:var(--pb-black);">
+      PB Sauce generates brand-perfect decks from text or voice, powered by AI that <span style="color:var(--pb-blue);">learns from every deck we make.</span>
+    </p>
+    <p style="font-size:18px; color:#777; margin-top:32px; font-weight:300; line-height:1.6;">
+      This is an internal tool. Not a revenue product &mdash; an operational one. It makes every person on this team faster at the thing we do most.
+    </p>
+  </div>
+  <img class="slide-logo" src="/assets/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="PB">
+  <span class="page-num">4</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 5 — Origin Story Timeline -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="blob blob-gold" style="width:300px; height:300px; bottom:-100px; left:-80px;"></div>
+  <div class="slide-content" contenteditable="true" style="padding:50px 60px;">
+    <div class="badge" style="color:var(--pb-gold); margin-bottom:24px;">The Origin Story</div>
+    <p style="font-size:16px; color:#666; margin-bottom:24px;">From question to product in six steps.</p>
+    <div style="display:flex; gap:16px;">
+      <div style="flex:1; display:flex; flex-direction:column;">
+        <div class="step-num">01</div>
+        <h4 style="font-size:14px; font-weight:500; margin-bottom:6px;">The Question</h4>
+        <p style="font-size:12px; color:#777; line-height:1.5;">Watched a PM spend 4 hours formatting a QBR that took 45 minutes to think through.</p>
+      </div>
+      <div style="flex:1; display:flex; flex-direction:column;">
+        <div class="step-num">02</div>
+        <h4 style="font-size:14px; font-weight:500; margin-bottom:6px;">Claude + PPTX</h4>
+        <p style="font-size:12px; color:#777; line-height:1.5;">PPTX is a nightmare of XML. Output looked like a government form.</p>
+      </div>
+      <div style="flex:1; display:flex; flex-direction:column;">
+        <div class="step-num">03</div>
+        <h4 style="font-size:14px; font-weight:500; margin-bottom:6px;">Google Slides API</h4>
+        <p style="font-size:12px; color:#777; line-height:1.5;">Powerful but rigid. Weeks of work for mediocre output.</p>
+      </div>
+      <div style="flex:1; display:flex; flex-direction:column;">
+        <div class="step-num">04</div>
+        <h4 style="font-size:14px; font-weight:500; margin-bottom:6px;">AI Deck Builders</h4>
+        <p style="font-size:12px; color:#777; line-height:1.5;">Gamma, Beautiful.ai, Tome &mdash; generic templates, no brand control.</p>
+      </div>
+      <div style="flex:1; display:flex; flex-direction:column;">
+        <div class="step-num">05</div>
+        <h4 style="font-size:14px; font-weight:500; margin-bottom:6px;">The Insight</h4>
+        <p style="font-size:12px; color:#777; line-height:1.5;">HTML is the rendering layer. Not PowerPoint. The Trust Score deck proved it.</p>
+      </div>
+      <div style="flex:1; display:flex; flex-direction:column;">
+        <div class="step-num">06</div>
+        <h4 style="font-size:14px; font-weight:500; margin-bottom:6px;">The Decision</h4>
+        <p style="font-size:12px; color:#777; line-height:1.5;">Two days. One person. Claude Code as architect. A full web app.</p>
+      </div>
+    </div>
+    <div style="background:var(--pb-blush); border-radius:10px; padding:16px 24px; margin-top:20px;">
+      <p style="font-size:14px; color:var(--pb-black); font-weight:500;">The Trust Score deck was the proof of concept. <span style="color:var(--pb-coral);">PB Sauce is the product.</span></p>
+    </div>
+  </div>
+  <img class="slide-logo" src="/assets/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="PB">
+  <span class="page-num">5</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 6 — Section Divider: Who This Serves -->
+<!-- ============================================================ -->
+<section class="slide slide-divider" style="background:var(--pb-blue);">
+  <img class="asset-img" src="/assets/illustrations/slide14_illustrations_05.png" alt="" style="width:260px; bottom:40px; right:80px; opacity:0.3;">
+  <div class="slide-content" contenteditable="true">
+    <div class="badge" style="color:rgba(255,255,255,0.6); border-color:rgba(255,255,255,0.3); margin-bottom:24px;">Section</div>
+    <h2 class="headline divider-title">Who This Serves</h2>
+    <p class="divider-sub">Three scenarios. Three people. Every week.</p>
+  </div>
+  <img class="slide-logo" src="/assets/logos/PB_Logo_Wordmark_Horizontal_White_1.png" alt="PB">
+  <span class="page-num">6</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 7 — The Executive (Vince) -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding:50px 70px;">
+    <div class="badge" style="color:var(--pb-coral); margin-bottom:20px;">The Executive</div>
+    <p style="font-size:16px; color:#666; margin-bottom:24px; font-weight:500;">Vince has a board call at 9 AM. He needs slides by EOD.</p>
+    <div style="display:flex; gap:32px; flex:1;">
+      <!-- Before -->
+      <div style="flex:1; background:#f5f2f1; border-radius:12px; padding:28px 24px; display:flex; flex-direction:column;">
+        <div class="label" style="color:#999; margin-bottom:16px;">Before</div>
+        <div style="display:flex; align-items:baseline; gap:8px; margin-bottom:16px;">
+          <span class="headline" style="font-size:48px; color:#bbb;">3 hrs</span>
+          <span style="font-size:14px; color:#999;">to deliver</span>
+        </div>
+        <div style="font-size:14px; color:#888; line-height:1.7; flex:1;">
+          <p style="margin-bottom:8px;">12-minute voice note to the team</p>
+          <p style="margin-bottom:8px;">Someone interprets it into slides</p>
+          <p style="margin-bottom:8px;">Two rounds of revision</p>
+          <p>Delivered at 5:45 PM</p>
+        </div>
+      </div>
+      <!-- After -->
+      <div style="flex:1; background:var(--pb-blue); border-radius:12px; padding:28px 24px; color:white; display:flex; flex-direction:column;">
+        <div class="label" style="color:rgba(255,255,255,0.6); margin-bottom:16px;">After</div>
+        <div style="display:flex; align-items:baseline; gap:8px; margin-bottom:16px;">
+          <span class="headline" style="font-size:48px; color:var(--pb-gold);">30 sec</span>
+          <span style="font-size:14px; color:rgba(255,255,255,0.7);">to generate</span>
+        </div>
+        <div style="font-size:14px; color:rgba(255,255,255,0.8); line-height:1.7; flex:1;">
+          <p style="margin-bottom:8px;">Records voice note directly in app</p>
+          <p style="margin-bottom:8px;">Clicks "Structure with AI" to organize</p>
+          <p style="margin-bottom:8px;">Clicks "Generate" &mdash; brand-perfect deck</p>
+          <p>Tweaks two headlines. Done by 4:15.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <img class="slide-logo" src="/assets/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="PB">
+  <span class="page-num">7</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 8 — The Project Manager -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding:50px 70px;">
+    <div class="badge" style="color:var(--pb-plum); margin-bottom:20px;">The Project Manager</div>
+    <p style="font-size:16px; color:#666; margin-bottom:24px; font-weight:500;">New client signed. Needs an onboarding deck for kickoff.</p>
+    <div style="display:flex; gap:32px; flex:1;">
+      <div style="flex:1; background:#f5f2f1; border-radius:12px; padding:28px 24px; display:flex; flex-direction:column;">
+        <div class="label" style="color:#999; margin-bottom:16px;">Before</div>
+        <div style="display:flex; align-items:baseline; gap:8px; margin-bottom:16px;">
+          <span class="headline" style="font-size:48px; color:#bbb;">2 hrs</span>
+          <span style="font-size:14px; color:#999;">digging + fixing</span>
+        </div>
+        <div style="font-size:14px; color:#888; line-height:1.7; flex:1;">
+          <p style="margin-bottom:8px;">Digs through Drive for the last deck</p>
+          <p style="margin-bottom:8px;">Finds three versions, picks the most recent</p>
+          <p style="margin-bottom:8px;">Replaces names, updates dates</p>
+          <p>Reformats broken fonts and layouts</p>
+        </div>
+      </div>
+      <div style="flex:1; background:var(--pb-plum); border-radius:12px; padding:28px 24px; color:white; display:flex; flex-direction:column;">
+        <div class="label" style="color:rgba(255,255,255,0.6); margin-bottom:16px;">After</div>
+        <div style="display:flex; align-items:baseline; gap:8px; margin-bottom:16px;">
+          <span class="headline" style="font-size:48px; color:var(--pb-gold);">1 min</span>
+          <span style="font-size:14px; color:rgba(255,255,255,0.7);">type + generate</span>
+        </div>
+        <div style="font-size:14px; color:rgba(255,255,255,0.8); line-height:1.7; flex:1;">
+          <p style="margin-bottom:8px;">Types a one-sentence description</p>
+          <p style="margin-bottom:8px;">RAG pulls structure from past onboarding decks</p>
+          <p style="margin-bottom:8px;">Deck already sounds like PB</p>
+          <p>Because it learned from every deck we've saved</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <img class="slide-logo" src="/assets/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="PB">
+  <span class="page-num">8</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 9 — The Account Manager -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding:50px 70px;">
+    <div class="badge" style="color:var(--pb-olive); margin-bottom:20px;">The Account Manager</div>
+    <p style="font-size:16px; color:#666; margin-bottom:24px; font-weight:500;">Three QBRs due this week. Different clients, different data, different stories.</p>
+    <div style="display:flex; gap:32px; flex:1;">
+      <div style="flex:1; background:#f5f2f1; border-radius:12px; padding:28px 24px; display:flex; flex-direction:column;">
+        <div class="label" style="color:#999; margin-bottom:16px;">Before</div>
+        <div style="display:flex; align-items:baseline; gap:8px; margin-bottom:16px;">
+          <span class="headline" style="font-size:48px; color:#bbb;">12 hrs</span>
+          <span style="font-size:14px; color:#999;">of production</span>
+        </div>
+        <div style="font-size:14px; color:#888; line-height:1.7; flex:1;">
+          <p style="margin-bottom:8px;">Three separate deck builds</p>
+          <p style="margin-bottom:8px;">Same formatting grind, three times</p>
+          <p style="margin-bottom:8px;">Copy-paste from data exports</p>
+          <p>Manually build data tables. 4 hours each.</p>
+        </div>
+      </div>
+      <div style="flex:1; background:var(--pb-olive); border-radius:12px; padding:28px 24px; color:white; display:flex; flex-direction:column;">
+        <div class="label" style="color:rgba(255,255,255,0.6); margin-bottom:16px;">After</div>
+        <div style="display:flex; align-items:baseline; gap:8px; margin-bottom:16px;">
+          <span class="headline" style="font-size:48px; color:var(--pb-gold);">&lt;1 hr</span>
+          <span style="font-size:14px; color:rgba(255,255,255,0.7);">total</span>
+        </div>
+        <div style="font-size:14px; color:rgba(255,255,255,0.8); line-height:1.7; flex:1;">
+          <p style="margin-bottom:8px;">Upload each client's performance PDF</p>
+          <p style="margin-bottom:8px;">PB Sauce reads the actual data</p>
+          <p style="margin-bottom:8px;">Set tone per client relationship</p>
+          <p>Three QBRs, three decks, under an hour.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <img class="slide-logo" src="/assets/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="PB">
+  <span class="page-num">9</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 10 — Section Divider: What We Built -->
+<!-- ============================================================ -->
+<section class="slide slide-divider" style="background:var(--pb-coral);">
+  <img class="asset-img" src="/assets/illustrations/slide32_illustrations.png" alt="" style="width:240px; bottom:40px; right:80px; opacity:0.3;">
+  <div class="slide-content" contenteditable="true">
+    <div class="badge" style="color:rgba(255,255,255,0.6); border-color:rgba(255,255,255,0.3); margin-bottom:24px;">Section</div>
+    <h2 class="headline divider-title">What We Built</h2>
+    <p class="divider-sub">Next.js web app. Text or voice in. Brand-perfect slides out.</p>
+  </div>
+  <img class="slide-logo" src="/assets/logos/PB_Logo_Wordmark_Horizontal_White_1.png" alt="PB">
+  <span class="page-num">10</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 11 — Generation Pipeline (6 input methods) -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="blob blob-blue" style="width:350px; height:350px; bottom:-120px; right:-100px;"></div>
+  <div class="slide-content" contenteditable="true" style="padding:50px 70px;">
+    <div class="badge" style="color:var(--pb-blue); margin-bottom:24px;">Generation Pipeline</div>
+    <h2 class="headline" style="font-size:28px; margin-bottom:28px;">Six ways to start a deck.</h2>
+    <div style="display:flex; gap:16px;">
+      <div style="flex:1; border:1px solid #eee; border-radius:12px; padding:24px 18px; text-align:center;">
+        <div style="width:48px; height:48px; border-radius:50%; background:var(--pb-blue); color:white; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:20px;">&#9998;</div>
+        <h4 style="font-size:14px; font-weight:500; margin-bottom:6px;">Text Input</h4>
+        <p style="font-size:12px; color:#777; line-height:1.4;">Describe the deck in plain language, bullets, or a full outline</p>
+      </div>
+      <div style="flex:1; border:1px solid #eee; border-radius:12px; padding:24px 18px; text-align:center;">
+        <div style="width:48px; height:48px; border-radius:50%; background:var(--pb-coral); color:white; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:20px;">&#127908;</div>
+        <h4 style="font-size:14px; font-weight:500; margin-bottom:6px;">Voice Input</h4>
+        <p style="font-size:12px; color:#777; line-height:1.4;">Record directly in the browser with real-time transcription</p>
+      </div>
+      <div style="flex:1; border:1px solid #eee; border-radius:12px; padding:24px 18px; text-align:center;">
+        <div style="width:48px; height:48px; border-radius:50%; background:var(--pb-plum); color:white; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:20px;">&#10024;</div>
+        <h4 style="font-size:14px; font-weight:500; margin-bottom:6px;">Structure AI</h4>
+        <p style="font-size:12px; color:#777; line-height:1.4;">One-click cleanup of raw speech into organized outline</p>
+      </div>
+      <div style="flex:1; border:1px solid #eee; border-radius:12px; padding:24px 18px; text-align:center;">
+        <div style="width:48px; height:48px; border-radius:50%; background:var(--pb-olive); color:white; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:20px;">&#128196;</div>
+        <h4 style="font-size:14px; font-weight:500; margin-bottom:6px;">PDF Upload</h4>
+        <p style="font-size:12px; color:#777; line-height:1.4;">Attach a source doc; Claude reads actual data, tables, metrics</p>
+      </div>
+      <div style="flex:1; border:1px solid #eee; border-radius:12px; padding:24px 18px; text-align:center;">
+        <div style="width:48px; height:48px; border-radius:50%; background:var(--pb-gold); color:white; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:20px;">&#127911;</div>
+        <h4 style="font-size:14px; font-weight:500; margin-bottom:6px;">Tone Presets</h4>
+        <p style="font-size:12px; color:#777; line-height:1.4;">Bold, Warm, Data-first, Executive, or custom tone</p>
+      </div>
+      <div style="flex:1; border:1px solid #eee; border-radius:12px; padding:24px 18px; text-align:center;">
+        <div style="width:48px; height:48px; border-radius:50%; background:var(--pb-black); color:white; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:20px;">&#128203;</div>
+        <h4 style="font-size:14px; font-weight:500; margin-bottom:6px;">Reference Deck</h4>
+        <p style="font-size:12px; color:#777; line-height:1.4;">Select a past deck's visual style as a starting point</p>
+      </div>
+    </div>
+  </div>
+  <img class="slide-logo" src="/assets/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="PB">
+  <span class="page-num">11</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 12 — 19 Slide Types -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding:48px 60px;">
+    <div class="badge" style="color:var(--pb-blue); margin-bottom:20px;">19 Slide Types</div>
+    <p style="font-size:15px; color:#666; margin-bottom:20px;">Every category of slide a PB deck needs, built as typed React components.</p>
+    <div style="display:flex; gap:20px; flex:1;">
+      <div style="flex:1;">
+        <div style="background:var(--pb-coral); color:white; padding:10px 16px; border-radius:8px 8px 0 0; font-weight:500; font-size:13px;">Foundation</div>
+        <div style="border:1px solid #eee; border-top:none; border-radius:0 0 8px 8px; padding:14px 16px;">
+          <p style="font-size:13px; color:#555; line-height:1.8;">Cover<br>Divider</p>
+        </div>
+      </div>
+      <div style="flex:1;">
+        <div style="background:var(--pb-blue); color:white; padding:10px 16px; border-radius:8px 8px 0 0; font-weight:500; font-size:13px;">Content</div>
+        <div style="border:1px solid #eee; border-top:none; border-radius:0 0 8px 8px; padding:14px 16px;">
+          <p style="font-size:13px; color:#555; line-height:1.8;">Content<br>Statement<br>Split Text + Image</p>
+        </div>
+      </div>
+      <div style="flex:1;">
+        <div style="background:var(--pb-gold); color:white; padding:10px 16px; border-radius:8px 8px 0 0; font-weight:500; font-size:13px;">Data &amp; Metrics</div>
+        <div style="border:1px solid #eee; border-top:none; border-radius:0 0 8px 8px; padding:14px 16px;">
+          <p style="font-size:13px; color:#555; line-height:1.8;">Data (bar charts)<br>Stat Hero<br>Table<br>VS Split</p>
+        </div>
+      </div>
+      <div style="flex:1;">
+        <div style="background:var(--pb-olive); color:white; padding:10px 16px; border-radius:8px 8px 0 0; font-weight:500; font-size:13px;">Strategy</div>
+        <div style="border:1px solid #eee; border-top:none; border-radius:0 0 8px 8px; padding:14px 16px;">
+          <p style="font-size:13px; color:#555; line-height:1.8;">Comparison<br>Grid Cards<br>Checklist<br>Timeline<br>Phased Roadmap</p>
+        </div>
+      </div>
+      <div style="flex:1;">
+        <div style="background:var(--pb-plum); color:white; padding:10px 16px; border-radius:8px 8px 0 0; font-weight:500; font-size:13px;">Operations</div>
+        <div style="border:1px solid #eee; border-top:none; border-radius:0 0 8px 8px; padding:14px 16px;">
+          <p style="font-size:13px; color:#555; line-height:1.8;">Process Flow<br>Before / After<br>Case Study</p>
+        </div>
+      </div>
+      <div style="flex:1;">
+        <div style="background:var(--pb-black); color:white; padding:10px 16px; border-radius:8px 8px 0 0; font-weight:500; font-size:13px;">Freeform</div>
+        <div style="border:1px solid #eee; border-top:none; border-radius:0 0 8px 8px; padding:14px 16px;">
+          <p style="font-size:13px; color:#555; line-height:1.8;">Custom HTML<br><span style="color:#bbb; font-size:11px;">(bespoke layouts)</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <img class="slide-logo" src="/assets/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="PB">
+  <span class="page-num">12</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 13 — Brand Integration -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="blob blob-blush" style="width:500px; height:500px; top:-200px; right:-150px;"></div>
+  <div class="slide-content" contenteditable="true" style="padding:50px 70px;">
+    <div class="badge" style="color:var(--pb-coral); margin-bottom:24px;">Brand Integration</div>
+    <h2 class="headline" style="font-size:28px; margin-bottom:28px;">Every output looks like PB.</h2>
+    <div style="display:flex; gap:20px;">
+      <div style="flex:1; text-align:center; padding:32px 20px; border:1px solid #eee; border-radius:12px;">
+        <div class="headline" style="font-size:52px; color:var(--pb-coral); margin-bottom:8px;">149</div>
+        <div style="font-size:13px; color:#999; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">Brand Assets</div>
+        <p style="font-size:13px; color:#666;">Backgrounds, icons, illustrations, logos, photos, scribbles, UI elements</p>
+      </div>
+      <div style="flex:1; text-align:center; padding:32px 20px; border:1px solid #eee; border-radius:12px;">
+        <div class="headline" style="font-size:52px; color:var(--pb-blue); margin-bottom:8px;">8</div>
+        <div style="font-size:13px; color:#999; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">Bean Characters</div>
+        <p style="font-size:13px; color:#666;">Auto-injected on cover, divider, and closing slides. Unique illustrations that cycle.</p>
+      </div>
+      <div style="flex:1; text-align:center; padding:32px 20px; border:1px solid #eee; border-radius:12px;">
+        <div class="headline" style="font-size:52px; color:var(--pb-olive); margin-bottom:8px;">2</div>
+        <div style="font-size:13px; color:#999; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">Custom Fonts</div>
+        <p style="font-size:13px; color:#666;">GT Walsheim + TT Hoves embedded throughout every export path</p>
+      </div>
+      <div style="flex:1; text-align:center; padding:32px 20px; border:1px solid #eee; border-radius:12px;">
+        <div class="headline" style="font-size:52px; color:var(--pb-gold); margin-bottom:8px;">7</div>
+        <div style="font-size:13px; color:#999; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">Brand Colors</div>
+        <p style="font-size:13px; color:#666;">CSS variables &mdash; one source of truth across React and PDF export</p>
+      </div>
+      <div style="flex:1; text-align:center; padding:32px 20px; border:1px solid #eee; border-radius:12px;">
+        <div class="headline" style="font-size:18px; color:var(--pb-plum); margin-bottom:8px; line-height:1.3;">&#9744; PB</div>
+        <div style="font-size:13px; color:#999; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:10px;">Logo Watermarks</div>
+        <p style="font-size:13px; color:#666;">Every slide. White on dark, black on light. 25% opacity.</p>
+      </div>
+    </div>
+  </div>
+  <img class="slide-logo" src="/assets/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="PB">
+  <span class="page-num">13</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 14 — Editing & Export -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding:50px 70px;">
+    <div class="badge" style="color:var(--pb-olive); margin-bottom:24px;">Editing &amp; Export</div>
+    <h2 class="headline" style="font-size:28px; margin-bottom:32px;">Generate, edit, export. All in the browser.</h2>
+    <div style="display:flex; gap:20px;">
+      <div style="flex:1; background:var(--pb-blush); border-radius:12px; padding:28px 22px;">
+        <div style="font-size:28px; margin-bottom:12px;">&#9998;</div>
+        <h4 style="font-size:16px; font-weight:500; margin-bottom:8px;">Contenteditable</h4>
+        <p style="font-size:13px; color:#666; line-height:1.5;">Click any text on any slide and type. Live editing, no forms, no modals.</p>
+      </div>
+      <div style="flex:1; background:var(--pb-blush); border-radius:12px; padding:28px 22px;">
+        <div style="font-size:28px; margin-bottom:12px;">&#127912;</div>
+        <h4 style="font-size:16px; font-weight:500; margin-bottom:8px;">Formatting Toolbar</h4>
+        <p style="font-size:13px; color:#666; line-height:1.5;">Floating Bold / Italic / Font Size / Color controls with 7 brand colors.</p>
+      </div>
+      <div style="flex:1; background:var(--pb-blush); border-radius:12px; padding:28px 22px;">
+        <div style="font-size:28px; margin-bottom:12px;">&#128196;</div>
+        <h4 style="font-size:16px; font-weight:500; margin-bottom:8px;">PDF Export</h4>
+        <p style="font-size:13px; color:#666; line-height:1.5;">One-click via Puppeteer headless Chrome. Pixel-perfect at 1280x720px per slide.</p>
+      </div>
+      <div style="flex:1; background:var(--pb-blush); border-radius:12px; padding:28px 22px;">
+        <div style="font-size:28px; margin-bottom:12px;">&#127760;</div>
+        <h4 style="font-size:16px; font-weight:500; margin-bottom:8px;">HTML Export</h4>
+        <p style="font-size:13px; color:#666; line-height:1.5;">Self-contained HTML file. Opens in any browser. Share via link or attachment.</p>
+      </div>
+      <div style="flex:1; background:var(--pb-blush); border-radius:12px; padding:28px 22px;">
+        <div style="font-size:28px; margin-bottom:12px;">&#128424;</div>
+        <h4 style="font-size:16px; font-weight:500; margin-bottom:8px;">Browser Print</h4>
+        <p style="font-size:13px; color:#666; line-height:1.5;">Ctrl+P, true WYSIWYG. Currently the most reliable export path.</p>
+      </div>
+    </div>
+  </div>
+  <img class="slide-logo" src="/assets/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="PB">
+  <span class="page-num">14</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 15 — Section Divider: How It Works -->
+<!-- ============================================================ -->
+<section class="slide slide-divider" style="background:var(--pb-olive);">
+  <img class="asset-img" src="/assets/illustrations/slide13_illustrations_03.png" alt="" style="width:240px; bottom:40px; right:80px; opacity:0.3;">
+  <div class="slide-content" contenteditable="true">
+    <div class="badge" style="color:rgba(255,255,255,0.6); border-color:rgba(255,255,255,0.3); margin-bottom:24px;">Section</div>
+    <h2 class="headline divider-title">How It Works</h2>
+    <p class="divider-sub">From input to brand-perfect output.</p>
+  </div>
+  <img class="slide-logo" src="/assets/logos/PB_Logo_Wordmark_Horizontal_White_1.png" alt="PB">
+  <span class="page-num">15</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 16 — Generation Pipeline Diagram -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding:50px 60px;">
+    <div class="badge" style="color:var(--pb-blue); margin-bottom:24px;">Generation Architecture</div>
+    <h2 class="headline" style="font-size:26px; margin-bottom:32px;">Text in. Slides out. Here's what happens in between.</h2>
+    <div class="arch-row" style="justify-content:center; margin-bottom:40px;">
+      <div class="arch-box" style="background:var(--pb-blush); color:var(--pb-black); padding:16px 20px; min-width:140px;">
+        <div style="font-size:14px; font-weight:500; margin-bottom:4px;">User Input</div>
+        <div style="font-size:10px; color:#888;">Text / Voice / PDF<br>Tone / Reference</div>
+      </div>
+      <div class="arch-arrow" style="font-size:24px;">&#10132;</div>
+      <div class="arch-box" style="background:var(--pb-blue); color:white; padding:16px 20px; min-width:180px;">
+        <div style="font-size:14px; font-weight:500; margin-bottom:4px;">System Prompt Assembly</div>
+        <div style="font-size:10px; color:rgba(255,255,255,0.7);">17 slide specs + brand ref<br>+ assets + tone + RAG</div>
+      </div>
+      <div class="arch-arrow" style="font-size:24px;">&#10132;</div>
+      <div class="arch-box" style="background:var(--pb-plum); color:white; padding:16px 20px; min-width:130px;">
+        <div style="font-size:14px; font-weight:500; margin-bottom:4px;">Claude Sonnet 4.6</div>
+        <div style="font-size:10px; color:rgba(255,255,255,0.7);">AI Generation</div>
+      </div>
+      <div class="arch-arrow" style="font-size:24px;">&#10132;</div>
+      <div class="arch-box" style="background:var(--pb-olive); color:white; padding:16px 20px; min-width:130px;">
+        <div style="font-size:14px; font-weight:500; margin-bottom:4px;">JSON &rarr; React</div>
+        <div style="font-size:10px; color:rgba(255,255,255,0.7);">19 typed components</div>
+      </div>
+      <div class="arch-arrow" style="font-size:24px;">&#10132;</div>
+      <div class="arch-box" style="background:var(--pb-coral); color:white; padding:16px 20px; min-width:120px;">
+        <div style="font-size:14px; font-weight:500; margin-bottom:4px;">Export</div>
+        <div style="font-size:10px; color:rgba(255,255,255,0.7);">PDF / HTML / Print</div>
+      </div>
+    </div>
+    <!-- Tech stack row -->
+    <div style="display:flex; gap:20px;">
+      <div style="flex:1; text-align:center; padding:16px; border:1px solid #eee; border-radius:8px;">
+        <div style="font-size:13px; font-weight:500; color:var(--pb-blue);">Frontend</div>
+        <div style="font-size:11px; color:#888; margin-top:4px;">Next.js 16 + TypeScript + Tailwind v4</div>
+      </div>
+      <div style="flex:1; text-align:center; padding:16px; border:1px solid #eee; border-radius:8px;">
+        <div style="font-size:13px; font-weight:500; color:var(--pb-plum);">AI</div>
+        <div style="font-size:11px; color:#888; margin-top:4px;">Claude Sonnet 4.6 (Anthropic API)</div>
+      </div>
+      <div style="flex:1; text-align:center; padding:16px; border:1px solid #eee; border-radius:8px;">
+        <div style="font-size:13px; font-weight:500; color:var(--pb-olive);">Embeddings</div>
+        <div style="font-size:11px; color:#888; margin-top:4px;">Google text-embedding-004</div>
+      </div>
+      <div style="flex:1; text-align:center; padding:16px; border:1px solid #eee; border-radius:8px;">
+        <div style="font-size:13px; font-weight:500; color:var(--pb-gold);">Database</div>
+        <div style="font-size:11px; color:#888; margin-top:4px;">Supabase (Postgres + pgvector)</div>
+      </div>
+      <div style="flex:1; text-align:center; padding:16px; border:1px solid #eee; border-radius:8px;">
+        <div style="font-size:13px; font-weight:500; color:var(--pb-coral);">PDF Export</div>
+        <div style="font-size:11px; color:#888; margin-top:4px;">Puppeteer (headless Chrome)</div>
+      </div>
+    </div>
+  </div>
+  <img class="slide-logo" src="/assets/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="PB">
+  <span class="page-num">16</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 17 — RAG Loop -->
+<!-- ============================================================ -->
+<section class="slide slide-dark" style="background:var(--pb-black);">
+  <div class="slide-content" contenteditable="true" style="padding:50px 70px; color:var(--white);">
+    <div class="badge" style="color:var(--pb-gold); border-color:var(--pb-gold); margin-bottom:24px;">RAG Loop</div>
+    <h2 class="headline" style="font-size:28px; color:var(--white); margin-bottom:32px;">Every deck makes the next one smarter.</h2>
+    <div style="display:flex; gap:24px; justify-content:center; align-items:center; flex:1;">
+      <!-- Circular flow as numbered steps -->
+      <div style="display:flex; flex-wrap:wrap; gap:16px; max-width:900px; justify-content:center;">
+        <div class="card-dark" style="flex:0 0 calc(25% - 12px); border:1px solid rgba(255,255,255,0.1); text-align:center; padding:20px 16px;">
+          <div class="step-num" style="font-size:32px;">01</div>
+          <h4 style="font-size:14px; font-weight:500; margin-bottom:6px;">Generate</h4>
+          <p style="font-size:12px; color:rgba(255,255,255,0.5);">User creates a deck from text, voice, or PDF</p>
+        </div>
+        <div class="card-dark" style="flex:0 0 calc(25% - 12px); border:1px solid rgba(255,255,255,0.1); text-align:center; padding:20px 16px;">
+          <div class="step-num" style="font-size:32px;">02</div>
+          <h4 style="font-size:14px; font-weight:500; margin-bottom:6px;">Save</h4>
+          <p style="font-size:12px; color:rgba(255,255,255,0.5);">Deck persists to Supabase with title, client, slides</p>
+        </div>
+        <div class="card-dark" style="flex:0 0 calc(25% - 12px); border:1px solid rgba(255,255,255,0.1); text-align:center; padding:20px 16px;">
+          <div class="step-num" style="font-size:32px;">03</div>
+          <h4 style="font-size:14px; font-weight:500; margin-bottom:6px;">Chunk</h4>
+          <p style="font-size:12px; color:rgba(255,255,255,0.5);">Each slide converts to plain text passages</p>
+        </div>
+        <div class="card-dark" style="flex:0 0 calc(25% - 12px); border:1px solid rgba(255,255,255,0.1); text-align:center; padding:20px 16px;">
+          <div class="step-num" style="font-size:32px;">04</div>
+          <h4 style="font-size:14px; font-weight:500; margin-bottom:6px;">Embed</h4>
+          <p style="font-size:12px; color:rgba(255,255,255,0.5);">Google AI creates 768-dim vector fingerprints</p>
+        </div>
+        <div class="card-dark" style="flex:0 0 calc(25% - 12px); border:1px solid rgba(255,255,255,0.1); text-align:center; padding:20px 16px;">
+          <div class="step-num" style="font-size:32px;">05</div>
+          <h4 style="font-size:14px; font-weight:500; margin-bottom:6px;">Store</h4>
+          <p style="font-size:12px; color:rgba(255,255,255,0.5);">Vectors stored in Supabase pgvector</p>
+        </div>
+        <div class="card-dark" style="flex:0 0 calc(25% - 12px); border:1px solid rgba(255,255,255,0.1); text-align:center; padding:20px 16px;">
+          <div class="step-num" style="font-size:32px;">06</div>
+          <h4 style="font-size:14px; font-weight:500; margin-bottom:6px;">Search</h4>
+          <p style="font-size:12px; color:rgba(255,255,255,0.5);">Similarity search finds relevant past content</p>
+        </div>
+        <div class="card-dark" style="flex:0 0 calc(25% - 12px); border:1px solid rgba(255,255,255,0.1); text-align:center; padding:20px 16px;">
+          <div class="step-num" style="font-size:32px;">07</div>
+          <h4 style="font-size:14px; font-weight:500; margin-bottom:6px;">Inject</h4>
+          <p style="font-size:12px; color:rgba(255,255,255,0.5);">Past content injected as generation context</p>
+        </div>
+        <div class="card-dark" style="flex:0 0 calc(25% - 12px); border:1px solid rgba(255,255,255,0.1); text-align:center; padding:20px 16px;">
+          <div class="step-num" style="font-size:32px;">08</div>
+          <h4 style="font-size:14px; font-weight:500; margin-bottom:6px;">Generate</h4>
+          <p style="font-size:12px; color:rgba(255,255,255,0.5);">New deck is smarter. The loop continues.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <img class="slide-logo" src="/assets/logos/PB_Logo_Wordmark_Horizontal_White_1.png" alt="PB">
+  <span class="page-num" style="color:rgba(255,255,255,0.3);">17</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 18 — Section Divider: The Learning Engine -->
+<!-- ============================================================ -->
+<section class="slide slide-divider" style="background:var(--pb-plum);">
+  <img class="asset-img" src="/assets/illustrations/slide14_illustrations_09.png" alt="" style="width:240px; bottom:40px; right:80px; opacity:0.3;">
+  <div class="slide-content" contenteditable="true">
+    <div class="badge" style="color:rgba(255,255,255,0.6); border-color:rgba(255,255,255,0.3); margin-bottom:24px;">Section</div>
+    <h2 class="headline divider-title">The Learning Engine</h2>
+    <p class="divider-sub">A tool that learns how PB thinks.</p>
+  </div>
+  <img class="slide-logo" src="/assets/logos/PB_Logo_Wordmark_Horizontal_White_1.png" alt="PB">
+  <span class="page-num">18</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 19 — Compounding Effect -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="blob blob-plum" style="width:350px; height:350px; bottom:-120px; right:-100px;"></div>
+  <div class="slide-content" contenteditable="true" style="padding:50px 70px;">
+    <div class="badge" style="color:var(--pb-plum); margin-bottom:24px;">Compounding Effect</div>
+    <h2 class="headline" style="font-size:28px; margin-bottom:32px;">The more we use it, the better it gets.</h2>
+    <div style="display:flex; gap:28px; flex:1;">
+      <div style="flex:1; border:1px solid #eee; border-radius:12px; padding:32px 24px; display:flex; flex-direction:column;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+          <div style="width:48px; height:48px; border-radius:50%; background:var(--pb-blush); display:flex; align-items:center; justify-content:center;">
+            <span class="headline" style="font-size:22px; color:var(--pb-plum);">M1</span>
+          </div>
+          <div>
+            <div style="font-size:16px; font-weight:500;">Month 1</div>
+            <div style="font-size:13px; color:#999;">~5 decks saved</div>
+          </div>
+        </div>
+        <p style="font-size:14px; color:#666; line-height:1.6; flex:1;">Generic but on-brand. PB Sauce knows the design system but not our voice.</p>
+        <div class="bar-track" style="margin-top:16px;">
+          <div class="bar-fill" style="width:20%; background:var(--pb-plum);"></div>
+        </div>
+      </div>
+      <div style="flex:1; border:1px solid #eee; border-radius:12px; padding:32px 24px; display:flex; flex-direction:column;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+          <div style="width:48px; height:48px; border-radius:50%; background:var(--pb-blush); display:flex; align-items:center; justify-content:center;">
+            <span class="headline" style="font-size:22px; color:var(--pb-plum);">M3</span>
+          </div>
+          <div>
+            <div style="font-size:16px; font-weight:500;">Month 3</div>
+            <div style="font-size:13px; color:#999;">~20 decks saved</div>
+          </div>
+        </div>
+        <p style="font-size:14px; color:#666; line-height:1.6; flex:1;">Starts to sound like us. Picks up recurring themes, client language, strategy patterns.</p>
+        <div class="bar-track" style="margin-top:16px;">
+          <div class="bar-fill" style="width:55%; background:var(--pb-plum);"></div>
+        </div>
+      </div>
+      <div style="flex:1; border:2px solid var(--pb-plum); border-radius:12px; padding:32px 24px; display:flex; flex-direction:column;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+          <div style="width:48px; height:48px; border-radius:50%; background:var(--pb-plum); display:flex; align-items:center; justify-content:center;">
+            <span class="headline" style="font-size:22px; color:white;">M6</span>
+          </div>
+          <div>
+            <div style="font-size:16px; font-weight:500;">Month 6</div>
+            <div style="font-size:13px; color:#999;">50+ decks saved</div>
+          </div>
+        </div>
+        <p style="font-size:14px; color:#666; line-height:1.6; flex:1;">Client-specific institutional knowledge. "Generate a Walgreens QBR" pulls from 6 months of history automatically.</p>
+        <div class="bar-track" style="margin-top:16px;">
+          <div class="bar-fill" style="width:90%; background:var(--pb-plum);"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <img class="slide-logo" src="/assets/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="PB">
+  <span class="page-num">19</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 20 — Cost Comparison -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding:50px 70px; justify-content:center; align-items:center; text-align:center;">
+    <div class="badge" style="color:var(--pb-gold); margin-bottom:32px;">Cost Per Deck</div>
+    <div class="headline" style="font-size:120px; color:var(--pb-black); margin-bottom:8px;">$0.12</div>
+    <p style="font-size:22px; color:#999; margin-bottom:40px;">Per deck. Twelve cents.</p>
+    <div style="display:flex; gap:24px; justify-content:center; text-align:left; width:100%;">
+      <div style="flex:1; max-width:420px;">
+        <table class="pb-table" style="font-size:13px;">
+          <tr><th>Component</th><th style="text-align:right;">Annual Cost</th></tr>
+          <tr><td>Claude API (Sonnet)</td><td style="text-align:right;">~$134</td></tr>
+          <tr><td>Google Embeddings</td><td style="text-align:right;">~$1</td></tr>
+          <tr><td>Supabase</td><td style="text-align:right;">$0 (free tier)</td></tr>
+          <tr><td>Vercel Hosting</td><td style="text-align:right;">$0&ndash;$20</td></tr>
+          <tr><td style="font-weight:600;">Total (20 users, ~1 deck/wk each)</td><td style="text-align:right; font-weight:600; color:var(--pb-olive);">~$134/year</td></tr>
+        </table>
+      </div>
+      <div style="flex:1; max-width:420px;">
+        <table class="pb-table" style="font-size:13px;">
+          <tr><th>Alternative</th><th style="text-align:right;">Annual (20 users)</th></tr>
+          <tr><td style="color:var(--pb-olive); font-weight:500;">PB Sauce</td><td style="text-align:right; color:var(--pb-olive); font-weight:500;">~$134</td></tr>
+          <tr><td>Figma (with Slides)</td><td style="text-align:right;">$3,600&ndash;$7,200</td></tr>
+          <tr><td>Beautiful.ai</td><td style="text-align:right;">$2,880</td></tr>
+          <tr><td>Gamma</td><td style="text-align:right;">$1,920</td></tr>
+          <tr><td>Google Slides + labor</td><td style="text-align:right;">~$7,500 in time</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <img class="slide-logo" src="/assets/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="PB">
+  <span class="page-num">20</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 21 — The Bottom Line on Cost -->
+<!-- ============================================================ -->
+<section class="slide" style="background:var(--pb-blush);">
+  <div class="blob blob-gold" style="width:400px; height:400px; top:-150px; right:-100px;"></div>
+  <div class="slide-content" contenteditable="true" style="justify-content:center; align-items:center; text-align:center;">
+    <div class="badge" style="color:var(--pb-gold); margin-bottom:40px;">The Bottom Line</div>
+    <div class="headline" style="font-size:88px; color:var(--pb-black); margin-bottom:16px;">$6.70</div>
+    <p style="font-size:28px; color:var(--pb-black); font-weight:300; margin-bottom:8px;">per user per year.</p>
+    <p style="font-size:22px; color:#888; font-weight:300; margin-top:24px;">Less than a team lunch.</p>
+    <div style="background:var(--pb-black); color:var(--white); border-radius:10px; padding:20px 32px; margin-top:40px; max-width:600px;">
+      <p style="font-size:15px; line-height:1.6; font-weight:300;">
+        Opus upgrade option: ~$398/year (~$20/user/year). Still trivial.<br>
+        <span style="color:var(--pb-gold); font-weight:500;">Worth testing for richer narrative quality on strategic decks.</span>
+      </p>
+    </div>
+  </div>
+  <img class="slide-logo" src="/assets/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="PB">
+  <span class="page-num">21</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 22 — Current vs. Deployed Architecture -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding:50px 60px;">
+    <div class="badge" style="color:var(--pb-coral); margin-bottom:24px;">Where It Stands</div>
+    <h2 class="headline" style="font-size:26px; margin-bottom:28px;">Alpha &rarr; v1. The gap is small.</h2>
+    <div style="display:flex; gap:40px; flex:1;">
+      <!-- Current -->
+      <div style="flex:1; border:2px solid #eee; border-radius:12px; padding:28px 24px;">
+        <div class="label" style="color:#999; margin-bottom:16px;">Current &mdash; Alpha</div>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:8px; height:8px; border-radius:50%; background:#ccc;"></div>
+            <span style="font-size:14px; color:#666;">Joe's MacBook (localhost:3000)</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:8px; height:8px; border-radius:50%; background:#ccc;"></div>
+            <span style="font-size:14px; color:#666;">Next.js dev server</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:8px; height:8px; border-radius:50%; background:#ccc;"></div>
+            <span style="font-size:14px; color:#666;">All 6 API routes</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:8px; height:8px; border-radius:50%; background:#ccc;"></div>
+            <span style="font-size:14px; color:#666;">Local file system</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:8px; height:8px; border-radius:50%; background:var(--pb-coral);"></div>
+            <span style="font-size:14px; color:#666;">No database</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:8px; height:8px; border-radius:50%; background:var(--pb-coral);"></div>
+            <span style="font-size:14px; color:#666;">No team access</span>
+          </div>
+        </div>
+      </div>
+      <!-- Arrow -->
+      <div style="display:flex; align-items:center; font-size:36px; color:#ccc;">&#10132;</div>
+      <!-- Deployed -->
+      <div style="flex:1; border:2px solid var(--pb-olive); border-radius:12px; padding:28px 24px;">
+        <div class="label" style="color:var(--pb-olive); margin-bottom:16px;">Deployed &mdash; v1</div>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:8px; height:8px; border-radius:50%; background:var(--pb-olive);"></div>
+            <span style="font-size:14px; color:#555; font-weight:500;">Vercel (Frontend + API routes)</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:8px; height:8px; border-radius:50%; background:var(--pb-olive);"></div>
+            <span style="font-size:14px; color:#555; font-weight:500;">Static assets (149 brand files)</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:8px; height:8px; border-radius:50%; background:var(--pb-olive);"></div>
+            <span style="font-size:14px; color:#555; font-weight:500;">Supabase (Postgres + pgvector)</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:8px; height:8px; border-radius:50%; background:var(--pb-olive);"></div>
+            <span style="font-size:14px; color:#555; font-weight:500;">Deck library + RAG vectors</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:8px; height:8px; border-radius:50%; background:var(--pb-olive);"></div>
+            <span style="font-size:14px; color:#555; font-weight:500;">Claude + Google APIs (same keys)</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:8px; height:8px; border-radius:50%; background:var(--pb-olive);"></div>
+            <span style="font-size:14px; color:#555; font-weight:500;">Team access via URL</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--pb-blush); border-radius:10px; padding:14px 24px; margin-top:16px; text-align:center;">
+      <p style="font-size:14px; color:var(--pb-black);">Status: <strong>Fully functional.</strong> All 19 slide types working. All export paths functional. 149 brand assets loaded. 7 reference decks seeded.</p>
+    </div>
+  </div>
+  <img class="slide-logo" src="/assets/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="PB">
+  <span class="page-num">22</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 23 — What's Needed to Deploy -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="blob blob-olive" style="width:350px; height:350px; bottom:-120px; left:-100px;"></div>
+  <div class="slide-content" contenteditable="true" style="padding:60px 80px;">
+    <div class="badge" style="color:var(--pb-olive); margin-bottom:24px;">Deploy Checklist</div>
+    <h2 class="headline" style="font-size:32px; margin-bottom:36px;">A Saturday afternoon, not a sprint cycle.</h2>
+    <div style="display:flex; gap:24px; margin-bottom:32px;">
+      <div style="flex:1; border:1px solid #eee; border-radius:12px; padding:28px 24px;">
+        <div class="step-num">01</div>
+        <h4 style="font-size:16px; font-weight:500; margin-bottom:8px;">Vercel Deploy</h4>
+        <p style="font-size:14px; color:#666; line-height:1.5; margin-bottom:12px;">Push repo, set env vars (ANTHROPIC_API_KEY, SUPABASE_URL, etc.)</p>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div style="background:var(--pb-olive); color:white; border-radius:6px; padding:4px 10px; font-size:12px; font-weight:500;">~30 min</div>
+        </div>
+      </div>
+      <div style="flex:1; border:1px solid #eee; border-radius:12px; padding:28px 24px;">
+        <div class="step-num">02</div>
+        <h4 style="font-size:16px; font-weight:500; margin-bottom:8px;">Supabase Setup</h4>
+        <p style="font-size:14px; color:#666; line-height:1.5; margin-bottom:12px;">Create project, run migration.sql in SQL Editor</p>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div style="background:var(--pb-olive); color:white; border-radius:6px; padding:4px 10px; font-size:12px; font-weight:500;">~30 min</div>
+        </div>
+      </div>
+      <div style="flex:1; border:1px solid #eee; border-radius:12px; padding:28px 24px;">
+        <div class="step-num">03</div>
+        <h4 style="font-size:16px; font-weight:500; margin-bottom:8px;">Seed Library</h4>
+        <p style="font-size:14px; color:#666; line-height:1.5; margin-bottom:12px;">Save 7+ existing reference decks to populate RAG</p>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div style="background:var(--pb-olive); color:white; border-radius:6px; padding:4px 10px; font-size:12px; font-weight:500;">~1 hour</div>
+        </div>
+      </div>
+      <div style="flex:1; border:1px solid #eee; border-radius:12px; padding:28px 24px;">
+        <div class="step-num">04</div>
+        <h4 style="font-size:16px; font-weight:500; margin-bottom:8px;">Team Walkthrough</h4>
+        <p style="font-size:14px; color:#666; line-height:1.5; margin-bottom:12px;">10-minute demo, share URL, answer questions</p>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div style="background:var(--pb-olive); color:white; border-radius:6px; padding:4px 10px; font-size:12px; font-weight:500;">~30 min</div>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--pb-black); color:var(--white); border-radius:10px; padding:20px 32px; text-align:center;">
+      <p style="font-size:16px; font-weight:300;">Total deployment effort: <strong style="color:var(--pb-gold);">~2.5 hours.</strong> No engineering team needed. No infrastructure to provision.</p>
+    </div>
+  </div>
+  <img class="slide-logo" src="/assets/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="PB">
+  <span class="page-num">23</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 24 — How We Built It -->
+<!-- ============================================================ -->
+<section class="slide">
+  <div class="slide-content" contenteditable="true" style="padding:44px 56px;">
+    <div class="badge" style="color:var(--pb-gold); margin-bottom:16px;">How We Built It</div>
+    <div style="display:flex; gap:40px; margin-bottom:20px;">
+      <div style="text-align:center;">
+        <div class="headline" style="font-size:48px; color:var(--pb-gold);">12</div>
+        <div style="font-size:12px; color:#999; text-transform:uppercase; letter-spacing:0.08em;">Sessions</div>
+      </div>
+      <div style="text-align:center;">
+        <div class="headline" style="font-size:48px; color:var(--pb-gold);">2</div>
+        <div style="font-size:12px; color:#999; text-transform:uppercase; letter-spacing:0.08em;">Days</div>
+      </div>
+      <div style="text-align:center;">
+        <div class="headline" style="font-size:48px; color:var(--pb-gold);">1</div>
+        <div style="font-size:12px; color:#999; text-transform:uppercase; letter-spacing:0.08em;">Person</div>
+      </div>
+      <div style="text-align:center;">
+        <div class="headline" style="font-size:48px; color:var(--pb-blue);">19</div>
+        <div style="font-size:12px; color:#999; text-transform:uppercase; letter-spacing:0.08em;">Slide Types</div>
+      </div>
+      <div style="text-align:center;">
+        <div class="headline" style="font-size:48px; color:var(--pb-blue);">42</div>
+        <div style="font-size:12px; color:#999; text-transform:uppercase; letter-spacing:0.08em;">TS Files</div>
+      </div>
+      <div style="text-align:center;">
+        <div class="headline" style="font-size:48px; color:var(--pb-coral);">149</div>
+        <div style="font-size:12px; color:#999; text-transform:uppercase; letter-spacing:0.08em;">Brand Assets</div>
+      </div>
+      <div style="text-align:center;">
+        <div class="headline" style="font-size:48px; color:var(--pb-olive);">25+</div>
+        <div style="font-size:12px; color:#999; text-transform:uppercase; letter-spacing:0.08em;">Decisions</div>
+      </div>
+    </div>
+    <table class="appendix-table">
+      <tr><th>Phase</th><th>What</th><th>Key Deliverable</th></tr>
+      <tr><td style="font-weight:500; color:var(--pb-gold);">1. Foundation</td><td>Next.js scaffold, design system, 8 slide components</td><td>Working app with sample deck rendering</td></tr>
+      <tr><td style="font-weight:500; color:var(--pb-gold);">2. AI Pipeline</td><td>Claude API integration, 10 new slide types, system prompt</td><td>Text &rarr; deck generation end-to-end</td></tr>
+      <tr><td style="font-weight:500; color:var(--pb-gold);">3. PDF Export</td><td>Puppeteer headless Chrome, 18 HTML renderers</td><td>One-click PDF download, pixel-perfect</td></tr>
+      <tr><td style="font-weight:500; color:var(--pb-blue);">4. Polish</td><td>Bug fixes (blush removal, PDF shadows, scaling)</td><td>Production-quality visual output</td></tr>
+      <tr><td style="font-weight:500; color:var(--pb-blue);">5. HTML Export</td><td>Shared renderer extraction, HTML download route</td><td>Self-contained HTML deck files</td></tr>
+      <tr><td style="font-weight:500; color:var(--pb-blue);">6. Voice Input</td><td>Web Speech API, Claude outline structuring</td><td>Speak &rarr; structure &rarr; generate pipeline</td></tr>
+      <tr><td style="font-weight:500; color:var(--pb-olive);">7. Library + RAG</td><td>Supabase, Google embeddings, vector search</td><td>Save, browse, and learn from past decks</td></tr>
+      <tr><td style="font-weight:500; color:var(--pb-olive);">8. Quality Analysis</td><td>Benchmarked output vs. raw Opus prompt</td><td>Identified 4 root causes of quality gap</td></tr>
+      <tr><td style="font-weight:500; color:var(--pb-olive);">9. Gen Upgrade</td><td>Hybrid slides, tone presets, reference injection</td><td>Dramatically improved output quality</td></tr>
+      <tr><td style="font-weight:500; color:var(--pb-coral);">10. PDF + Branding</td><td>Direct PDF-to-Claude, 149 assets, 7 layout patterns</td><td>Source documents + brand in every generation</td></tr>
+      <tr><td style="font-weight:500; color:var(--pb-coral);">11. Visual Polish</td><td>Formatting toolbar, bean chars, logo watermarks</td><td>Professional editing experience</td></tr>
+      <tr><td style="font-weight:500; color:var(--pb-coral);">12. Component Branding</td><td>Illustrations in React + HTML export, print fixes</td><td>Brand elements survive every export path</td></tr>
+    </table>
+  </div>
+  <img class="slide-logo" src="/assets/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png" alt="PB">
+  <span class="page-num">24</span>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 25 — Closing Statement -->
+<!-- ============================================================ -->
+<section class="slide slide-dark" style="background:var(--pb-black);">
+  <div class="blob blob-gold" style="width:500px; height:500px; top:-200px; left:-150px; opacity:0.08;"></div>
+  <div class="blob blob-blue" style="width:300px; height:300px; bottom:-100px; right:300px; opacity:0.06;"></div>
+  <img class="asset-img" src="/assets/illustrations/slide14_illustrations_09.png" alt="" style="width:220px; bottom:40px; right:60px; opacity:0.4;">
+  <div class="slide-content" contenteditable="true" style="justify-content:center; align-items:flex-start; padding:80px 100px; padding-right:340px;">
+    <div style="width:60px; height:4px; background:var(--pb-gold); border-radius:2px; margin-bottom:32px;"></div>
+    <p class="headline" style="font-size:34px; color:var(--white); line-height:1.35; margin-bottom:32px;">
+      We built a tool that makes PB decks.<br>
+      <span style="color:var(--pb-gold);">Now let's make it the way PB makes decks.</span>
+    </p>
+    <p style="font-size:17px; color:rgba(255,255,255,0.55); font-weight:300; line-height:1.6; margin-bottom:48px;">
+      PB Sauce is live and working. It generates brand-perfect decks in under 30 seconds. It costs effectively nothing. It learns from itself. It solves a problem every person on this team deals with every week.
+    </p>
+    <p style="font-size:14px; color:rgba(255,255,255,0.35);">The next step is to deploy it for the team. Everything else follows from usage and feedback.</p>
+  </div>
+  <img class="slide-logo" src="/assets/logos/PB_Logo_Wordmark_Horizontal_White_1.png" alt="PB">
+  <span class="page-num" style="color:rgba(255,255,255,0.3);">25</span>
+</section>
+
+<button class="save-pdf-btn" onclick="window.print()">Save as PDF</button>
+
+</body>
+</html>
