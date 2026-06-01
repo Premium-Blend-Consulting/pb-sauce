@@ -57,6 +57,8 @@ This step matters most for anyone on a **Claude Plus** plan — you have a small
 >
 > **The move:** Start in Opus, say *"plan me a deck outline for…"*, refine it until the content is right, then switch to Sonnet (`/model`) and say *"now build this in PB Sauce."*
 >
+> *Not sure how to switch? In Claude Code type `/model`; in Cowork/Desktop use the model dropdown near the message box.*
+>
 > Doing the whole thing in Opus works, but you'll burn through your session budget much faster. Planning is where Opus earns its keep; execution is where Sonnet saves you.
 
 ---
