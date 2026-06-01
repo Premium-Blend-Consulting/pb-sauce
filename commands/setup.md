@@ -9,7 +9,7 @@ Welcome to PB Sauce, Premium Blend's internal deck builder. This is a one-time o
 
 ## What you'll do
 
-Walk the user through four quick steps:
+Walk the user through five quick steps:
 
 ---
 
@@ -42,7 +42,26 @@ Show this in a clean, readable format:
 
 ---
 
-## Step 3: Show what it knows
+## Step 3: Model strategy (important for token budgets)
+
+This step matters most for anyone on a **Claude Plus** plan — you have a smaller per-session token budget than Max, and a full deck build can eat into it fast. The fix is to split the work across two models:
+
+> **⚡ Plan in Opus, build in Sonnet.**
+>
+> Building a deck has two phases, and they want different models:
+>
+> | Phase | Model | Why |
+> |---|---|---|
+> | **1. Plan the outline** — structure, slide-by-slide content, key messages, data points | **Opus** | Opus is the strategist. Use it to nail *what* goes on each slide. This is the thinking-heavy part and it's cheap on tokens — it's just text. |
+> | **2. Build the HTML** — generate the actual styled deck | **Sonnet** | Sonnet executes the layout fast and burns far fewer tokens producing the long HTML output. Switch here once the outline is locked. |
+>
+> **The move:** Start in Opus, say *"plan me a deck outline for…"*, refine it until the content is right, then switch to Sonnet (`/model`) and say *"now build this in PB Sauce."*
+>
+> Doing the whole thing in Opus works, but you'll burn through your session budget much faster. Planning is where Opus earns its keep; execution is where Sonnet saves you.
+
+---
+
+## Step 4: Show what it knows
 
 Tell the user about the nine reference layouts available:
 
@@ -59,7 +78,7 @@ Tell the user about the nine reference layouts available:
 
 ---
 
-## Step 4: Offer a test build
+## Step 5: Offer a test build
 
 Ask the user:
 

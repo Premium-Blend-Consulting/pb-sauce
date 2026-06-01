@@ -15,3 +15,7 @@ Load the pb-sauce SKILL.md from this plugin's root directory, then build the dec
 If `$ARGUMENTS` is empty, ask the user the five intake questions (audience, type, tone, slide count, source material) before building.
 
 Save the output `.html` file to the current working directory with a descriptive filename.
+
+## Token-budget tip (Plus plans)
+
+If the user is currently on Opus and hasn't yet locked an outline, gently suggest the two-phase workflow before generating a full deck: plan the outline in Opus, then switch to Sonnet (`/model`) to build the HTML. Building long HTML output in Opus burns session tokens fast. If they're already on Sonnet or explicitly want to just build, skip the nudge and proceed.
