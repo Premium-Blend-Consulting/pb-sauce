@@ -1,15 +1,32 @@
 # PB Sauce — Cowork Setup Guide
 
-Claude Code and Cowork are separate surfaces. They don't share skills. If you want PB Sauce in Cowork, here's how to set it up — takes two minutes.
+## Recommended: install as a plugin (two commands)
 
-## What you'll do
+The fastest path. In Claude Desktop (Cowork), run:
+
+```
+/plugin marketplace add Premium-Blend-Consulting/pb-sauce
+/plugin install pb-sauce@pb-sauce
+```
+
+Then run `/pb-sauce:setup` for the guided walkthrough. This pulls the skill, all 9 reference decks, and the design system in one shot — no file uploads, no pasting.
+
+> Prefer clicking? Run `/plugin` with no arguments to open the plugin browser and add/install from the menu.
+
+That's it. Skip the rest of this guide unless your Cowork build doesn't support plugins yet.
+
+---
+
+## Fallback: manual Project setup
+
+If `/plugin` isn't available in your Cowork build, set it up manually as a Project — takes two minutes.
+
+### What you'll do
 
 1. Create a Cowork Project called **"PB Sauce — Deck Builder"**
 2. Paste the Project instructions below
 3. Upload the 9 reference deck files
 4. Start a conversation — "build a QBR deck for…"
-
-That's it.
 
 ---
 

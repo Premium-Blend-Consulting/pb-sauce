@@ -2,21 +2,17 @@
 
 Turn a brief into a branded Premium Blend HTML deck. Outputs at 1280×720 per slide, uses PB fonts and colors, mirrors the layout DNA of real decks, and ships with a PDF exporter.
 
-**Two ways to use it:**
-
-- **Cowork** (Claude Desktop app) → one-click install below ⬇️
-- **Claude Code** (CLI / VS Code) → install as a skill, see [Claude Code install](#claude-code-install)
-
-Both produce identical output.
+**Works in both Claude Code and Cowork.** Both produce identical output.
 
 ---
 
-## Cowork install (one click)
+## Install (two commands)
 
-In Claude Desktop, run:
+PB Sauce ships as a plugin. Installing is two steps — add the marketplace, then install the plugin:
 
 ```
-/install-plugin github:Premium-Blend-Consulting/pb-sauce
+/plugin marketplace add Premium-Blend-Consulting/pb-sauce
+/plugin install pb-sauce@pb-sauce
 ```
 
 Then run the setup walkthrough:
@@ -25,13 +21,13 @@ Then run the setup walkthrough:
 /pb-sauce:setup
 ```
 
-Claude will confirm the install, explain what it can do, and offer to build a test deck.
+Claude will confirm the install, explain what it can do, walk you through the Plus-plan model strategy, and offer to build a test deck.
 
-> First time? Make sure you have [Claude Desktop](https://claude.ai/download) with Cowork enabled.
+> Prefer clicking? Run `/plugin` with no arguments to open the plugin browser, then add the marketplace and install from the menu.
+>
+> First time in Cowork? Make sure you have [Claude Desktop](https://claude.ai/download) with Cowork enabled.
 
 ---
-
-## Claude Code install
 
 ## What it does
 
@@ -43,30 +39,16 @@ Ask Claude something like:
 
 ## Requirements
 
-- [Claude Code](https://docs.claude.com/en/docs/claude-code) installed (CLI, desktop, or VS Code extension)
+- [Claude Code](https://docs.claude.com/en/docs/claude-code) or Claude Desktop (Cowork)
 - macOS or Linux (the PDF exporter assumes bash)
 - For PDF export: Node + Python 3 on your PATH (Playwright is auto-installed on first run)
 
-## Install (one command)
-
-```bash
-git clone https://github.com/Premium-Blend-Consulting/pb-sauce ~/.claude/skills/pb-sauce
-```
-
-Then restart Claude Code and run the setup walkthrough:
-
-```
-/pb-sauce:setup
-```
-
-Claude will confirm the install, explain what it can do, and offer to build a test deck.
-
 ## Use it
 
-Invoke explicitly with `/pb-sauce`, or just describe the deck in plain language:
+Invoke explicitly with `/pb-sauce:deck`, or just describe the deck in plain language:
 
 ```
-/pb-sauce build an ops roadmap deck for internal leadership, 15 slides, punchy tone
+/pb-sauce:deck build an ops roadmap deck for internal leadership, 15 slides, punchy tone
 ```
 
 or
@@ -82,14 +64,7 @@ Claude will:
 
 ## Convert to PDF
 
-After the deck is built, ask Claude to "export to PDF" or run the script directly:
-
-```bash
-# edit DECK and OUT paths in scripts/export-deck-pdf.sh first
-bash ~/.claude/skills/pb-sauce/scripts/export-deck-pdf.sh
-```
-
-The script opens each slide in Playwright, screenshots at 2x for retina fidelity, and stitches PNGs into a PDF at 144 DPI. First run auto-installs Playwright (~30s).
+After the deck is built, just ask Claude to "export to PDF" — it runs the bundled `scripts/export-deck-pdf.sh` against your deck. The script opens each slide in Playwright, screenshots at 2x for retina fidelity, and stitches PNGs into a PDF at 144 DPI. First run auto-installs Playwright (~30s).
 
 ## What's in the package
 
