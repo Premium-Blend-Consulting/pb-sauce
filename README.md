@@ -19,7 +19,13 @@ In Claude Desktop, run:
 /install-plugin github:Premium-Blend-Consulting/pb-sauce
 ```
 
-That's it. Claude will pull the skill, reference decks, and design system in one shot. Then start a new Cowork conversation and say "build a deck for…"
+Then run the setup walkthrough:
+
+```
+/pb-sauce:setup
+```
+
+Claude will confirm the install, explain what it can do, and offer to build a test deck.
 
 > First time? Make sure you have [Claude Desktop](https://claude.ai/download) with Cowork enabled.
 
@@ -47,9 +53,13 @@ Ask Claude something like:
 git clone https://github.com/Premium-Blend-Consulting/pb-sauce ~/.claude/skills/pb-sauce
 ```
 
-Then restart Claude Code. That's it — the skill is now live.
+Then restart Claude Code and run the setup walkthrough:
 
-To verify: type `/help` in Claude Code and look for `pb-sauce` in the skills list, or just ask Claude to "build a PB deck" and watch it fire.
+```
+/pb-sauce:setup
+```
+
+Claude will confirm the install, explain what it can do, and offer to build a test deck.
 
 ## Use it
 
