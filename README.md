@@ -38,6 +38,8 @@ Two commands — add the marketplace, then install:
 
 Claude confirms the install, explains what it can do, walks you through the Plus-plan model strategy, and offers to build a test deck.
 
+> **Admins:** to push PB Sauce to the whole team at once (no per-person install), see [ADMIN-ROLLOUT.md](./ADMIN-ROLLOUT.md).
+
 ---
 
 ## What it does
