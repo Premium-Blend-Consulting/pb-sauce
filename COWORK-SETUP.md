@@ -1,25 +1,33 @@
 # PB Sauce — Cowork Setup Guide
 
-## Recommended: install as a plugin (two commands)
+> **Important:** Cowork has **no `/plugin` slash commands** — those are Claude Code (CLI) only. In Cowork you install through the Settings UI. Don't paste `/plugin marketplace add ...` into a Cowork chat; it won't do anything.
 
-The fastest path. In Claude Desktop (Cowork), run:
+## Recommended: install the plugin via Settings
 
-```
-/plugin marketplace add Premium-Blend-Consulting/pb-sauce
-/plugin install pb-sauce@pb-sauce
-```
+The fastest path in Claude Desktop (Cowork):
 
-Then run `/pb-sauce:setup` for the guided walkthrough. This pulls the skill, all 9 reference decks, and the design system in one shot — no file uploads, no pasting.
+1. Open **Settings → Customize → Plugins**
+2. Click **Add plugin → GitHub**
+3. Paste: `Premium-Blend-Consulting/pb-sauce`
+4. Install it, then start a new chat and run `/pb-sauce:setup`
 
-> Prefer clicking? Run `/plugin` with no arguments to open the plugin browser and add/install from the menu.
+This pulls the skill, all 9 reference decks, and the design system in one shot — no file uploads, no pasting.
 
-That's it. Skip the rest of this guide unless your Cowork build doesn't support plugins yet.
+### If the GitHub option isn't there (or won't resolve): use the `.plugin` file
+
+Cowork can also install from a packaged file, which needs no GitHub access:
+
+1. Get `pb-sauce.plugin` (from Joe / the AI Pod)
+2. **Settings → Customize → Plugins → Add plugin → Upload file**
+3. Select `pb-sauce.plugin`, install, then run `/pb-sauce:setup`
+
+> Org admins (Team/Enterprise): you can provision PB Sauce for everyone via **Organization settings → Plugins → Add plugins → GitHub**, then set it to "Installed by default" or "Available for install." That's the cleanest path for a full rollout.
 
 ---
 
-## Fallback: manual Project setup
+## Last-resort fallback: manual Project setup
 
-If `/plugin` isn't available in your Cowork build, set it up manually as a Project — takes two minutes.
+If none of the above are available in your Cowork build, set it up manually as a Project — takes two minutes.
 
 ### What you'll do
 

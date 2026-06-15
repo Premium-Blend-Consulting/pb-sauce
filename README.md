@@ -6,26 +6,37 @@ Turn a brief into a branded Premium Blend HTML deck. Outputs at 1280×720 per sl
 
 ---
 
-## Install (two commands)
+## Install
 
-PB Sauce ships as a plugin. Installing is two steps — add the marketplace, then install the plugin:
+PB Sauce ships as a plugin. **The two surfaces install it differently** — pick yours.
+
+### Cowork (Claude Desktop / web app)
+
+There are **no `/plugin` slash commands in Cowork** — installing is done through the UI:
+
+1. Open **Settings → Customize → Plugins**
+2. Click **Add plugin → GitHub**
+3. Paste: `Premium-Blend-Consulting/pb-sauce`
+4. Install, then start a new chat and run `/pb-sauce:setup`
+
+> Don't see a GitHub option, or it won't resolve? Use the **`.plugin` file** instead: download `pb-sauce.plugin` (ask Joe / the AI Pod), then **Settings → Customize → Plugins → Add plugin → Upload file**. This always works and needs no GitHub access.
+
+### Claude Code (CLI / VS Code)
+
+Two commands — add the marketplace, then install:
 
 ```
 /plugin marketplace add Premium-Blend-Consulting/pb-sauce
 /plugin install pb-sauce@pb-sauce
 ```
 
-Then run the setup walkthrough:
+### Then, on either surface
 
 ```
 /pb-sauce:setup
 ```
 
-Claude will confirm the install, explain what it can do, walk you through the Plus-plan model strategy, and offer to build a test deck.
-
-> Prefer clicking? Run `/plugin` with no arguments to open the plugin browser, then add the marketplace and install from the menu.
->
-> First time in Cowork? Make sure you have [Claude Desktop](https://claude.ai/download) with Cowork enabled.
+Claude confirms the install, explains what it can do, walks you through the Plus-plan model strategy, and offers to build a test deck.
 
 ---
 
