@@ -69,6 +69,31 @@ Always end the file with:
 
 This injects in-browser deck tools (save-to-PDF button, slide navigation).
 
+## Asset references — ALWAYS absolute CDN URLs
+
+Every font, logo, illustration, scribble, and script **must** load from the `pbsauce-6o98.vercel.app` CDN as an absolute `https://` URL. This is the single most common failure mode in generated decks: an asset referenced by a local path (`../../Branding/...`), a dev server (`http://localhost:3000/...`), or a root-absolute path (`/assets/...`, `/fonts/...`) renders as a broken image on every machine except the one that built it.
+
+**Never** use a relative path, a `localhost` URL, or a root-absolute path for any asset. Always the full CDN URL.
+
+| Asset type | CDN base |
+|---|---|
+| Fonts | `https://pbsauce-6o98.vercel.app/fonts/` |
+| Bean illustrations | `https://pbsauce-6o98.vercel.app/assets/illustrations/` |
+| Logos | `https://pbsauce-6o98.vercel.app/assets/logos/` |
+| Scribbles / decorative | `https://pbsauce-6o98.vercel.app/assets/scribbles/` |
+| Deck-tools script | `https://pbsauce-6o98.vercel.app/references/deck-tools.js` |
+
+### Logos
+
+The two standard wordmark lockups (note the `Horiztonal` spelling on the black file — it is intentional, that is the real filename):
+
+```
+https://pbsauce-6o98.vercel.app/assets/logos/PB_Logo_Wordmark_Horizontal_White_1.png
+https://pbsauce-6o98.vercel.app/assets/logos/PB_Logo_Wordmark_Horiztonal_Black_1.png
+```
+
+Use the **white** lockup on dark/blue slides and the **black** lockup on white/light slides. Vertical and icon variants follow the same naming under `/assets/logos/`.
+
 ## Brand colors
 
 - **blue** `#617EC8` — primary, use most
@@ -91,6 +116,7 @@ This injects in-browser deck tools (save-to-PDF button, slide navigation).
 8. Data slides: use actual bars, numbers, visual weight — not bullets dressed up as data
 9. Inline styles only — no `<script>` blocks, no external CSS beyond the font block above
 10. Use `contenteditable="true"` on all text elements so the deck is editable in-browser
+11. Every asset (font, logo, illustration, scribble, script) loads from the CDN via an absolute `https://` URL — never a local path, `localhost`, or root-absolute path (see **Asset references**)
 
 ## Voice
 
