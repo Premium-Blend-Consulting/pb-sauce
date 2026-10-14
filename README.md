@@ -108,7 +108,7 @@ All fonts, bean illustrations, and the deck-tools JS bundle are served from `pbs
 
 **Fonts look wrong in the browser:** check your internet — fonts load from Vercel. Offline decks fall back to system-ui.
 
-**PDF export fails on first run:** the script installs Playwright into `/tmp/deck-export`. If `/tmp` is write-locked, edit `WORKDIR` in the script.
+**PDF export fails on first run:** the script installs Playwright into `~/.pb-sauce/deck-export` (persistent, so it only installs once). To use a different location, edit `WORKDIR` in the script.
 
 **Bean illustrations don't load:** confirm the URLs in `SKILL.md` are current. They live under `pbsauce-6o98.vercel.app/assets/illustrations/`.
 

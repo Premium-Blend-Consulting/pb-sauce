@@ -30,7 +30,7 @@ fi
 echo "📄 Exporting: $(basename "$DECK")"
 
 # ── Playwright setup (one-time) ──────────────────────────
-WORKDIR="/tmp/deck-export"
+WORKDIR="$HOME/.pb-sauce/deck-export"  # persistent; /tmp gets wiped by macOS
 if [ ! -d "$WORKDIR/node_modules/playwright" ]; then
   echo "   Installing Playwright (one-time)..."
   mkdir -p "$WORKDIR"
