@@ -10,7 +10,7 @@
         {
             "name": "pb-sauce",
             "description": "Turn a brief into a branded Premium Blend HTML deck. 1280×720 per slide, PB design system, 9 reference layouts, PDF exporter included.",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "author": {
                 "name": "Premium Blend AI Pod"
             },
